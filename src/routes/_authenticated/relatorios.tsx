@@ -15,6 +15,7 @@ const BASE_TABS = [
   { to: "/relatorios", label: "Visão Geral", icon: BarChart3, exact: true },
   { to: "/relatorios/imoveis", label: "Imóveis", icon: Building2 },
   { to: "/relatorios/exportacoes", label: "Exportações & Portais", icon: Share2 },
+  { to: "/relatorios/rankings", label: "Rankings", icon: Trophy },
   { to: "/relatorios/corretores", label: "Corretores", icon: UserCheck },
   { to: "/relatorios/atividade", label: "Atividade & Auditoria", icon: Activity },
 ];
