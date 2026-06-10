@@ -39,6 +39,7 @@ export const ROUTE_ACCESS: Record<string, AppRole[]> = {
   "/carteiras": ["super_admin", "secretaria", "imobiliaria", "corretor_imobiliaria", "corretor_autonomo"],
   "/portais": ["super_admin"],
   "/auditoria": ["super_admin"],
+  "/seguranca": ["super_admin"],
   "/configuracoes": ["super_admin"],
   "/perfil": [],
 };
