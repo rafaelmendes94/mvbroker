@@ -1,0 +1,80 @@
+import { Link, useRouterState } from "@tanstack/react-router";
+import {
+  Building2, LayoutDashboard, FolderKanban, Users, UserSquare2,
+  BarChart3, Download, Settings, LifeBuoy,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const nav = [
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/registros", label: "Cadastros", icon: FolderKanban },
+  { to: "/usuarios", label: "Usuários", icon: Users },
+  { to: "/clientes", label: "Clientes", icon: UserSquare2 },
+  { to: "/relatorios", label: "Relatórios", icon: BarChart3 },
+  { to: "/exportacoes", label: "Exportações", icon: Download },
+  { to: "/configuracoes", label: "Configurações", icon: Settings },
+] as const;
+
+export function AppSidebar({ onNavigate }: { onNavigate?: () => void }) {
+  const pathname = useRouterState({ select: s => s.location.pathname });
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Logo */}
+      <div className="px-5 py-5 border-b border-sidebar-border">
+        <Link to="/dashboard" onClick={onNavigate} className="flex items-center gap-3 group">
+          <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-primary-foreground shrink-0 transition-transform group-hover:scale-105">
+            <Building2 className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <div className="font-bold tracking-tight text-base leading-tight">MV BROKER</div>
+            <div className="text-[11px] text-sidebar-foreground/60 leading-tight truncate">
+              Sistema de Suporte Imobiliário
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <div className="px-2 mb-2 text-[11px] uppercase tracking-wider text-sidebar-foreground/40 font-semibold">
+          Menu
+        </div>
+        <ul className="space-y-0.5">
+          {nav.map(item => {
+            const active = pathname === item.to || pathname.startsWith(item.to + "/");
+            const Icon = item.icon;
+            return (
+              <li key={item.to}>
+                <Link
+                  to={item.to}
+                  onClick={onNavigate}
+                  className={cn(
+                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+                    active
+                      ? "bg-primary text-primary-foreground font-medium shadow-sm"
+                      : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  )}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
+      {/* Footer */}
+      <div className="px-3 py-3 border-t border-sidebar-border">
+        <a
+          href="#"
+          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+        >
+          <LifeBuoy className="h-4 w-4" />
+          Suporte
+        </a>
+      </div>
+    </div>
+  );
+}

@@ -9,38 +9,225 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedUsuariosRouteImport } from './routes/_authenticated/usuarios'
+import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
+import { Route as AuthenticatedRegistrosRouteImport } from './routes/_authenticated/registros'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as AuthenticatedExportacoesRouteImport } from './routes/_authenticated/exportacoes'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedClientesRouteImport } from './routes/_authenticated/clientes'
+import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authenticated/registros.index'
+import { Route as AuthenticatedRegistrosNovoRouteImport } from './routes/_authenticated/registros.novo'
+import { Route as AuthenticatedRegistrosIdRouteImport } from './routes/_authenticated/registros.$id'
+import { Route as AuthenticatedRegistrosIdEditarRouteImport } from './routes/_authenticated/registros.$id.editar'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedUsuariosRoute = AuthenticatedUsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRegistrosRoute = AuthenticatedRegistrosRouteImport.update({
+  id: '/registros',
+  path: '/registros',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedExportacoesRoute =
+  AuthenticatedExportacoesRouteImport.update({
+    id: '/exportacoes',
+    path: '/exportacoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedClientesRoute = AuthenticatedClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRegistrosIndexRoute =
+  AuthenticatedRegistrosIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedRegistrosRoute,
+  } as any)
+const AuthenticatedRegistrosNovoRoute =
+  AuthenticatedRegistrosNovoRouteImport.update({
+    id: '/novo',
+    path: '/novo',
+    getParentRoute: () => AuthenticatedRegistrosRoute,
+  } as any)
+const AuthenticatedRegistrosIdRoute =
+  AuthenticatedRegistrosIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedRegistrosRoute,
+  } as any)
+const AuthenticatedRegistrosIdEditarRoute =
+  AuthenticatedRegistrosIdEditarRouteImport.update({
+    id: '/editar',
+    path: '/editar',
+    getParentRoute: () => AuthenticatedRegistrosIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/clientes': typeof AuthenticatedClientesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/exportacoes': typeof AuthenticatedExportacoesRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
+  '/registros': typeof AuthenticatedRegistrosRouteWithChildren
+  '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/usuarios': typeof AuthenticatedUsuariosRoute
+  '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
+  '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/registros/': typeof AuthenticatedRegistrosIndexRoute
+  '/registros/$id/editar': typeof AuthenticatedRegistrosIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/clientes': typeof AuthenticatedClientesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/exportacoes': typeof AuthenticatedExportacoesRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
+  '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/usuarios': typeof AuthenticatedUsuariosRoute
+  '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
+  '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/registros': typeof AuthenticatedRegistrosIndexRoute
+  '/registros/$id/editar': typeof AuthenticatedRegistrosIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/clientes': typeof AuthenticatedClientesRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/exportacoes': typeof AuthenticatedExportacoesRoute
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/_authenticated/registros': typeof AuthenticatedRegistrosRouteWithChildren
+  '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/_authenticated/usuarios': typeof AuthenticatedUsuariosRoute
+  '/_authenticated/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
+  '/_authenticated/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/_authenticated/registros/': typeof AuthenticatedRegistrosIndexRoute
+  '/_authenticated/registros/$id/editar': typeof AuthenticatedRegistrosIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/clientes'
+    | '/configuracoes'
+    | '/dashboard'
+    | '/exportacoes'
+    | '/perfil'
+    | '/registros'
+    | '/relatorios'
+    | '/usuarios'
+    | '/registros/$id'
+    | '/registros/novo'
+    | '/registros/'
+    | '/registros/$id/editar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/clientes'
+    | '/configuracoes'
+    | '/dashboard'
+    | '/exportacoes'
+    | '/perfil'
+    | '/relatorios'
+    | '/usuarios'
+    | '/registros/$id'
+    | '/registros/novo'
+    | '/registros'
+    | '/registros/$id/editar'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/clientes'
+    | '/_authenticated/configuracoes'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/exportacoes'
+    | '/_authenticated/perfil'
+    | '/_authenticated/registros'
+    | '/_authenticated/relatorios'
+    | '/_authenticated/usuarios'
+    | '/_authenticated/registros/$id'
+    | '/_authenticated/registros/novo'
+    | '/_authenticated/registros/'
+    | '/_authenticated/registros/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +235,155 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/usuarios': {
+      id: '/_authenticated/usuarios'
+      path: '/usuarios'
+      fullPath: '/usuarios'
+      preLoaderRoute: typeof AuthenticatedUsuariosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/relatorios': {
+      id: '/_authenticated/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof AuthenticatedRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/registros': {
+      id: '/_authenticated/registros'
+      path: '/registros'
+      fullPath: '/registros'
+      preLoaderRoute: typeof AuthenticatedRegistrosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/exportacoes': {
+      id: '/_authenticated/exportacoes'
+      path: '/exportacoes'
+      fullPath: '/exportacoes'
+      preLoaderRoute: typeof AuthenticatedExportacoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/clientes': {
+      id: '/_authenticated/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof AuthenticatedClientesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/registros/': {
+      id: '/_authenticated/registros/'
+      path: '/'
+      fullPath: '/registros/'
+      preLoaderRoute: typeof AuthenticatedRegistrosIndexRouteImport
+      parentRoute: typeof AuthenticatedRegistrosRoute
+    }
+    '/_authenticated/registros/novo': {
+      id: '/_authenticated/registros/novo'
+      path: '/novo'
+      fullPath: '/registros/novo'
+      preLoaderRoute: typeof AuthenticatedRegistrosNovoRouteImport
+      parentRoute: typeof AuthenticatedRegistrosRoute
+    }
+    '/_authenticated/registros/$id': {
+      id: '/_authenticated/registros/$id'
+      path: '/$id'
+      fullPath: '/registros/$id'
+      preLoaderRoute: typeof AuthenticatedRegistrosIdRouteImport
+      parentRoute: typeof AuthenticatedRegistrosRoute
+    }
+    '/_authenticated/registros/$id/editar': {
+      id: '/_authenticated/registros/$id/editar'
+      path: '/editar'
+      fullPath: '/registros/$id/editar'
+      preLoaderRoute: typeof AuthenticatedRegistrosIdEditarRouteImport
+      parentRoute: typeof AuthenticatedRegistrosIdRoute
+    }
   }
 }
 
+interface AuthenticatedRegistrosIdRouteChildren {
+  AuthenticatedRegistrosIdEditarRoute: typeof AuthenticatedRegistrosIdEditarRoute
+}
+
+const AuthenticatedRegistrosIdRouteChildren: AuthenticatedRegistrosIdRouteChildren =
+  {
+    AuthenticatedRegistrosIdEditarRoute: AuthenticatedRegistrosIdEditarRoute,
+  }
+
+const AuthenticatedRegistrosIdRouteWithChildren =
+  AuthenticatedRegistrosIdRoute._addFileChildren(
+    AuthenticatedRegistrosIdRouteChildren,
+  )
+
+interface AuthenticatedRegistrosRouteChildren {
+  AuthenticatedRegistrosIdRoute: typeof AuthenticatedRegistrosIdRouteWithChildren
+  AuthenticatedRegistrosNovoRoute: typeof AuthenticatedRegistrosNovoRoute
+  AuthenticatedRegistrosIndexRoute: typeof AuthenticatedRegistrosIndexRoute
+}
+
+const AuthenticatedRegistrosRouteChildren: AuthenticatedRegistrosRouteChildren =
+  {
+    AuthenticatedRegistrosIdRoute: AuthenticatedRegistrosIdRouteWithChildren,
+    AuthenticatedRegistrosNovoRoute: AuthenticatedRegistrosNovoRoute,
+    AuthenticatedRegistrosIndexRoute: AuthenticatedRegistrosIndexRoute,
+  }
+
+const AuthenticatedRegistrosRouteWithChildren =
+  AuthenticatedRegistrosRoute._addFileChildren(
+    AuthenticatedRegistrosRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedClientesRoute: typeof AuthenticatedClientesRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedExportacoesRoute: typeof AuthenticatedExportacoesRoute
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
+  AuthenticatedRegistrosRoute: typeof AuthenticatedRegistrosRouteWithChildren
+  AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRoute
+  AuthenticatedUsuariosRoute: typeof AuthenticatedUsuariosRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedClientesRoute: AuthenticatedClientesRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedExportacoesRoute: AuthenticatedExportacoesRoute,
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
+  AuthenticatedRegistrosRoute: AuthenticatedRegistrosRouteWithChildren,
+  AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRoute,
+  AuthenticatedUsuariosRoute: AuthenticatedUsuariosRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
