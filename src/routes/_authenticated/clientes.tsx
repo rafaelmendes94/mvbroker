@@ -421,7 +421,35 @@ function ClientesPage() {
                 </Select>
               </div>
             </div>
+
+            <div className="space-y-2 rounded-lg border bg-muted/30 p-3">
+              <Label className="flex items-center gap-2"><KeyRound className="h-4 w-4" /> Acesso ao sistema</Label>
+              <p className="text-xs text-muted-foreground">
+                O e-mail informado acima será o login do cliente.
+              </p>
+              <RadioGroup
+                value={form.modoAcesso}
+                onValueChange={(v) => setForm({ ...form, modoAcesso: v as "senha" | "convite" })}
+                className="grid gap-2 sm:grid-cols-2 pt-1"
+              >
+                <label className="flex items-start gap-2 rounded-md border bg-background p-2 cursor-pointer hover:bg-accent/40">
+                  <RadioGroupItem value="senha" className="mt-1" />
+                  <div>
+                    <div className="text-sm font-medium flex items-center gap-1"><KeyRound className="h-3.5 w-3.5" /> Gerar senha agora</div>
+                    <div className="text-xs text-muted-foreground">Senha exibida na tela para você passar ao cliente.</div>
+                  </div>
+                </label>
+                <label className="flex items-start gap-2 rounded-md border bg-background p-2 cursor-pointer hover:bg-accent/40">
+                  <RadioGroupItem value="convite" className="mt-1" />
+                  <div>
+                    <div className="text-sm font-medium flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> Enviar convite por e-mail</div>
+                    <div className="text-xs text-muted-foreground">Cliente recebe link para definir a própria senha.</div>
+                  </div>
+                </label>
+              </RadioGroup>
+            </div>
           </div>
+
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpenNew(false)}>Cancelar</Button>
