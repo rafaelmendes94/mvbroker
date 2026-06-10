@@ -128,24 +128,36 @@ export const listCompartilhamentos = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     const { data: rows, error } = await context.supabase
       .from("carteira_compartilhamentos")
-      .select("id, usuario_id, permissao, created_at, profiles:usuario_id(full_name, email)")
+      .select("id, usuario_id, permissao, created_at, profiles:usuario_id(full_name)")
       .eq("carteira_id", data.carteira_id);
     if (error) throw error;
-    return rows ?? [];
+    // enrich with email via admin
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const enriched = await Promise.all((rows ?? []).map(async (r: any) => {
+      try {
+        const { data: u } = await supabaseAdmin.auth.admin.getUserById(r.usuario_id);
+        return { ...r, email: u?.user?.email ?? null };
+      } catch {
+        return { ...r, email: null };
+      }
+    }));
+    return enriched;
   });
 
 export const compartilharCarteira = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { carteira_id: string; email: string; permissao: "leitura" | "edicao" }) => input)
   .handler(async ({ data, context }) => {
-    // find user by email via profiles
-    const { data: prof } = await context.supabase
-      .from("profiles").select("id").eq("email", data.email).maybeSingle();
-    if (!prof) throw new Error("Usuário com este e-mail não encontrado");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // find user by email via auth.admin list
+    const { data: list, error: lErr } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
+    if (lErr) throw lErr;
+    const user = list.users.find((u) => u.email?.toLowerCase() === data.email.toLowerCase());
+    if (!user) throw new Error("Usuário com este e-mail não encontrado");
     const { error } = await context.supabase
       .from("carteira_compartilhamentos")
       .upsert(
-        { carteira_id: data.carteira_id, usuario_id: prof.id, permissao: data.permissao },
+        { carteira_id: data.carteira_id, usuario_id: user.id, permissao: data.permissao },
         { onConflict: "carteira_id,usuario_id" }
       );
     if (error) throw error;

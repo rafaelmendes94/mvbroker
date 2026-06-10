@@ -43,6 +43,7 @@ import { Route as AuthenticatedCarteirasIdRouteImport } from './routes/_authenti
 import { Route as ApiPublicFeedSlugRouteImport } from './routes/api/public/feed/$slug'
 import { Route as AuthenticatedRegistrosIdEditarRouteImport } from './routes/_authenticated/registros.$id.editar'
 import { Route as AuthenticatedImoveisIdEditarRouteImport } from './routes/_authenticated/imoveis.$id.editar'
+import { Route as ApiPublicPortalPortalSlugRouteImport } from './routes/api/public/portal/$portal/$slug'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -228,6 +229,12 @@ const AuthenticatedImoveisIdEditarRoute =
     path: '/$id/editar',
     getParentRoute: () => AuthenticatedImoveisRoute,
   } as any)
+const ApiPublicPortalPortalSlugRoute =
+  ApiPublicPortalPortalSlugRouteImport.update({
+    id: '/api/public/portal/$portal/$slug',
+    path: '/api/public/portal/$portal/$slug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -263,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/imoveis/$id/editar': typeof AuthenticatedImoveisIdEditarRoute
   '/registros/$id/editar': typeof AuthenticatedRegistrosIdEditarRoute
   '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
+  '/api/public/portal/$portal/$slug': typeof ApiPublicPortalPortalSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -295,6 +303,7 @@ export interface FileRoutesByTo {
   '/imoveis/$id/editar': typeof AuthenticatedImoveisIdEditarRoute
   '/registros/$id/editar': typeof AuthenticatedRegistrosIdEditarRoute
   '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
+  '/api/public/portal/$portal/$slug': typeof ApiPublicPortalPortalSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -332,6 +341,7 @@ export interface FileRoutesById {
   '/_authenticated/imoveis/$id/editar': typeof AuthenticatedImoveisIdEditarRoute
   '/_authenticated/registros/$id/editar': typeof AuthenticatedRegistrosIdEditarRoute
   '/api/public/feed/$slug': typeof ApiPublicFeedSlugRoute
+  '/api/public/portal/$portal/$slug': typeof ApiPublicPortalPortalSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -369,6 +379,7 @@ export interface FileRouteTypes {
     | '/imoveis/$id/editar'
     | '/registros/$id/editar'
     | '/api/public/feed/$slug'
+    | '/api/public/portal/$portal/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -401,6 +412,7 @@ export interface FileRouteTypes {
     | '/imoveis/$id/editar'
     | '/registros/$id/editar'
     | '/api/public/feed/$slug'
+    | '/api/public/portal/$portal/$slug'
   id:
     | '__root__'
     | '/'
@@ -437,6 +449,7 @@ export interface FileRouteTypes {
     | '/_authenticated/imoveis/$id/editar'
     | '/_authenticated/registros/$id/editar'
     | '/api/public/feed/$slug'
+    | '/api/public/portal/$portal/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -444,6 +457,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AuthRoute: typeof AuthRoute
   ApiPublicFeedSlugRoute: typeof ApiPublicFeedSlugRoute
+  ApiPublicPortalPortalSlugRoute: typeof ApiPublicPortalPortalSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -686,6 +700,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImoveisIdEditarRouteImport
       parentRoute: typeof AuthenticatedImoveisRoute
     }
+    '/api/public/portal/$portal/$slug': {
+      id: '/api/public/portal/$portal/$slug'
+      path: '/api/public/portal/$portal/$slug'
+      fullPath: '/api/public/portal/$portal/$slug'
+      preLoaderRoute: typeof ApiPublicPortalPortalSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -831,6 +852,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthRoute: AuthRoute,
   ApiPublicFeedSlugRoute: ApiPublicFeedSlugRoute,
+  ApiPublicPortalPortalSlugRoute: ApiPublicPortalPortalSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
