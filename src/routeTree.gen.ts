@@ -39,6 +39,7 @@ import { Route as AuthenticatedImoveisIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedCarteirasIndexRouteImport } from './routes/_authenticated/carteiras.index'
 import { Route as AuthenticatedRelatoriosImoveisRouteImport } from './routes/_authenticated/relatorios.imoveis'
 import { Route as AuthenticatedRelatoriosExportacoesRouteImport } from './routes/_authenticated/relatorios.exportacoes'
+import { Route as AuthenticatedRelatoriosAtividadeRouteImport } from './routes/_authenticated/relatorios.atividade'
 import { Route as AuthenticatedRegistrosNovoRouteImport } from './routes/_authenticated/registros.novo'
 import { Route as AuthenticatedRegistrosIdRouteImport } from './routes/_authenticated/registros.$id'
 import { Route as AuthenticatedImoveisNovoRouteImport } from './routes/_authenticated/imoveis.novo'
@@ -211,6 +212,12 @@ const AuthenticatedRelatoriosExportacoesRoute =
     path: '/exportacoes',
     getParentRoute: () => AuthenticatedRelatoriosRoute,
   } as any)
+const AuthenticatedRelatoriosAtividadeRoute =
+  AuthenticatedRelatoriosAtividadeRouteImport.update({
+    id: '/atividade',
+    path: '/atividade',
+    getParentRoute: () => AuthenticatedRelatoriosRoute,
+  } as any)
 const AuthenticatedRegistrosNovoRoute =
   AuthenticatedRegistrosNovoRouteImport.update({
     id: '/novo',
@@ -299,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/relatorios/atividade': typeof AuthenticatedRelatoriosAtividadeRoute
   '/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
   '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/carteiras/': typeof AuthenticatedCarteirasIndexRoute
@@ -335,6 +343,7 @@ export interface FileRoutesByTo {
   '/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/relatorios/atividade': typeof AuthenticatedRelatoriosAtividadeRoute
   '/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
   '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/carteiras': typeof AuthenticatedCarteirasIndexRoute
@@ -378,6 +387,7 @@ export interface FileRoutesById {
   '/_authenticated/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/_authenticated/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/_authenticated/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/_authenticated/relatorios/atividade': typeof AuthenticatedRelatoriosAtividadeRoute
   '/_authenticated/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
   '/_authenticated/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/_authenticated/carteiras/': typeof AuthenticatedCarteirasIndexRoute
@@ -421,6 +431,7 @@ export interface FileRouteTypes {
     | '/imoveis/novo'
     | '/registros/$id'
     | '/registros/novo'
+    | '/relatorios/atividade'
     | '/relatorios/exportacoes'
     | '/relatorios/imoveis'
     | '/carteiras/'
@@ -457,6 +468,7 @@ export interface FileRouteTypes {
     | '/imoveis/novo'
     | '/registros/$id'
     | '/registros/novo'
+    | '/relatorios/atividade'
     | '/relatorios/exportacoes'
     | '/relatorios/imoveis'
     | '/carteiras'
@@ -499,6 +511,7 @@ export interface FileRouteTypes {
     | '/_authenticated/imoveis/novo'
     | '/_authenticated/registros/$id'
     | '/_authenticated/registros/novo'
+    | '/_authenticated/relatorios/atividade'
     | '/_authenticated/relatorios/exportacoes'
     | '/_authenticated/relatorios/imoveis'
     | '/_authenticated/carteiras/'
@@ -732,6 +745,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRelatoriosExportacoesRouteImport
       parentRoute: typeof AuthenticatedRelatoriosRoute
     }
+    '/_authenticated/relatorios/atividade': {
+      id: '/_authenticated/relatorios/atividade'
+      path: '/atividade'
+      fullPath: '/relatorios/atividade'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAtividadeRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosRoute
+    }
     '/_authenticated/registros/novo': {
       id: '/_authenticated/registros/novo'
       path: '/novo'
@@ -906,6 +926,7 @@ const AuthenticatedRegistrosRouteWithChildren =
   )
 
 interface AuthenticatedRelatoriosRouteChildren {
+  AuthenticatedRelatoriosAtividadeRoute: typeof AuthenticatedRelatoriosAtividadeRoute
   AuthenticatedRelatoriosExportacoesRoute: typeof AuthenticatedRelatoriosExportacoesRoute
   AuthenticatedRelatoriosImoveisRoute: typeof AuthenticatedRelatoriosImoveisRoute
   AuthenticatedRelatoriosIndexRoute: typeof AuthenticatedRelatoriosIndexRoute
@@ -913,6 +934,8 @@ interface AuthenticatedRelatoriosRouteChildren {
 
 const AuthenticatedRelatoriosRouteChildren: AuthenticatedRelatoriosRouteChildren =
   {
+    AuthenticatedRelatoriosAtividadeRoute:
+      AuthenticatedRelatoriosAtividadeRoute,
     AuthenticatedRelatoriosExportacoesRoute:
       AuthenticatedRelatoriosExportacoesRoute,
     AuthenticatedRelatoriosImoveisRoute: AuthenticatedRelatoriosImoveisRoute,
