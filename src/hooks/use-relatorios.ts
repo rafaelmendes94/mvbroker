@@ -42,6 +42,6 @@ export async function logRelatorioAccess(relatorio: string, filtros?: Record<str
     user_id: user.id,
     evento: "relatorio_visualizado",
     descricao: relatorio,
-    metadata: filtros ?? {},
+    metadata: (filtros ?? {}) as any,
   });
 }
