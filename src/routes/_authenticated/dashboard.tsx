@@ -69,17 +69,28 @@ const pieData = [
 const pieColors = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"];
 
 function Dashboard() {
+  const { roles } = useRoles();
+  const role = primaryRole(roles.length ? roles : ["corretor_autonomo"]);
+  const variant: "admin" | "secretaria" | "comercial" =
+    role === "super_admin" ? "admin" : role === "secretaria" ? "secretaria" : "comercial";
+  const kpis = variant === "admin" ? KPIS_ADMIN : variant === "secretaria" ? KPIS_SECRETARIA : KPIS_COMERCIAL;
+  const title = variant === "admin" ? "Dashboard Administrativo" : variant === "secretaria" ? "Dashboard Operacional" : "Dashboard Comercial";
+  const desc = variant === "admin"
+    ? "Indicadores globais da plataforma e das contas."
+    : variant === "secretaria"
+    ? "Acompanhe a produção operacional de cadastros e mídias."
+    : "Visão comercial dos imóveis e exportações do seu portfólio.";
+
   return (
     <>
       <PageHeader
-        title="Dashboard"
-        description="Visão geral dos indicadores e desempenho da plataforma."
-        actions={<Button variant="outline" size="sm">Últimos 30 dias</Button>}
+        title={title}
+        description={desc}
+        actions={<Badge variant="secondary" className="text-xs">Perfil: {ROLE_LABEL[role]}</Badge>}
       />
 
-      {/* KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        {kpis.map(k => {
+        {kpis.map((k) => {
           const Icon = k.icon;
           return (
             <Card key={k.label} className="border-border">
