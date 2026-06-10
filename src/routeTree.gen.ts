@@ -32,6 +32,7 @@ import { Route as AuthenticatedCentralRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedCarteirasRouteImport } from './routes/_authenticated/carteiras'
 import { Route as AuthenticatedBibliotecaRouteImport } from './routes/_authenticated/biblioteca'
 import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authenticated/auditoria'
+import { Route as AuthenticatedAcessoNegadoRouteImport } from './routes/_authenticated/acesso-negado'
 import { Route as AuthenticatedRelatoriosIndexRouteImport } from './routes/_authenticated/relatorios.index'
 import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authenticated/registros.index'
 import { Route as AuthenticatedPortaisIndexRouteImport } from './routes/_authenticated/portais.index'
@@ -172,6 +173,12 @@ const AuthenticatedAuditoriaRoute = AuthenticatedAuditoriaRouteImport.update({
   path: '/auditoria',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAcessoNegadoRoute =
+  AuthenticatedAcessoNegadoRouteImport.update({
+    id: '/acesso-negado',
+    path: '/acesso-negado',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedRelatoriosIndexRoute =
   AuthenticatedRelatoriosIndexRouteImport.update({
     id: '/',
@@ -294,6 +301,7 @@ const ApiPublicPortalPortalSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/acesso-negado': typeof AuthenticatedAcessoNegadoRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/biblioteca': typeof AuthenticatedBibliotecaRoute
   '/carteiras': typeof AuthenticatedCarteirasRouteWithChildren
@@ -338,6 +346,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/acesso-negado': typeof AuthenticatedAcessoNegadoRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/biblioteca': typeof AuthenticatedBibliotecaRoute
   '/central': typeof AuthenticatedCentralRouteWithChildren
@@ -379,6 +388,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/acesso-negado': typeof AuthenticatedAcessoNegadoRoute
   '/_authenticated/auditoria': typeof AuthenticatedAuditoriaRoute
   '/_authenticated/biblioteca': typeof AuthenticatedBibliotecaRoute
   '/_authenticated/carteiras': typeof AuthenticatedCarteirasRouteWithChildren
@@ -425,6 +435,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/acesso-negado'
     | '/auditoria'
     | '/biblioteca'
     | '/carteiras'
@@ -469,6 +480,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/acesso-negado'
     | '/auditoria'
     | '/biblioteca'
     | '/central'
@@ -509,6 +521,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/acesso-negado'
     | '/_authenticated/auditoria'
     | '/_authenticated/biblioteca'
     | '/_authenticated/carteiras'
@@ -720,6 +733,13 @@ declare module '@tanstack/react-router' {
       path: '/auditoria'
       fullPath: '/auditoria'
       preLoaderRoute: typeof AuthenticatedAuditoriaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/acesso-negado': {
+      id: '/_authenticated/acesso-negado'
+      path: '/acesso-negado'
+      fullPath: '/acesso-negado'
+      preLoaderRoute: typeof AuthenticatedAcessoNegadoRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/relatorios/': {
@@ -994,6 +1014,7 @@ const AuthenticatedRelatoriosRouteWithChildren =
   )
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAcessoNegadoRoute: typeof AuthenticatedAcessoNegadoRoute
   AuthenticatedAuditoriaRoute: typeof AuthenticatedAuditoriaRoute
   AuthenticatedBibliotecaRoute: typeof AuthenticatedBibliotecaRoute
   AuthenticatedCarteirasRoute: typeof AuthenticatedCarteirasRouteWithChildren
@@ -1017,6 +1038,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAcessoNegadoRoute: AuthenticatedAcessoNegadoRoute,
   AuthenticatedAuditoriaRoute: AuthenticatedAuditoriaRoute,
   AuthenticatedBibliotecaRoute: AuthenticatedBibliotecaRoute,
   AuthenticatedCarteirasRoute: AuthenticatedCarteirasRouteWithChildren,
@@ -1053,3 +1075,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
