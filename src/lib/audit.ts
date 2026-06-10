@@ -5,7 +5,11 @@ export type AuditEvento =
   | "logout"
   | "perfil_alterado"
   | "usuario_criado"
-  | "usuario_inativado";
+  | "usuario_inativado"
+  | "edificio_criado" | "edificio_atualizado" | "edificio_excluido"
+  | "condominio_criado" | "condominio_atualizado" | "condominio_excluido"
+  | "empreendimento_criado" | "empreendimento_atualizado" | "empreendimento_excluido"
+  | "imagem_upload";
 
 export async function logAudit(evento: AuditEvento, descricao?: string, metadata?: Record<string, unknown>) {
   try {
