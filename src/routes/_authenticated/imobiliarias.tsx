@@ -1,3 +1,4 @@
+import { IMOBILIARIA_PUBLIC_COLUMNS } from "@/lib/db-columns";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Plus, Building, Search, Pencil, Trash2 } from "lucide-react";
@@ -49,7 +50,7 @@ function ImobiliariasPage() {
   async function load() {
     setLoading(true);
     const { data, error } = await supabase
-      .from("imobiliarias").select("*").order("created_at", { ascending: false });
+      .from("imobiliarias").select(IMOBILIARIA_PUBLIC_COLUMNS).order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setItems((data ?? []) as Imobiliaria[]);
     setLoading(false);

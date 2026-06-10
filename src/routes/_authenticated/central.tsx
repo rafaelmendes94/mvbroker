@@ -1,3 +1,4 @@
+import { IMOVEL_PUBLIC_COLUMNS } from "@/lib/db-columns";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -88,7 +89,7 @@ function Central() {
 
   async function load() {
     setLoading(true);
-    const { data } = await supabase.from("imoveis").select("*").eq("arquivado", false).order("updated_at", { ascending: false });
+    const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).eq("arquivado", false).order("updated_at", { ascending: false });
     setItems(data ?? []);
     setLoading(false);
   }

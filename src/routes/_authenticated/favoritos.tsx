@@ -1,3 +1,4 @@
+import { IMOVEL_PUBLIC_COLUMNS } from "@/lib/db-columns";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Heart, MapPin, Eye, ShoppingBag, Check } from "lucide-react";
@@ -24,7 +25,7 @@ function Favoritos() {
     (async () => {
       if (fav.ids.size === 0) { setItems([]); return; }
       setLoading(true);
-      const { data } = await supabase.from("imoveis").select("*").in("id", Array.from(fav.ids));
+      const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).in("id", Array.from(fav.ids));
       setItems(data ?? []);
       setLoading(false);
     })();

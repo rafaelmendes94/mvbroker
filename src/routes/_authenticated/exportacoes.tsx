@@ -1,3 +1,4 @@
+import { IMOVEL_PUBLIC_COLUMNS } from "@/lib/db-columns";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Download, Trash2, X, ShoppingBag, MapPin } from "lucide-react";
@@ -22,7 +23,7 @@ function Exportacoes() {
     (async () => {
       if (exp.ids.size === 0) { setItems([]); return; }
       setLoading(true);
-      const { data } = await supabase.from("imoveis").select("*").in("id", Array.from(exp.ids));
+      const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).in("id", Array.from(exp.ids));
       setItems(data ?? []);
       setLoading(false);
     })();

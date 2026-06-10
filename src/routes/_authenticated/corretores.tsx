@@ -1,3 +1,4 @@
+import { CORRETOR_PUBLIC_COLUMNS } from "@/lib/db-columns";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Plus, Briefcase, Search, Pencil, Power, PowerOff } from "lucide-react";
@@ -52,7 +53,7 @@ function CorretoresPage() {
   async function load() {
     setLoading(true);
     const [{ data: c, error }, { data: i }] = await Promise.all([
-      supabase.from("corretores").select("*").order("created_at", { ascending: false }),
+      supabase.from("corretores").select(CORRETOR_PUBLIC_COLUMNS).order("created_at", { ascending: false }),
       supabase.from("imobiliarias").select("id, nome_fantasia").order("nome_fantasia"),
     ]);
     if (error) toast.error(error.message);
