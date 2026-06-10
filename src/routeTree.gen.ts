@@ -37,6 +37,8 @@ import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedPortaisIndexRouteImport } from './routes/_authenticated/portais.index'
 import { Route as AuthenticatedImoveisIndexRouteImport } from './routes/_authenticated/imoveis.index'
 import { Route as AuthenticatedCarteirasIndexRouteImport } from './routes/_authenticated/carteiras.index'
+import { Route as AuthenticatedRelatoriosImoveisRouteImport } from './routes/_authenticated/relatorios.imoveis'
+import { Route as AuthenticatedRelatoriosExportacoesRouteImport } from './routes/_authenticated/relatorios.exportacoes'
 import { Route as AuthenticatedRegistrosNovoRouteImport } from './routes/_authenticated/registros.novo'
 import { Route as AuthenticatedRegistrosIdRouteImport } from './routes/_authenticated/registros.$id'
 import { Route as AuthenticatedImoveisNovoRouteImport } from './routes/_authenticated/imoveis.novo'
@@ -197,6 +199,18 @@ const AuthenticatedCarteirasIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedCarteirasRoute,
   } as any)
+const AuthenticatedRelatoriosImoveisRoute =
+  AuthenticatedRelatoriosImoveisRouteImport.update({
+    id: '/imoveis',
+    path: '/imoveis',
+    getParentRoute: () => AuthenticatedRelatoriosRoute,
+  } as any)
+const AuthenticatedRelatoriosExportacoesRoute =
+  AuthenticatedRelatoriosExportacoesRouteImport.update({
+    id: '/exportacoes',
+    path: '/exportacoes',
+    getParentRoute: () => AuthenticatedRelatoriosRoute,
+  } as any)
 const AuthenticatedRegistrosNovoRoute =
   AuthenticatedRegistrosNovoRouteImport.update({
     id: '/novo',
@@ -285,6 +299,8 @@ export interface FileRoutesByFullPath {
   '/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
+  '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/carteiras/': typeof AuthenticatedCarteirasIndexRoute
   '/imoveis/': typeof AuthenticatedImoveisIndexRoute
   '/portais/': typeof AuthenticatedPortaisIndexRoute
@@ -319,6 +335,8 @@ export interface FileRoutesByTo {
   '/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
+  '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/carteiras': typeof AuthenticatedCarteirasIndexRoute
   '/imoveis': typeof AuthenticatedImoveisIndexRoute
   '/portais': typeof AuthenticatedPortaisIndexRoute
@@ -360,6 +378,8 @@ export interface FileRoutesById {
   '/_authenticated/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/_authenticated/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/_authenticated/registros/novo': typeof AuthenticatedRegistrosNovoRoute
+  '/_authenticated/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
+  '/_authenticated/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/_authenticated/carteiras/': typeof AuthenticatedCarteirasIndexRoute
   '/_authenticated/imoveis/': typeof AuthenticatedImoveisIndexRoute
   '/_authenticated/portais/': typeof AuthenticatedPortaisIndexRoute
@@ -401,6 +421,8 @@ export interface FileRouteTypes {
     | '/imoveis/novo'
     | '/registros/$id'
     | '/registros/novo'
+    | '/relatorios/exportacoes'
+    | '/relatorios/imoveis'
     | '/carteiras/'
     | '/imoveis/'
     | '/portais/'
@@ -435,6 +457,8 @@ export interface FileRouteTypes {
     | '/imoveis/novo'
     | '/registros/$id'
     | '/registros/novo'
+    | '/relatorios/exportacoes'
+    | '/relatorios/imoveis'
     | '/carteiras'
     | '/imoveis'
     | '/portais'
@@ -475,6 +499,8 @@ export interface FileRouteTypes {
     | '/_authenticated/imoveis/novo'
     | '/_authenticated/registros/$id'
     | '/_authenticated/registros/novo'
+    | '/_authenticated/relatorios/exportacoes'
+    | '/_authenticated/relatorios/imoveis'
     | '/_authenticated/carteiras/'
     | '/_authenticated/imoveis/'
     | '/_authenticated/portais/'
@@ -692,6 +718,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCarteirasIndexRouteImport
       parentRoute: typeof AuthenticatedCarteirasRoute
     }
+    '/_authenticated/relatorios/imoveis': {
+      id: '/_authenticated/relatorios/imoveis'
+      path: '/imoveis'
+      fullPath: '/relatorios/imoveis'
+      preLoaderRoute: typeof AuthenticatedRelatoriosImoveisRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosRoute
+    }
+    '/_authenticated/relatorios/exportacoes': {
+      id: '/_authenticated/relatorios/exportacoes'
+      path: '/exportacoes'
+      fullPath: '/relatorios/exportacoes'
+      preLoaderRoute: typeof AuthenticatedRelatoriosExportacoesRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosRoute
+    }
     '/_authenticated/registros/novo': {
       id: '/_authenticated/registros/novo'
       path: '/novo'
@@ -866,11 +906,16 @@ const AuthenticatedRegistrosRouteWithChildren =
   )
 
 interface AuthenticatedRelatoriosRouteChildren {
+  AuthenticatedRelatoriosExportacoesRoute: typeof AuthenticatedRelatoriosExportacoesRoute
+  AuthenticatedRelatoriosImoveisRoute: typeof AuthenticatedRelatoriosImoveisRoute
   AuthenticatedRelatoriosIndexRoute: typeof AuthenticatedRelatoriosIndexRoute
 }
 
 const AuthenticatedRelatoriosRouteChildren: AuthenticatedRelatoriosRouteChildren =
   {
+    AuthenticatedRelatoriosExportacoesRoute:
+      AuthenticatedRelatoriosExportacoesRoute,
+    AuthenticatedRelatoriosImoveisRoute: AuthenticatedRelatoriosImoveisRoute,
     AuthenticatedRelatoriosIndexRoute: AuthenticatedRelatoriosIndexRoute,
   }
 
@@ -939,3 +984,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
