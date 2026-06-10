@@ -22,6 +22,7 @@ export const ROLE_LABEL: Record<AppRole, string> = {
 // Each route → list of roles allowed (empty = open to all authenticated)
 export const ROUTE_ACCESS: Record<string, AppRole[]> = {
   "/dashboard": [],
+  "/imoveis": [], // visualização para todos autenticados
   "/registros": ["super_admin", "secretaria", "imobiliaria", "corretor_imobiliaria", "corretor_autonomo"],
   "/imobiliarias": ["super_admin"],
   "/edificios": ["super_admin", "secretaria"],
@@ -38,10 +39,16 @@ export const ROUTE_ACCESS: Record<string, AppRole[]> = {
   "/perfil": [],
 };
 
+export const WRITE_IMOVEL_ROLES: AppRole[] = ["super_admin", "secretaria"];
+
 export function canAccess(path: string, roles: AppRole[]): boolean {
   const allowed = ROUTE_ACCESS[path];
   if (!allowed || allowed.length === 0) return true;
   return roles.some((r) => allowed.includes(r));
+}
+
+export function canWriteImovel(roles: AppRole[]): boolean {
+  return roles.some((r) => WRITE_IMOVEL_ROLES.includes(r));
 }
 
 export function primaryRole(roles: AppRole[]): AppRole {
