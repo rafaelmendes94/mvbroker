@@ -40,6 +40,8 @@ import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedPortaisIndexRouteImport } from './routes/_authenticated/portais.index'
 import { Route as AuthenticatedImoveisIndexRouteImport } from './routes/_authenticated/imoveis.index'
 import { Route as AuthenticatedCarteirasIndexRouteImport } from './routes/_authenticated/carteiras.index'
+import { Route as AuthenticatedSegurancaSessoesRouteImport } from './routes/_authenticated/seguranca.sessoes'
+import { Route as AuthenticatedSegurancaAlertasRouteImport } from './routes/_authenticated/seguranca.alertas'
 import { Route as AuthenticatedSegurancaAcessosRouteImport } from './routes/_authenticated/seguranca.acessos'
 import { Route as AuthenticatedRelatoriosImoveisRouteImport } from './routes/_authenticated/relatorios.imoveis'
 import { Route as AuthenticatedRelatoriosImobiliariasRouteImport } from './routes/_authenticated/relatorios.imobiliarias'
@@ -223,6 +225,18 @@ const AuthenticatedCarteirasIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedCarteirasRoute,
   } as any)
+const AuthenticatedSegurancaSessoesRoute =
+  AuthenticatedSegurancaSessoesRouteImport.update({
+    id: '/sessoes',
+    path: '/sessoes',
+    getParentRoute: () => AuthenticatedSegurancaRoute,
+  } as any)
+const AuthenticatedSegurancaAlertasRoute =
+  AuthenticatedSegurancaAlertasRouteImport.update({
+    id: '/alertas',
+    path: '/alertas',
+    getParentRoute: () => AuthenticatedSegurancaRoute,
+  } as any)
 const AuthenticatedSegurancaAcessosRoute =
   AuthenticatedSegurancaAcessosRouteImport.update({
     id: '/acessos',
@@ -355,6 +369,8 @@ export interface FileRoutesByFullPath {
   '/relatorios/imobiliarias': typeof AuthenticatedRelatoriosImobiliariasRoute
   '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/seguranca/acessos': typeof AuthenticatedSegurancaAcessosRoute
+  '/seguranca/alertas': typeof AuthenticatedSegurancaAlertasRoute
+  '/seguranca/sessoes': typeof AuthenticatedSegurancaSessoesRoute
   '/carteiras/': typeof AuthenticatedCarteirasIndexRoute
   '/imoveis/': typeof AuthenticatedImoveisIndexRoute
   '/portais/': typeof AuthenticatedPortaisIndexRoute
@@ -397,6 +413,8 @@ export interface FileRoutesByTo {
   '/relatorios/imobiliarias': typeof AuthenticatedRelatoriosImobiliariasRoute
   '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/seguranca/acessos': typeof AuthenticatedSegurancaAcessosRoute
+  '/seguranca/alertas': typeof AuthenticatedSegurancaAlertasRoute
+  '/seguranca/sessoes': typeof AuthenticatedSegurancaSessoesRoute
   '/carteiras': typeof AuthenticatedCarteirasIndexRoute
   '/imoveis': typeof AuthenticatedImoveisIndexRoute
   '/portais': typeof AuthenticatedPortaisIndexRoute
@@ -447,6 +465,8 @@ export interface FileRoutesById {
   '/_authenticated/relatorios/imobiliarias': typeof AuthenticatedRelatoriosImobiliariasRoute
   '/_authenticated/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
   '/_authenticated/seguranca/acessos': typeof AuthenticatedSegurancaAcessosRoute
+  '/_authenticated/seguranca/alertas': typeof AuthenticatedSegurancaAlertasRoute
+  '/_authenticated/seguranca/sessoes': typeof AuthenticatedSegurancaSessoesRoute
   '/_authenticated/carteiras/': typeof AuthenticatedCarteirasIndexRoute
   '/_authenticated/imoveis/': typeof AuthenticatedImoveisIndexRoute
   '/_authenticated/portais/': typeof AuthenticatedPortaisIndexRoute
@@ -497,6 +517,8 @@ export interface FileRouteTypes {
     | '/relatorios/imobiliarias'
     | '/relatorios/imoveis'
     | '/seguranca/acessos'
+    | '/seguranca/alertas'
+    | '/seguranca/sessoes'
     | '/carteiras/'
     | '/imoveis/'
     | '/portais/'
@@ -539,6 +561,8 @@ export interface FileRouteTypes {
     | '/relatorios/imobiliarias'
     | '/relatorios/imoveis'
     | '/seguranca/acessos'
+    | '/seguranca/alertas'
+    | '/seguranca/sessoes'
     | '/carteiras'
     | '/imoveis'
     | '/portais'
@@ -588,6 +612,8 @@ export interface FileRouteTypes {
     | '/_authenticated/relatorios/imobiliarias'
     | '/_authenticated/relatorios/imoveis'
     | '/_authenticated/seguranca/acessos'
+    | '/_authenticated/seguranca/alertas'
+    | '/_authenticated/seguranca/sessoes'
     | '/_authenticated/carteiras/'
     | '/_authenticated/imoveis/'
     | '/_authenticated/portais/'
@@ -826,6 +852,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/carteiras/'
       preLoaderRoute: typeof AuthenticatedCarteirasIndexRouteImport
       parentRoute: typeof AuthenticatedCarteirasRoute
+    }
+    '/_authenticated/seguranca/sessoes': {
+      id: '/_authenticated/seguranca/sessoes'
+      path: '/sessoes'
+      fullPath: '/seguranca/sessoes'
+      preLoaderRoute: typeof AuthenticatedSegurancaSessoesRouteImport
+      parentRoute: typeof AuthenticatedSegurancaRoute
+    }
+    '/_authenticated/seguranca/alertas': {
+      id: '/_authenticated/seguranca/alertas'
+      path: '/alertas'
+      fullPath: '/seguranca/alertas'
+      preLoaderRoute: typeof AuthenticatedSegurancaAlertasRouteImport
+      parentRoute: typeof AuthenticatedSegurancaRoute
     }
     '/_authenticated/seguranca/acessos': {
       id: '/_authenticated/seguranca/acessos'
@@ -1072,12 +1112,16 @@ const AuthenticatedRelatoriosRouteWithChildren =
 
 interface AuthenticatedSegurancaRouteChildren {
   AuthenticatedSegurancaAcessosRoute: typeof AuthenticatedSegurancaAcessosRoute
+  AuthenticatedSegurancaAlertasRoute: typeof AuthenticatedSegurancaAlertasRoute
+  AuthenticatedSegurancaSessoesRoute: typeof AuthenticatedSegurancaSessoesRoute
   AuthenticatedSegurancaIndexRoute: typeof AuthenticatedSegurancaIndexRoute
 }
 
 const AuthenticatedSegurancaRouteChildren: AuthenticatedSegurancaRouteChildren =
   {
     AuthenticatedSegurancaAcessosRoute: AuthenticatedSegurancaAcessosRoute,
+    AuthenticatedSegurancaAlertasRoute: AuthenticatedSegurancaAlertasRoute,
+    AuthenticatedSegurancaSessoesRoute: AuthenticatedSegurancaSessoesRoute,
     AuthenticatedSegurancaIndexRoute: AuthenticatedSegurancaIndexRoute,
   }
 
@@ -1150,3 +1194,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
