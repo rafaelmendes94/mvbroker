@@ -1,85 +1,49 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { BarChart3, FileText, PieChart, TrendingUp, Download, Building2, Building, Briefcase } from "lucide-react";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { BarChart3, Building2, Download, Activity, Share2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/relatorios")({
   head: () => ({ meta: [{ title: "Relatórios — MV Broker" }] }),
-  component: Relatorios,
+  component: RelatoriosLayout,
 });
 
-const reports = [
-  { titulo: "Relatório de Cadastros", desc: "Volume e evolução dos registros.", icon: FileText },
-  { titulo: "Performance Comercial", desc: "Vendas e conversões por período.", icon: TrendingUp },
-  { titulo: "Distribuição por Tipo", desc: "Composição da carteira de imóveis.", icon: PieChart },
-  { titulo: "Análise Mensal", desc: "Indicadores consolidados do mês.", icon: BarChart3 },
+const TABS = [
+  { to: "/relatorios", label: "Visão Geral", icon: BarChart3, exact: true },
+  { to: "/relatorios/imoveis", label: "Imóveis", icon: Building2 },
+  { to: "/relatorios/exportacoes", label: "Exportações & Portais", icon: Share2 },
+  { to: "/relatorios/atividade", label: "Atividade & Auditoria", icon: Activity },
 ];
 
-function Relatorios() {
-  const [counts, setCounts] = useState({ edificios: 0, condominios: 0, empreendimentos: 0 });
-
-  useEffect(() => {
-    (async () => {
-      const [e, c, m] = await Promise.all([
-        supabase.from("edificios").select("*", { count: "exact", head: true }),
-        supabase.from("condominios").select("*", { count: "exact", head: true }),
-        supabase.from("empreendimentos").select("*", { count: "exact", head: true }),
-      ]);
-      setCounts({ edificios: e.count ?? 0, condominios: c.count ?? 0, empreendimentos: m.count ?? 0 });
-    })();
-  }, []);
-
-  const kpis = [
-    { label: "Edifícios", value: counts.edificios, icon: Building2 },
-    { label: "Condomínios", value: counts.condominios, icon: Building },
-    { label: "Empreendimentos", value: counts.empreendimentos, icon: Briefcase },
-  ];
-
+function RelatoriosLayout() {
+  const { pathname } = useLocation();
   return (
     <>
-      <PageHeader title="Relatórios" description="Gere relatórios completos sobre a operação." />
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        {kpis.map((k) => {
-          const Icon = k.icon;
-          return (
-            <Card key={k.label}>
-              <CardContent className="p-5 flex items-center gap-4">
-                <div className="grid h-12 w-12 place-items-center rounded-lg bg-primary/10 text-primary">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">{k.value}</div>
-                  <div className="text-sm text-muted-foreground">{k.label}</div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+      <PageHeader title="Relatórios & BI" description="Inteligência operacional consolidada." />
+      <div className="border-b mb-6 -mt-2 overflow-x-auto">
+        <nav className="flex gap-1 min-w-max">
+          {TABS.map((t) => {
+            const Icon = t.icon;
+            const active = t.exact ? pathname === t.to : pathname.startsWith(t.to);
+            return (
+              <Link
+                key={t.to}
+                to={t.to}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors",
+                  active
+                    ? "border-primary text-primary"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <Icon className="h-4 w-4" />
+                {t.label}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {reports.map(r => {
-          const Icon = r.icon;
-          return (
-            <Card key={r.titulo} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-5">
-                <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary mb-4">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="font-semibold">{r.titulo}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{r.desc}</p>
-                <Button variant="outline" size="sm" className="mt-4 w-full">
-                  <Download className="h-4 w-4" /> Gerar
-                </Button>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+      <Outlet />
     </>
   );
 }
