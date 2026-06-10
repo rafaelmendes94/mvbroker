@@ -1,66 +1,101 @@
-# Inteligência Comercial — Oportunidades, Notificações e Rankings
+## Objetivo
 
-Como o escopo é muito grande para um único ciclo, proponho dividir em **3 fases independentes e funcionais**, cada uma encerra uma migration + telas prontas, sem deixar nada quebrado no meio do caminho.
+Criar um fluxo de importação em massa via **CSV ou Excel (.xlsx)** para:
+- **Empreendimentos**, **Condomínios**, **Edifícios** → importação direta com cabeçalhos padronizados.
+- **Imóveis** → importação completa com **mapeamento visual de colunas** (drag & match entre as colunas do arquivo enviado e os campos do sistema), por causa da grande quantidade de campos (80+).
+
+Disponível somente para **Super Admin** e **Secretaria** (mesmas permissões de criação dessas tabelas).
 
 ---
 
-## Fase 1 — Notificações (base para tudo)
+## UX e Fluxo
 
-### Banco
-- `notifications`: `usuario_id`, `titulo`, `mensagem`, `tipo` (enum: `novo_imovel`, `imovel_atualizado`, `novo_exclusivo`, `novo_bonus`, `xml_atualizado`, `erro_xml`, `publicacao_aprovada`, `publicacao_rejeitada`, `sistema`), `categoria` (`imoveis`|`xml`|`portais`|`sistema`), `lida`, `link`, `metadata jsonb`, `created_at`
-- `notification_preferences`: `usuario_id`, `tipo`, `canal_sistema`, `canal_email`, `canal_whatsapp` (futuro), `canal_push` (futuro)
-- RLS: usuário só vê/edita as próprias notificações
-- Realtime: `ALTER PUBLICATION supabase_realtime ADD TABLE notifications`
-- Triggers iniciais: novo `imoveis` (INSERT) → cria notificação para `super_admin`/`secretaria` + dono da carteira; UPDATE em `imoveis` com mudança em `valor`/`bonus`/`exclusividade`/`fotos` → notificação contextual
+### Menu
+Nova entrada na sidebar: **Importações** (ícone Upload), agrupando 4 sub-páginas:
+- `/importacoes/empreendimentos`
+- `/importacoes/condominios`
+- `/importacoes/edificios`
+- `/importacoes/imoveis`
+
+### Fluxo simples (Empreendimentos / Condomínios / Edifícios)
+1. Botão "Baixar modelo CSV" e "Baixar modelo Excel" — gera arquivo com cabeçalhos exatos das colunas.
+2. Upload do arquivo (drag & drop, aceita `.csv`, `.xlsx`, `.xls`).
+3. **Preview** das 10 primeiras linhas em tabela.
+4. Validação (campos obrigatórios, formatos de data, números).
+5. Botão **Importar** → insere em lote, mostra contador "X importados / Y falhas" e lista de erros por linha.
+
+### Fluxo com mapeamento (Imóveis)
+1. Upload do arquivo.
+2. Sistema lê os cabeçalhos e mostra tela de **mapeamento de colunas**:
+   - Coluna esquerda: campos do sistema (agrupados por seção: Identificação, Localização, Valores, Características, etc.), marcando obrigatórios.
+   - Coluna direita: select para cada campo do sistema escolhendo qual coluna do arquivo corresponde (ou "ignorar").
+   - **Auto-match inteligente**: se o nome da coluna do arquivo bater (case-insensitive, normalizado sem acento) com o nome técnico ou rótulo do campo, já preenche.
+   - Botão "Salvar mapeamento como preset" (futuro — ficará só placeholder UI nesta fase).
+3. Preview com as 10 primeiras linhas já mapeadas no formato final.
+4. Validação por linha (tipos, FKs como `empreendimento_id` resolvidos por código_interno/nome).
+5. Importar em lote, com relatório de erros por linha (linha, campo, motivo).
+
+---
+
+## Implementação Técnica
 
 ### Frontend
-- `useNotifications()` (Realtime + contador não lidas)
-- Sino na topbar com badge → popover (últimas 10 + "ver todas")
-- `/notificacoes` central com filtros (Todas, Não lidas, Imóveis, XML, Portais, Sistema), marcar lida, marcar todas, excluir
-- `/configuracoes/notificacoes` preferências por tipo × canal (sistema/email ativos, whatsapp/push como "em breve")
+- Biblioteca: **`xlsx`** (SheetJS, já leve e funciona client-side para CSV+XLSX).
+- Novos componentes:
+  - `src/components/import/FileDropzone.tsx` — drag & drop + parse.
+  - `src/components/import/PreviewTable.tsx` — preview com 10 linhas.
+  - `src/components/import/ColumnMapper.tsx` — usado só para imóveis.
+  - `src/components/import/ImportReport.tsx` — resultado com sucessos/erros.
+- Novas rotas em `src/routes/_authenticated/importacoes.*.tsx`.
+- `src/lib/import-schemas.ts` — define para cada entidade: lista de campos, label, tipo (text/number/date/boolean/array), obrigatório, parser de valor.
+- AppSidebar atualizado com o grupo "Importações".
+
+### Backend
+- Insert direto via supabase client (já há RLS de admin/secretaria nas tabelas).
+- Para imóveis, resolver FKs antes do insert:
+  - `empreendimento_id`/`condominio_id`/`edificio_id`: aceitar nome OU código_interno; lookup no banco.
+  - `imobiliaria_id`/`corretor_id`: aceitar nome.
+- Inserts em lotes de 50 linhas para evitar payload gigante; cada lote em try/catch isolado para reportar erros por linha.
+- Campos `text[]` (infraestrutura, condicoes_pagamento, etc.): aceitar string separada por `;` ou `|`.
+- Booleanos: aceitar `sim/não`, `true/false`, `1/0`.
+- Datas: aceitar `dd/mm/yyyy` e ISO.
+
+### Modelos (templates de download)
+Gerados em runtime via SheetJS — não precisa subir arquivo estático. Cada página tem botão que monta e baixa o template com cabeçalhos + uma linha de exemplo.
+
+### Permissões
+- Adicionar rota em `src/lib/permissions.ts`: importações só para `super_admin` e `secretaria`. Outros roles veem "Acesso negado".
 
 ---
 
-## Fase 2 — Oportunidades (tela principal de Corretor/Imobiliária)
+## Entregáveis (arquivos)
 
-### Banco
-- Coluna `score_qualidade int` em `imoveis` + função `calc_score_imovel(imovel_id)` (fotos, descrição, vídeo, tour, infra, localização, documentos)
-- View `vw_imoveis_destaque` agregando flags (exclusivo, bônus, vista_mar, alto_padrao, lançamento, decorado)
-- RPC `get_oportunidades_resumo()` → contadores do dashboard (hoje/7d/30d, exclusivos, com bônus, etc.)
+**Criar:**
+- `src/routes/_authenticated/importacoes.tsx` (layout com Outlet + tabs)
+- `src/routes/_authenticated/importacoes.empreendimentos.tsx`
+- `src/routes/_authenticated/importacoes.condominios.tsx`
+- `src/routes/_authenticated/importacoes.edificios.tsx`
+- `src/routes/_authenticated/importacoes.imoveis.tsx`
+- `src/components/import/FileDropzone.tsx`
+- `src/components/import/PreviewTable.tsx`
+- `src/components/import/ColumnMapper.tsx`
+- `src/components/import/ImportReport.tsx`
+- `src/lib/import-schemas.ts`
+- `src/lib/import-runner.ts` (lógica de parse, normalização e insert em lote)
 
-### Frontend
-- Rota `/oportunidades` (passa a ser landing pós-login para corretor/imobiliária)
-- Dashboard com cards de indicadores
-- Seções horizontais (scroll): Recém Cadastrados, Atualizações Recentes (usa `imovel_logs`), Exclusividades 🔥, Com Bônus 💰, Vista Mar, Decorados, Lançamentos, Alto Padrão, Mais Visualizados, Mais Exportados, Favoritos
-- Badge de Score (Excelente/Bom/Regular/Incompleto) no card
-- Reaproveita `ImovelCard` existente
+**Editar:**
+- `src/components/layout/AppSidebar.tsx` (novo item "Importações")
+- `src/lib/permissions.ts` (rotas novas)
 
----
-
-## Fase 3 — Rankings + Score de Corretor
-
-### Banco
-- `imovel_metricas`: `imovel_id`, `visualizacoes`, `downloads_fotos`, `downloads_docs`, `exportacoes`, `favoritos`, `compartilhamentos_wpp`, `compartilhamentos_pdf`, `compartilhamentos_link`, `buscas_hits`, `updated_at`
-- `corretor_metricas`: `corretor_id`, `logins`, `visualizacoes`, `downloads`, `exportacoes`, `carteiras_atualizadas`, `score`, `classificacao` (`ouro`|`prata`|`bronze`)
-- RPCs `get_ranking_imoveis(tipo, limit)` e `get_ranking_corretores(tipo, limit)`
-- Trigger/edge para incrementar contadores em eventos (já parcialmente capturados em `audit_logs`/`imovel_logs`/`feed_logs`)
-
-### Frontend
-- `/relatorios/ranking-imoveis` — abas: Mais Visualizados, Exportados, Baixados, Favoritados, Compartilhados, Procurados (Top 10 cada)
-- `/relatorios/ranking-corretores` — abas: Mais Ativos, Exportações, Downloads, Visualizações, Favoritos + Score com classificação Ouro/Prata/Bronze
-- Para perfil Imobiliária: pódio 🥇🥈🥉 dos próprios corretores
-- `/dashboard-executivo` (super_admin/secretaria) consolidando tudo
+**Dependência nova:**
+- `xlsx` (SheetJS) via `bun add xlsx`
 
 ---
 
-## Sidebar / Permissions
-- Novo grupo "Inteligência" com: Oportunidades, Notificações
-- Em Relatórios: Ranking de Imóveis, Ranking de Corretores, Dashboard Executivo
-- Atualizar `src/lib/permissions.ts`
+## Fora do escopo desta fase
+- Upload de fotos via importação (continua manual no cadastro do imóvel).
+- Salvar presets de mapeamento por usuário (só placeholder UI).
+- Importação de unidades em massa dentro de um empreendimento específico (pode vir em fase 2).
+- Update/upsert por código_interno — nesta fase só **insert**. Se o código já existir, a linha entra como erro "código duplicado".
 
-## Fora de escopo (estrutura pronta, sem implementação)
-- Envio real de e-mail/WhatsApp/Push (apenas armazena preferência)
-- Job assíncrono para recálculo periódico de scores (faremos cálculo on-read + trigger pontual)
-
-## Ordem de execução
-**Confirma a Fase 1 primeiro?** Entrego notificações funcionando com Realtime + sino + central + preferências, e em seguida abro a Fase 2.
+Posso seguir com a implementação?
