@@ -69,13 +69,13 @@ export async function logAction(opts: {
     await supabase.rpc("log_action", {
       p_modulo: opts.modulo,
       p_acao: opts.acao,
-      p_registro_tipo: opts.registro_tipo ?? null,
-      p_registro_id: (opts.registro_id ?? null) as never,
+      p_registro_tipo: opts.registro_tipo ?? undefined,
+      p_registro_id: (opts.registro_id ?? undefined) as never,
       p_status: opts.status ?? "sucesso",
-      p_descricao: opts.descricao ?? null,
-      p_dados_anteriores: (opts.dados_anteriores ?? null) as never,
-      p_dados_novos: (opts.dados_novos ?? null) as never,
-      p_user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+      p_descricao: opts.descricao ?? undefined,
+      p_dados_anteriores: (opts.dados_anteriores ?? undefined) as never,
+      p_dados_novos: (opts.dados_novos ?? undefined) as never,
+      p_user_agent: typeof navigator !== "undefined" ? navigator.userAgent : undefined,
     });
   } catch {
     // silencioso
