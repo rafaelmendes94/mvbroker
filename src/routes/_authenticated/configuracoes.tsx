@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Save } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Save, Settings2, ArrowRight } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,25 @@ function Configuracoes() {
   return (
     <>
       <PageHeader title="Configurações" description="Personalize sua experiência na plataforma." />
+
+      <Link
+        to="/configuracoes/opcoes"
+        className="block mb-4 group"
+      >
+        <Card className="border-border hover:border-primary/50 transition-colors">
+          <CardContent className="p-4 flex items-center gap-4">
+            <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary shrink-0">
+              <Settings2 className="h-5 w-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-medium">Opções do Sistema</div>
+              <p className="text-xs text-muted-foreground">Gerencie listas dinâmicas usadas em formulários: tipos, status, infraestrutura e mais.</p>
+            </div>
+            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+          </CardContent>
+        </Card>
+      </Link>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card>
           <CardHeader><CardTitle className="text-base">Organização</CardTitle></CardHeader>
