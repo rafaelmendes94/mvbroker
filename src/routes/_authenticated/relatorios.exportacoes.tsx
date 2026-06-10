@@ -76,10 +76,11 @@ function RelExportacoes() {
   }
   const portalRows = [...porPortal.values()];
 
-  // Atividade 30 dias
+  // Atividade no período
+  const periodoDias = filters.periodoDias || 30;
   const days = new Map<string, number>();
-  const cutoff = Date.now() - 1000 * 60 * 60 * 24 * 30;
-  for (let i = 29; i >= 0; i--) {
+  const cutoff = Date.now() - 1000 * 60 * 60 * 24 * periodoDias;
+  for (let i = periodoDias - 1; i >= 0; i--) {
     const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
     days.set(d, 0);
   }
