@@ -18,9 +18,12 @@ import { Route as AuthenticatedRegistrosRouteImport } from './routes/_authentica
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as AuthenticatedImobiliariasRouteImport } from './routes/_authenticated/imobiliarias'
 import { Route as AuthenticatedExportacoesRouteImport } from './routes/_authenticated/exportacoes'
+import { Route as AuthenticatedEmpreendimentosRouteImport } from './routes/_authenticated/empreendimentos'
+import { Route as AuthenticatedEdificiosRouteImport } from './routes/_authenticated/edificios'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCorretoresRouteImport } from './routes/_authenticated/corretores'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedCondominiosRouteImport } from './routes/_authenticated/condominios'
 import { Route as AuthenticatedClientesRouteImport } from './routes/_authenticated/clientes'
 import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authenticated/auditoria'
 import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authenticated/registros.index'
@@ -75,6 +78,17 @@ const AuthenticatedExportacoesRoute =
     path: '/exportacoes',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedEmpreendimentosRoute =
+  AuthenticatedEmpreendimentosRouteImport.update({
+    id: '/empreendimentos',
+    path: '/empreendimentos',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedEdificiosRoute = AuthenticatedEdificiosRouteImport.update({
+  id: '/edificios',
+  path: '/edificios',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -89,6 +103,12 @@ const AuthenticatedConfiguracoesRoute =
   AuthenticatedConfiguracoesRouteImport.update({
     id: '/configuracoes',
     path: '/configuracoes',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedCondominiosRoute =
+  AuthenticatedCondominiosRouteImport.update({
+    id: '/condominios',
+    path: '/condominios',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedClientesRoute = AuthenticatedClientesRouteImport.update({
@@ -137,9 +157,12 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/clientes': typeof AuthenticatedClientesRoute
+  '/condominios': typeof AuthenticatedCondominiosRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/corretores': typeof AuthenticatedCorretoresRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/edificios': typeof AuthenticatedEdificiosRoute
+  '/empreendimentos': typeof AuthenticatedEmpreendimentosRoute
   '/exportacoes': typeof AuthenticatedExportacoesRoute
   '/imobiliarias': typeof AuthenticatedImobiliariasRoute
   '/perfil': typeof AuthenticatedPerfilRoute
@@ -157,9 +180,12 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/clientes': typeof AuthenticatedClientesRoute
+  '/condominios': typeof AuthenticatedCondominiosRoute
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/corretores': typeof AuthenticatedCorretoresRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/edificios': typeof AuthenticatedEdificiosRoute
+  '/empreendimentos': typeof AuthenticatedEmpreendimentosRoute
   '/exportacoes': typeof AuthenticatedExportacoesRoute
   '/imobiliarias': typeof AuthenticatedImobiliariasRoute
   '/perfil': typeof AuthenticatedPerfilRoute
@@ -178,9 +204,12 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/auditoria': typeof AuthenticatedAuditoriaRoute
   '/_authenticated/clientes': typeof AuthenticatedClientesRoute
+  '/_authenticated/condominios': typeof AuthenticatedCondominiosRoute
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/corretores': typeof AuthenticatedCorretoresRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/edificios': typeof AuthenticatedEdificiosRoute
+  '/_authenticated/empreendimentos': typeof AuthenticatedEmpreendimentosRoute
   '/_authenticated/exportacoes': typeof AuthenticatedExportacoesRoute
   '/_authenticated/imobiliarias': typeof AuthenticatedImobiliariasRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
@@ -200,9 +229,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auditoria'
     | '/clientes'
+    | '/condominios'
     | '/configuracoes'
     | '/corretores'
     | '/dashboard'
+    | '/edificios'
+    | '/empreendimentos'
     | '/exportacoes'
     | '/imobiliarias'
     | '/perfil'
@@ -220,9 +252,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auditoria'
     | '/clientes'
+    | '/condominios'
     | '/configuracoes'
     | '/corretores'
     | '/dashboard'
+    | '/edificios'
+    | '/empreendimentos'
     | '/exportacoes'
     | '/imobiliarias'
     | '/perfil'
@@ -240,9 +275,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/auditoria'
     | '/_authenticated/clientes'
+    | '/_authenticated/condominios'
     | '/_authenticated/configuracoes'
     | '/_authenticated/corretores'
     | '/_authenticated/dashboard'
+    | '/_authenticated/edificios'
+    | '/_authenticated/empreendimentos'
     | '/_authenticated/exportacoes'
     | '/_authenticated/imobiliarias'
     | '/_authenticated/perfil'
@@ -327,6 +365,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedExportacoesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/empreendimentos': {
+      id: '/_authenticated/empreendimentos'
+      path: '/empreendimentos'
+      fullPath: '/empreendimentos'
+      preLoaderRoute: typeof AuthenticatedEmpreendimentosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/edificios': {
+      id: '/_authenticated/edificios'
+      path: '/edificios'
+      fullPath: '/edificios'
+      preLoaderRoute: typeof AuthenticatedEdificiosRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -346,6 +398,13 @@ declare module '@tanstack/react-router' {
       path: '/configuracoes'
       fullPath: '/configuracoes'
       preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/condominios': {
+      id: '/_authenticated/condominios'
+      path: '/condominios'
+      fullPath: '/condominios'
+      preLoaderRoute: typeof AuthenticatedCondominiosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/clientes': {
@@ -450,9 +509,12 @@ const AuthenticatedRegistrosRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAuditoriaRoute: typeof AuthenticatedAuditoriaRoute
   AuthenticatedClientesRoute: typeof AuthenticatedClientesRoute
+  AuthenticatedCondominiosRoute: typeof AuthenticatedCondominiosRoute
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedCorretoresRoute: typeof AuthenticatedCorretoresRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedEdificiosRoute: typeof AuthenticatedEdificiosRoute
+  AuthenticatedEmpreendimentosRoute: typeof AuthenticatedEmpreendimentosRoute
   AuthenticatedExportacoesRoute: typeof AuthenticatedExportacoesRoute
   AuthenticatedImobiliariasRoute: typeof AuthenticatedImobiliariasRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
@@ -464,9 +526,12 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAuditoriaRoute: AuthenticatedAuditoriaRoute,
   AuthenticatedClientesRoute: AuthenticatedClientesRoute,
+  AuthenticatedCondominiosRoute: AuthenticatedCondominiosRoute,
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedCorretoresRoute: AuthenticatedCorretoresRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedEdificiosRoute: AuthenticatedEdificiosRoute,
+  AuthenticatedEmpreendimentosRoute: AuthenticatedEmpreendimentosRoute,
   AuthenticatedExportacoesRoute: AuthenticatedExportacoesRoute,
   AuthenticatedImobiliariasRoute: AuthenticatedImobiliariasRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,

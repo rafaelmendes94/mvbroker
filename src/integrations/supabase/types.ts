@@ -47,6 +47,84 @@ export type Database = {
         }
         Relationships: []
       }
+      condominios: {
+        Row: {
+          area_total: number | null
+          ativo: boolean
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          codigo_interno: string | null
+          complemento: string | null
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          estado: string | null
+          id: string
+          infraestrutura: string[]
+          latitude: number | null
+          logradouro: string | null
+          longitude: number | null
+          nome: string
+          numero: string | null
+          numero_lotes: number | null
+          portaria: string | null
+          seguranca: string | null
+          tipo_condominio: string | null
+          updated_at: string
+        }
+        Insert: {
+          area_total?: number | null
+          ativo?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          codigo_interno?: string | null
+          complemento?: string | null
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          estado?: string | null
+          id?: string
+          infraestrutura?: string[]
+          latitude?: number | null
+          logradouro?: string | null
+          longitude?: number | null
+          nome: string
+          numero?: string | null
+          numero_lotes?: number | null
+          portaria?: string | null
+          seguranca?: string | null
+          tipo_condominio?: string | null
+          updated_at?: string
+        }
+        Update: {
+          area_total?: number | null
+          ativo?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          codigo_interno?: string | null
+          complemento?: string | null
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          estado?: string | null
+          id?: string
+          infraestrutura?: string[]
+          latitude?: number | null
+          logradouro?: string | null
+          longitude?: number | null
+          nome?: string
+          numero?: string | null
+          numero_lotes?: number | null
+          portaria?: string | null
+          seguranca?: string | null
+          tipo_condominio?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       corretores: {
         Row: {
           created_at: string
@@ -99,6 +177,201 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      edificios: {
+        Row: {
+          ano_construcao: number | null
+          ativo: boolean
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          codigo_interno: string | null
+          complemento: string | null
+          construtora: string | null
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          estado: string | null
+          id: string
+          infraestrutura: string[]
+          latitude: number | null
+          logradouro: string | null
+          longitude: number | null
+          nome: string
+          numero: string | null
+          qtd_andares: number | null
+          qtd_apartamentos: number | null
+          qtd_elevadores: number | null
+          updated_at: string
+        }
+        Insert: {
+          ano_construcao?: number | null
+          ativo?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          codigo_interno?: string | null
+          complemento?: string | null
+          construtora?: string | null
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          estado?: string | null
+          id?: string
+          infraestrutura?: string[]
+          latitude?: number | null
+          logradouro?: string | null
+          longitude?: number | null
+          nome: string
+          numero?: string | null
+          qtd_andares?: number | null
+          qtd_apartamentos?: number | null
+          qtd_elevadores?: number | null
+          updated_at?: string
+        }
+        Update: {
+          ano_construcao?: number | null
+          ativo?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          codigo_interno?: string | null
+          complemento?: string | null
+          construtora?: string | null
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          estado?: string | null
+          id?: string
+          infraestrutura?: string[]
+          latitude?: number | null
+          logradouro?: string | null
+          longitude?: number | null
+          nome?: string
+          numero?: string | null
+          qtd_andares?: number | null
+          qtd_apartamentos?: number | null
+          qtd_elevadores?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      empreendimentos: {
+        Row: {
+          ativo: boolean
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          codigo_interno: string | null
+          complemento: string | null
+          construtora: string | null
+          created_at: string
+          created_by: string | null
+          data_entrega_efetiva: string | null
+          data_lancamento: string | null
+          data_prevista_entrega: string | null
+          descricao: string | null
+          estado: string | null
+          id: string
+          incorporadora: string | null
+          infraestrutura: string[]
+          latitude: number | null
+          logradouro: string | null
+          longitude: number | null
+          nome: string
+          numero: string | null
+          status_obra: Database["public"]["Enums"]["status_obra"] | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          codigo_interno?: string | null
+          complemento?: string | null
+          construtora?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_entrega_efetiva?: string | null
+          data_lancamento?: string | null
+          data_prevista_entrega?: string | null
+          descricao?: string | null
+          estado?: string | null
+          id?: string
+          incorporadora?: string | null
+          infraestrutura?: string[]
+          latitude?: number | null
+          logradouro?: string | null
+          longitude?: number | null
+          nome: string
+          numero?: string | null
+          status_obra?: Database["public"]["Enums"]["status_obra"] | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          codigo_interno?: string | null
+          complemento?: string | null
+          construtora?: string | null
+          created_at?: string
+          created_by?: string | null
+          data_entrega_efetiva?: string | null
+          data_lancamento?: string | null
+          data_prevista_entrega?: string | null
+          descricao?: string | null
+          estado?: string | null
+          id?: string
+          incorporadora?: string | null
+          infraestrutura?: string[]
+          latitude?: number | null
+          logradouro?: string | null
+          longitude?: number | null
+          nome?: string
+          numero?: string | null
+          status_obra?: Database["public"]["Enums"]["status_obra"] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      estrutura_imagens: {
+        Row: {
+          capa: boolean
+          created_at: string
+          created_by: string | null
+          estrutura_id: string
+          estrutura_tipo: string
+          id: string
+          ordem: number
+          storage_path: string
+          url: string
+        }
+        Insert: {
+          capa?: boolean
+          created_at?: string
+          created_by?: string | null
+          estrutura_id: string
+          estrutura_tipo: string
+          id?: string
+          ordem?: number
+          storage_path: string
+          url: string
+        }
+        Update: {
+          capa?: boolean
+          created_at?: string
+          created_by?: string | null
+          estrutura_id?: string
+          estrutura_tipo?: string
+          id?: string
+          ordem?: number
+          storage_path?: string
+          url?: string
+        }
+        Relationships: []
       }
       imobiliarias: {
         Row: {
@@ -244,6 +517,7 @@ export type Database = {
         | "imobiliaria"
         | "corretor_imobiliaria"
         | "corretor_autonomo"
+      status_obra: "lancamento" | "em_obras" | "pronto" | "entregue"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -381,6 +655,7 @@ export const Constants = {
         "corretor_imobiliaria",
         "corretor_autonomo",
       ],
+      status_obra: ["lancamento", "em_obras", "pronto", "entregue"],
     },
   },
 } as const
