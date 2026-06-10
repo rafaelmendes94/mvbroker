@@ -94,7 +94,7 @@ function VisaoGeral() {
           .map(([mes, v]) => ({ mes, ...v }))
       );
     })();
-  }, []);
+  }, [filters]);
 
   return (
     <div className="space-y-6">
