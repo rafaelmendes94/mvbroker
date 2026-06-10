@@ -66,18 +66,16 @@ export async function logAction(opts: {
   dados_novos?: unknown;
 }) {
   try {
-    const { data } = await supabase.auth.getUser();
-    await supabase.from("audit_logs").insert({
-      usuario_id: data.user?.id ?? null,
-      modulo: opts.modulo,
-      acao: opts.acao,
-      registro_tipo: opts.registro_tipo ?? null,
-      registro_id: (opts.registro_id ?? null) as never,
-      status: opts.status ?? "sucesso",
-      descricao: opts.descricao ?? null,
-      dados_anteriores: (opts.dados_anteriores ?? null) as never,
-      dados_novos: (opts.dados_novos ?? null) as never,
-      user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
+    await supabase.rpc("log_action", {
+      p_modulo: opts.modulo,
+      p_acao: opts.acao,
+      p_registro_tipo: opts.registro_tipo ?? null,
+      p_registro_id: (opts.registro_id ?? null) as never,
+      p_status: opts.status ?? "sucesso",
+      p_descricao: opts.descricao ?? null,
+      p_dados_anteriores: (opts.dados_anteriores ?? null) as never,
+      p_dados_novos: (opts.dados_novos ?? null) as never,
+      p_user_agent: typeof navigator !== "undefined" ? navigator.userAgent : null,
     });
   } catch {
     // silencioso
@@ -91,13 +89,11 @@ export async function createSecurityAlert(opts: {
   metadata?: Record<string, unknown>;
 }) {
   try {
-    const { data } = await supabase.auth.getUser();
-    await supabase.from("security_alerts").insert({
-      tipo: opts.tipo,
-      severidade: opts.severidade ?? "media",
-      usuario_id: data.user?.id ?? null,
-      descricao: opts.descricao,
-      metadata: (opts.metadata ?? {}) as never,
+    await supabase.rpc("create_security_alert", {
+      p_tipo: opts.tipo,
+      p_severidade: opts.severidade ?? "media",
+      p_descricao: opts.descricao,
+      p_metadata: (opts.metadata ?? {}) as never,
     });
   } catch {
     // silencioso
