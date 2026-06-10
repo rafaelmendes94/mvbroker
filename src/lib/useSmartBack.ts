@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-shim";
 
 /**
  * Retorna um handler que volta para a página anterior se existir histórico,

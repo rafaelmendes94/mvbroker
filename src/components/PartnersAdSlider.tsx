@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-shim";
 import { supabase } from "@/integrations/supabase/client";
 import { ChevronLeft, ChevronRight, Sparkles, Handshake } from "lucide-react";
 

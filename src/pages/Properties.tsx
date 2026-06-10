@@ -1,7 +1,7 @@
 import { PLACEHOLDER_IMAGE } from "@/lib/placeholderImage";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-shim";
 import { AppLayout } from "@/components/AppLayout";
 import { BackButton } from "@/components/BackButton";
 import { PropertyMap } from "@/components/PropertyMap";
@@ -21,7 +21,7 @@ import {
   FolderDown, User, ShieldCheck, Percent, Gift, BarChart3, FileSignature,
   TrendingUp, Wallet, RefreshCw, ArrowUp, ArrowDown, Banknote, Copy, Maximize2, Scan, Route, Globe, Trash2,
 } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "@/lib/router-shim";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { generatePropertyPdf } from "@/utils/generatePropertyPdf";

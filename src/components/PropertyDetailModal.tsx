@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-shim";
 import {
   X, MapPin, BedDouble, Bath, Car, Ruler, Phone, Waves, Paintbrush,
   Building2, ChevronLeft, ChevronRight, ExternalLink, Play, Repeat,
