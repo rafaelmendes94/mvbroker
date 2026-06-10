@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   FolderKanban, Users, UserSquare2, Download, TrendingUp, TrendingDown, ArrowRight,
+  Building, Briefcase, ImageIcon, FileUp, RefreshCw, Clock, FileText, BadgeCheck,
 } from "lucide-react";
 import {
   Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart,
@@ -10,17 +11,37 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
+import { useRoles } from "@/hooks/use-roles";
+import { primaryRole, ROLE_LABEL } from "@/lib/permissions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — MV Broker" }] }),
   component: Dashboard,
 });
 
-const kpis = [
-  { label: "Total de registros", value: "12.482", delta: "+12,4%", up: true, icon: FolderKanban },
-  { label: "Total de usuários", value: "284", delta: "+3,1%", up: true, icon: Users },
-  { label: "Total de clientes", value: "1.926", delta: "+8,7%", up: true, icon: UserSquare2 },
-  { label: "Total de exportações", value: "342", delta: "-2,3%", up: false, icon: Download },
+type Kpi = { label: string; value: string; delta: string; up: boolean; icon: typeof FolderKanban };
+
+const KPIS_ADMIN: Kpi[] = [
+  { label: "Clientes", value: "1.926", delta: "+8,7%", up: true, icon: UserSquare2 },
+  { label: "Imobiliárias", value: "84", delta: "+3,2%", up: true, icon: Building },
+  { label: "Corretores", value: "612", delta: "+5,1%", up: true, icon: Briefcase },
+  { label: "Usuários", value: "284", delta: "+3,1%", up: true, icon: Users },
+  { label: "Exportações", value: "342", delta: "-2,3%", up: false, icon: Download },
+  { label: "Assinaturas ativas", value: "78", delta: "+4,4%", up: true, icon: BadgeCheck },
+];
+
+const KPIS_SECRETARIA: Kpi[] = [
+  { label: "Imóveis cadastrados", value: "1.482", delta: "+6,2%", up: true, icon: FolderKanban },
+  { label: "Imóveis atualizados", value: "326", delta: "+12,1%", up: true, icon: RefreshCw },
+  { label: "Arquivos enviados", value: "918", delta: "+4,8%", up: true, icon: FileUp },
+  { label: "Fotos enviadas", value: "5.214", delta: "+9,3%", up: true, icon: ImageIcon },
+];
+
+const KPIS_COMERCIAL: Kpi[] = [
+  { label: "Imóveis disponíveis", value: "246", delta: "+1,8%", up: true, icon: FolderKanban },
+  { label: "Imóveis exportados", value: "184", delta: "+5,6%", up: true, icon: Download },
+  { label: "Última atualização", value: "há 12 min", delta: "hoje", up: true, icon: Clock },
+  { label: "Downloads realizados", value: "92", delta: "+2,4%", up: true, icon: FileText },
 ];
 
 const barData = [
