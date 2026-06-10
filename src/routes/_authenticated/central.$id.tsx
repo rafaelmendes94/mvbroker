@@ -36,7 +36,7 @@ function Detalhe() {
     (async () => {
       setLoading(true);
       const [{ data: i }, { data: imgs }, { data: l }] = await Promise.all([
-        supabase.from("imoveis").select("*").eq("id", id).single(),
+        supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).eq("id", id).single(),
         supabase.from("imovel_imagens").select("*").eq("imovel_id", id).order("ordem", { ascending: true }),
         supabase.from("imovel_logs").select("*").eq("imovel_id", id).order("created_at", { ascending: false }).limit(20),
       ]);

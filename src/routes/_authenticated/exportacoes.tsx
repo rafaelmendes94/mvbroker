@@ -22,7 +22,7 @@ function Exportacoes() {
     (async () => {
       if (exp.ids.size === 0) { setItems([]); return; }
       setLoading(true);
-      const { data } = await supabase.from("imoveis").select("*").in("id", Array.from(exp.ids));
+      const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).in("id", Array.from(exp.ids));
       setItems(data ?? []);
       setLoading(false);
     })();

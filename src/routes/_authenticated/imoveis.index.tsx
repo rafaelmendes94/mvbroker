@@ -52,7 +52,7 @@ function ImoveisList() {
 
   async function load() {
     setLoading(true);
-    const { data, error } = await supabase.from("imoveis").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).order("created_at", { ascending: false });
     if (error) toast.error(error.message);
     setItems(data ?? []);
     setLoading(false);

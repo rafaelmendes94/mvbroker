@@ -16,10 +16,18 @@ function EditarImovel() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.from("imoveis").select("*").eq("id", id).single().then((r) => {
-      setItem(r.data);
+    (async () => {
+      const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).eq("id", id).single();
+      if (data) {
+        // Admin/secretaria pode ver campos internos via RPC SECURITY DEFINER
+        const { data: internal } = await supabase.rpc("get_imovel_internal", { p_imovel_id: id });
+        const internalRow = Array.isArray(internal) && internal.length > 0 ? internal[0] : {};
+        setItem({ ...data, ...internalRow });
+      } else {
+        setItem(null);
+      }
       setLoading(false);
-    });
+    })();
   }, [id]);
 
   return (

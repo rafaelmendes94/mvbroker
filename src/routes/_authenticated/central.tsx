@@ -88,7 +88,7 @@ function Central() {
 
   async function load() {
     setLoading(true);
-    const { data } = await supabase.from("imoveis").select("*").eq("arquivado", false).order("updated_at", { ascending: false });
+    const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).eq("arquivado", false).order("updated_at", { ascending: false });
     setItems(data ?? []);
     setLoading(false);
   }

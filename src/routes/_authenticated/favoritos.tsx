@@ -24,7 +24,7 @@ function Favoritos() {
     (async () => {
       if (fav.ids.size === 0) { setItems([]); return; }
       setLoading(true);
-      const { data } = await supabase.from("imoveis").select("*").in("id", Array.from(fav.ids));
+      const { data } = await supabase.from("imoveis").select(IMOVEL_PUBLIC_COLUMNS).in("id", Array.from(fav.ids));
       setItems(data ?? []);
       setLoading(false);
     })();
