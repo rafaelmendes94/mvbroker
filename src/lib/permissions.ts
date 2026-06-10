@@ -15,7 +15,7 @@ export const ROLE_LABEL: Record<AppRole, string> = {
   corretor_imobiliaria: "Corretor da Imobiliária",
   corretor_autonomo: "Corretor Autônomo",
   admin: "Administrador",
-  moderator: "Moderador",
+  manager: "Moderador",
   user: "Usuário",
 };
 
@@ -44,7 +44,7 @@ export function primaryRole(roles: AppRole[]): AppRole {
   const priority: AppRole[] = [
     "super_admin", "imobiliaria", "secretaria",
     "corretor_imobiliaria", "corretor_autonomo",
-    "admin", "moderator", "user",
+    "admin", "manager", "user",
   ];
   for (const r of priority) if (roles.includes(r)) return r;
   return "corretor_autonomo";
