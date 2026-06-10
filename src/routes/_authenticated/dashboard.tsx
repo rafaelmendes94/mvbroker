@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   FolderKanban, Users, UserSquare2, Download, TrendingUp, TrendingDown, ArrowRight,
+  Building, Briefcase, ImageIcon, FileUp, RefreshCw, Clock, FileText, BadgeCheck,
 } from "lucide-react";
 import {
   Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart,
@@ -10,17 +11,37 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
+import { useRoles } from "@/hooks/use-roles";
+import { primaryRole, ROLE_LABEL } from "@/lib/permissions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — MV Broker" }] }),
   component: Dashboard,
 });
 
-const kpis = [
-  { label: "Total de registros", value: "12.482", delta: "+12,4%", up: true, icon: FolderKanban },
-  { label: "Total de usuários", value: "284", delta: "+3,1%", up: true, icon: Users },
-  { label: "Total de clientes", value: "1.926", delta: "+8,7%", up: true, icon: UserSquare2 },
-  { label: "Total de exportações", value: "342", delta: "-2,3%", up: false, icon: Download },
+type Kpi = { label: string; value: string; delta: string; up: boolean; icon: typeof FolderKanban };
+
+const KPIS_ADMIN: Kpi[] = [
+  { label: "Clientes", value: "1.926", delta: "+8,7%", up: true, icon: UserSquare2 },
+  { label: "Imobiliárias", value: "84", delta: "+3,2%", up: true, icon: Building },
+  { label: "Corretores", value: "612", delta: "+5,1%", up: true, icon: Briefcase },
+  { label: "Usuários", value: "284", delta: "+3,1%", up: true, icon: Users },
+  { label: "Exportações", value: "342", delta: "-2,3%", up: false, icon: Download },
+  { label: "Assinaturas ativas", value: "78", delta: "+4,4%", up: true, icon: BadgeCheck },
+];
+
+const KPIS_SECRETARIA: Kpi[] = [
+  { label: "Imóveis cadastrados", value: "1.482", delta: "+6,2%", up: true, icon: FolderKanban },
+  { label: "Imóveis atualizados", value: "326", delta: "+12,1%", up: true, icon: RefreshCw },
+  { label: "Arquivos enviados", value: "918", delta: "+4,8%", up: true, icon: FileUp },
+  { label: "Fotos enviadas", value: "5.214", delta: "+9,3%", up: true, icon: ImageIcon },
+];
+
+const KPIS_COMERCIAL: Kpi[] = [
+  { label: "Imóveis disponíveis", value: "246", delta: "+1,8%", up: true, icon: FolderKanban },
+  { label: "Imóveis exportados", value: "184", delta: "+5,6%", up: true, icon: Download },
+  { label: "Última atualização", value: "há 12 min", delta: "hoje", up: true, icon: Clock },
+  { label: "Downloads realizados", value: "92", delta: "+2,4%", up: true, icon: FileText },
 ];
 
 const barData = [
@@ -48,17 +69,28 @@ const pieData = [
 const pieColors = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"];
 
 function Dashboard() {
+  const { roles } = useRoles();
+  const role = primaryRole(roles.length ? roles : ["corretor_autonomo"]);
+  const variant: "admin" | "secretaria" | "comercial" =
+    role === "super_admin" ? "admin" : role === "secretaria" ? "secretaria" : "comercial";
+  const kpis = variant === "admin" ? KPIS_ADMIN : variant === "secretaria" ? KPIS_SECRETARIA : KPIS_COMERCIAL;
+  const title = variant === "admin" ? "Dashboard Administrativo" : variant === "secretaria" ? "Dashboard Operacional" : "Dashboard Comercial";
+  const desc = variant === "admin"
+    ? "Indicadores globais da plataforma e das contas."
+    : variant === "secretaria"
+    ? "Acompanhe a produção operacional de cadastros e mídias."
+    : "Visão comercial dos imóveis e exportações do seu portfólio.";
+
   return (
     <>
       <PageHeader
-        title="Dashboard"
-        description="Visão geral dos indicadores e desempenho da plataforma."
-        actions={<Button variant="outline" size="sm">Últimos 30 dias</Button>}
+        title={title}
+        description={desc}
+        actions={<Badge variant="secondary" className="text-xs">Perfil: {ROLE_LABEL[role]}</Badge>}
       />
 
-      {/* KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        {kpis.map(k => {
+        {kpis.map((k) => {
           const Icon = k.icon;
           return (
             <Card key={k.label} className="border-border">
