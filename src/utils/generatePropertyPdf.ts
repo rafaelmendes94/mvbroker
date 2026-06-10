@@ -37,7 +37,7 @@ export async function generatePropertyPdf(property: Property) {
   document.body.appendChild(container);
 
   try {
-    await html2pdf()
+    await (html2pdf() as any)
       .set({
         margin: [10, 10, 10, 10],
         filename: `${property.code || property.id}_${property.title.replace(/\s+/g, "_")}_fotos.pdf`,
