@@ -26,6 +26,7 @@ import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authentica
 import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authenticated/registros.index'
 import { Route as AuthenticatedRegistrosNovoRouteImport } from './routes/_authenticated/registros.novo'
 import { Route as AuthenticatedRegistrosIdRouteImport } from './routes/_authenticated/registros.$id'
+import { Route as AuthenticatedConfiguracoesOpcoesRouteImport } from './routes/_authenticated/configuracoes.opcoes'
 import { Route as AuthenticatedRegistrosIdEditarRouteImport } from './routes/_authenticated/registros.$id.editar'
 
 const AuthRoute = AuthRouteImport.update({
@@ -118,6 +119,12 @@ const AuthenticatedRegistrosIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedRegistrosRoute,
   } as any)
+const AuthenticatedConfiguracoesOpcoesRoute =
+  AuthenticatedConfiguracoesOpcoesRouteImport.update({
+    id: '/opcoes',
+    path: '/opcoes',
+    getParentRoute: () => AuthenticatedConfiguracoesRoute,
+  } as any)
 const AuthenticatedRegistrosIdEditarRoute =
   AuthenticatedRegistrosIdEditarRouteImport.update({
     id: '/editar',
@@ -130,7 +137,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/clientes': typeof AuthenticatedClientesRoute
-  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/corretores': typeof AuthenticatedCorretoresRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/exportacoes': typeof AuthenticatedExportacoesRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/registros': typeof AuthenticatedRegistrosRouteWithChildren
   '/relatorios': typeof AuthenticatedRelatoriosRoute
   '/usuarios': typeof AuthenticatedUsuariosRoute
+  '/configuracoes/opcoes': typeof AuthenticatedConfiguracoesOpcoesRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
   '/registros/': typeof AuthenticatedRegistrosIndexRoute
@@ -149,7 +157,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/auditoria': typeof AuthenticatedAuditoriaRoute
   '/clientes': typeof AuthenticatedClientesRoute
-  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/corretores': typeof AuthenticatedCorretoresRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/exportacoes': typeof AuthenticatedExportacoesRoute
@@ -157,6 +165,7 @@ export interface FileRoutesByTo {
   '/perfil': typeof AuthenticatedPerfilRoute
   '/relatorios': typeof AuthenticatedRelatoriosRoute
   '/usuarios': typeof AuthenticatedUsuariosRoute
+  '/configuracoes/opcoes': typeof AuthenticatedConfiguracoesOpcoesRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
   '/registros': typeof AuthenticatedRegistrosIndexRoute
@@ -169,7 +178,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/auditoria': typeof AuthenticatedAuditoriaRoute
   '/_authenticated/clientes': typeof AuthenticatedClientesRoute
-  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/corretores': typeof AuthenticatedCorretoresRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/exportacoes': typeof AuthenticatedExportacoesRoute
@@ -178,6 +187,7 @@ export interface FileRoutesById {
   '/_authenticated/registros': typeof AuthenticatedRegistrosRouteWithChildren
   '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
   '/_authenticated/usuarios': typeof AuthenticatedUsuariosRoute
+  '/_authenticated/configuracoes/opcoes': typeof AuthenticatedConfiguracoesOpcoesRoute
   '/_authenticated/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/_authenticated/registros/novo': typeof AuthenticatedRegistrosNovoRoute
   '/_authenticated/registros/': typeof AuthenticatedRegistrosIndexRoute
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/registros'
     | '/relatorios'
     | '/usuarios'
+    | '/configuracoes/opcoes'
     | '/registros/$id'
     | '/registros/novo'
     | '/registros/'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/relatorios'
     | '/usuarios'
+    | '/configuracoes/opcoes'
     | '/registros/$id'
     | '/registros/novo'
     | '/registros'
@@ -237,6 +249,7 @@ export interface FileRouteTypes {
     | '/_authenticated/registros'
     | '/_authenticated/relatorios'
     | '/_authenticated/usuarios'
+    | '/_authenticated/configuracoes/opcoes'
     | '/_authenticated/registros/$id'
     | '/_authenticated/registros/novo'
     | '/_authenticated/registros/'
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRegistrosIdRouteImport
       parentRoute: typeof AuthenticatedRegistrosRoute
     }
+    '/_authenticated/configuracoes/opcoes': {
+      id: '/_authenticated/configuracoes/opcoes'
+      path: '/opcoes'
+      fullPath: '/configuracoes/opcoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesOpcoesRouteImport
+      parentRoute: typeof AuthenticatedConfiguracoesRoute
+    }
     '/_authenticated/registros/$id/editar': {
       id: '/_authenticated/registros/$id/editar'
       path: '/editar'
@@ -379,6 +399,21 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedConfiguracoesRouteChildren {
+  AuthenticatedConfiguracoesOpcoesRoute: typeof AuthenticatedConfiguracoesOpcoesRoute
+}
+
+const AuthenticatedConfiguracoesRouteChildren: AuthenticatedConfiguracoesRouteChildren =
+  {
+    AuthenticatedConfiguracoesOpcoesRoute:
+      AuthenticatedConfiguracoesOpcoesRoute,
+  }
+
+const AuthenticatedConfiguracoesRouteWithChildren =
+  AuthenticatedConfiguracoesRoute._addFileChildren(
+    AuthenticatedConfiguracoesRouteChildren,
+  )
 
 interface AuthenticatedRegistrosIdRouteChildren {
   AuthenticatedRegistrosIdEditarRoute: typeof AuthenticatedRegistrosIdEditarRoute
@@ -415,7 +450,7 @@ const AuthenticatedRegistrosRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAuditoriaRoute: typeof AuthenticatedAuditoriaRoute
   AuthenticatedClientesRoute: typeof AuthenticatedClientesRoute
-  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedCorretoresRoute: typeof AuthenticatedCorretoresRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedExportacoesRoute: typeof AuthenticatedExportacoesRoute
@@ -429,7 +464,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAuditoriaRoute: AuthenticatedAuditoriaRoute,
   AuthenticatedClientesRoute: AuthenticatedClientesRoute,
-  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedCorretoresRoute: AuthenticatedCorretoresRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExportacoesRoute: AuthenticatedExportacoesRoute,
