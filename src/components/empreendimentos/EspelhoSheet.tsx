@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Building2, Camera, Map as MapIcon, Table2, MapPin, Loader2, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { useUserRole } from "@/hooks/use-user-role";
+import { useRoles } from "@/hooks/use-roles";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
