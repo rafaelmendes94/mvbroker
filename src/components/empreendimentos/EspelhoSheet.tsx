@@ -37,8 +37,8 @@ type SectionId = "midia" | "implantacao" | "tabela";
 
 export function EspelhoSheet({ tipo, empreendimentoId }: Props) {
   const { user } = useAuth();
-  const { role } = useUserRole();
-  const isAdmin = role === "super_admin" || role === "secretaria";
+  const { roles } = useRoles();
+  const isAdmin = roles.includes("super_admin") || roles.includes("secretaria");
   const labels = TIPO_LABELS[tipo];
 
   const [emp, setEmp] = useState<EmpData | null>(null);
