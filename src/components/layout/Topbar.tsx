@@ -50,15 +50,16 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative rounded-full bg-muted hover:bg-muted/70 h-10 w-10">
                 <Bell className="h-5 w-5" />
                 {unread > 0 && (
-                  <Badge className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 text-[10px] bg-primary">
+                  <Badge className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 text-[10px] bg-accent text-accent-foreground border-2 border-card">
                     {unread > 99 ? "99+" : unread}
                   </Badge>
                 )}
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end" className="w-96">
               <div className="flex items-center justify-between px-2 py-1.5">
                 <DropdownMenuLabel className="p-0">Notificações</DropdownMenuLabel>
