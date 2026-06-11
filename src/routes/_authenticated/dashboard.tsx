@@ -25,45 +25,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 type Kpi = { label: string; value: string; delta?: string; up?: boolean; icon: typeof FolderKanban };
 
-const KPIS_ADMIN: Kpi[] = [
-  { label: "Clientes", value: "1.926", delta: "+8,7%", up: true, icon: UserSquare2 },
-  { label: "Imobiliárias", value: "84", delta: "+3,2%", up: true, icon: Building },
-  { label: "Corretores", value: "612", delta: "+5,1%", up: true, icon: Briefcase },
-  { label: "Usuários", value: "284", delta: "+3,1%", up: true, icon: Users },
-  { label: "Exportações", value: "342", delta: "-2,3%", up: false, icon: Download },
-  { label: "Assinaturas ativas", value: "78", delta: "+4,4%", up: true, icon: BadgeCheck },
-];
+const pieColors = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-const KPIS_SECRETARIA: Kpi[] = [
-  { label: "Imóveis cadastrados", value: "1.482", delta: "+6,2%", up: true, icon: FolderKanban },
-  { label: "Imóveis atualizados", value: "326", delta: "+12,1%", up: true, icon: RefreshCw },
-  { label: "Arquivos enviados", value: "918", delta: "+4,8%", up: true, icon: FileUp },
-  { label: "Fotos enviadas", value: "5.214", delta: "+9,3%", up: true, icon: ImageIcon },
-];
-
-const barData = [
-  { mes: "Jan", registros: 420 }, { mes: "Fev", registros: 510 },
-  { mes: "Mar", registros: 690 }, { mes: "Abr", registros: 740 },
-  { mes: "Mai", registros: 820 }, { mes: "Jun", registros: 910 },
-  { mes: "Jul", registros: 1020 },
-];
-
-const lineData = [
-  { dia: "Sem 1", clientes: 120, leads: 80 },
-  { dia: "Sem 2", clientes: 180, leads: 140 },
-  { dia: "Sem 3", clientes: 240, leads: 200 },
-  { dia: "Sem 4", clientes: 310, leads: 260 },
-  { dia: "Sem 5", clientes: 390, leads: 320 },
-  { dia: "Sem 6", clientes: 480, leads: 410 },
-];
-
-const pieData = [
-  { name: "Residencial", value: 540 },
-  { name: "Comercial", value: 320 },
-  { name: "Terreno", value: 180 },
-  { name: "Rural", value: 90 },
-];
-const pieColors = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"];
 
 function Dashboard() {
   const { roles } = useRoles();
@@ -75,7 +38,155 @@ function Dashboard() {
     return <ComercialDashboard roleLabel={ROLE_LABEL[role]} />;
   }
 
-  const kpis = variant === "admin" ? KPIS_ADMIN : KPIS_SECRETARIA;
+  return <AdminOpsDashboard variant={variant} roleLabel={ROLE_LABEL[role]} />;
+}
+
+type AtividadeAdm = { id: string; usuario_id: string | null; modulo: string; acao: string; created_at: string; nome?: string | null };
+
+function AdminOpsDashboard({ variant, roleLabel }: { variant: "admin" | "secretaria"; roleLabel: string }) {
+  const [loading, setLoading] = useState(true);
+  const [kpis, setKpis] = useState<Kpi[]>([]);
+  const [barData, setBarData] = useState<{ mes: string; registros: number }[]>([]);
+  const [pieData, setPieData] = useState<{ name: string; value: number }[]>([]);
+  const [lineData, setLineData] = useState<{ dia: string; novos: number; atividade: number }[]>([]);
+  const [atividades, setAtividades] = useState<AtividadeAdm[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const head = { count: "exact" as const, head: true };
+      const now = new Date();
+      const since30d = new Date(now.getTime() - 30 * 86400000).toISOString();
+      const sinceCurrPrev30d = new Date(now.getTime() - 60 * 86400000).toISOString();
+      const since7m = new Date(now.getFullYear(), now.getMonth() - 6, 1).toISOString();
+
+      // ---------- KPIs ----------
+      if (variant === "admin") {
+        const [imob, corr, users, exps, assAtv, exps30, exps60] = await Promise.all([
+          supabase.from("imobiliarias").select("*", head),
+          supabase.from("corretores").select("*", head).eq("status", "ativo"),
+          supabase.from("profiles").select("*", head),
+          supabase.from("exportacao_itens").select("*", head),
+          supabase.from("assinaturas").select("*", head).eq("status", "ativa"),
+          supabase.from("exportacao_itens").select("*", head).gte("created_at", since30d),
+          supabase.from("exportacao_itens").select("*", head).gte("created_at", sinceCurrPrev30d).lt("created_at", since30d),
+        ]);
+        const delta = pctDelta(exps30.count ?? 0, exps60.count ?? 0);
+        setKpis([
+          { label: "Imobiliárias", value: fmt(imob.count), icon: Building },
+          { label: "Corretores ativos", value: fmt(corr.count), icon: Briefcase },
+          { label: "Usuários", value: fmt(users.count), icon: Users },
+          { label: "Exportações", value: fmt(exps.count), delta: delta.label, up: delta.up, icon: Download },
+          { label: "Assinaturas ativas", value: fmt(assAtv.count), icon: BadgeCheck },
+          { label: "Novas (30 dias)", value: fmt(exps30.count), icon: TrendingUp },
+        ]);
+      } else {
+        const [im, im30, im60, upd30, arq, fotos] = await Promise.all([
+          supabase.from("imoveis").select("*", head).eq("arquivado", false),
+          supabase.from("imoveis").select("*", head).eq("arquivado", false).gte("created_at", since30d),
+          supabase.from("imoveis").select("*", head).eq("arquivado", false).gte("created_at", sinceCurrPrev30d).lt("created_at", since30d),
+          supabase.from("imoveis").select("*", head).gte("updated_at", since30d),
+          supabase.from("arquivos").select("*", head),
+          supabase.from("imovel_imagens").select("*", head),
+        ]);
+        const delta = pctDelta(im30.count ?? 0, im60.count ?? 0);
+        setKpis([
+          { label: "Imóveis cadastrados", value: fmt(im.count), delta: delta.label, up: delta.up, icon: FolderKanban },
+          { label: "Atualizados (30d)", value: fmt(upd30.count), icon: RefreshCw },
+          { label: "Arquivos enviados", value: fmt(arq.count), icon: FileUp },
+          { label: "Fotos enviadas", value: fmt(fotos.count), icon: ImageIcon },
+        ]);
+      }
+
+      // ---------- Bar: imóveis criados por mês (últimos 7 meses) ----------
+      const { data: imRows } = await supabase
+        .from("imoveis")
+        .select("created_at")
+        .gte("created_at", since7m)
+        .limit(10000);
+      const monthsLabel = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+      const buckets: Record<string, number> = {};
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        buckets[`${d.getFullYear()}-${d.getMonth()}`] = 0;
+      }
+      (imRows ?? []).forEach((r: { created_at: string }) => {
+        const d = new Date(r.created_at);
+        const key = `${d.getFullYear()}-${d.getMonth()}`;
+        if (key in buckets) buckets[key] += 1;
+      });
+      setBarData(
+        Object.keys(buckets).map((k) => {
+          const [, m] = k.split("-").map(Number);
+          return { mes: monthsLabel[m], registros: buckets[k] };
+        })
+      );
+
+      // ---------- Pie: distribuição por tipo_imovel ----------
+      const { data: tipoRows } = await supabase
+        .from("imoveis")
+        .select("tipo_imovel")
+        .eq("arquivado", false)
+        .limit(10000);
+      const tipoCount: Record<string, number> = {};
+      (tipoRows ?? []).forEach((r: { tipo_imovel: string | null }) => {
+        const k = r.tipo_imovel || "Outros";
+        tipoCount[k] = (tipoCount[k] ?? 0) + 1;
+      });
+      setPieData(
+        Object.entries(tipoCount)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([name, value]) => ({ name, value }))
+      );
+
+      // ---------- Line: novos imóveis vs atividade por semana (6 semanas) ----------
+      const weeks: { start: Date; end: Date; label: string }[] = [];
+      for (let i = 5; i >= 0; i--) {
+        const end = new Date(now.getTime() - i * 7 * 86400000);
+        const start = new Date(end.getTime() - 7 * 86400000);
+        weeks.push({ start, end, label: `Sem ${6 - i}` });
+      }
+      const since6w = weeks[0].start.toISOString();
+      const [novosRows, logsRows] = await Promise.all([
+        supabase.from("imoveis").select("created_at").gte("created_at", since6w).limit(10000),
+        supabase.from("imovel_logs").select("created_at").gte("created_at", since6w).limit(10000),
+      ]);
+      setLineData(
+        weeks.map((w) => ({
+          dia: w.label,
+          novos: (novosRows.data ?? []).filter((r: { created_at: string }) => {
+            const t = new Date(r.created_at).getTime();
+            return t >= w.start.getTime() && t < w.end.getTime();
+          }).length,
+          atividade: (logsRows.data ?? []).filter((r: { created_at: string }) => {
+            const t = new Date(r.created_at).getTime();
+            return t >= w.start.getTime() && t < w.end.getTime();
+          }).length,
+        }))
+      );
+
+      // ---------- Atividade recente ----------
+      const { data: logs } = await supabase
+        .from("audit_logs")
+        .select("id, usuario_id, modulo, acao, created_at")
+        .order("created_at", { ascending: false })
+        .limit(6);
+      const uids = Array.from(new Set((logs ?? []).map((l) => l.usuario_id).filter(Boolean))) as string[];
+      const profMap: Record<string, string> = {};
+      if (uids.length) {
+        const { data: profs } = await supabase.from("profiles").select("id, full_name").in("id", uids);
+        (profs ?? []).forEach((p: { id: string; full_name: string | null }) => {
+          profMap[p.id] = p.full_name || "Usuário";
+        });
+      }
+      setAtividades(
+        (logs ?? []).map((l) => ({ ...l, nome: l.usuario_id ? profMap[l.usuario_id] ?? "Usuário" : "Sistema" })) as AtividadeAdm[]
+      );
+
+      setLoading(false);
+    })();
+  }, [variant]);
+
   const title = variant === "admin" ? "Dashboard Administrativo" : "Dashboard Operacional";
   const desc = variant === "admin"
     ? "Indicadores globais da plataforma e das contas."
@@ -89,17 +200,17 @@ function Dashboard() {
         actions={
           <div className="flex items-center gap-2">
             <BaixarTabelaButton />
-            <Badge variant="secondary" className="text-xs">Perfil: {ROLE_LABEL[role]}</Badge>
+            <Badge variant="secondary" className="text-xs">Perfil: {roleLabel}</Badge>
           </div>
         }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-        {kpis.map((k) => {
+        {(loading ? Array.from({ length: variant === "admin" ? 6 : 4 }).map((_, i) => ({ label: "—", value: "—", icon: FolderKanban, _k: i } as Kpi & { _k: number })) : kpis).map((k, idx) => {
           const Icon = k.icon;
           return (
             <div
-              key={k.label}
+              key={k.label + idx}
               className="rounded-2xl p-6 bg-card border border-border shadow-[0_1px_2px_0_oklch(0_0_0/0.04),0_4px_16px_-6px_oklch(0_0_0/0.06)] hover:border-accent/40 transition-colors"
             >
               <div className="flex items-center justify-between mb-4">
@@ -123,7 +234,7 @@ function Dashboard() {
                 {k.label}
               </p>
               <p className="text-3xl font-extrabold tracking-tight mt-1 text-foreground">
-                {k.value}
+                {loading ? "—" : k.value}
               </p>
             </div>
           );
@@ -136,9 +247,9 @@ function Dashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-base">Registros por mês</CardTitle>
-              <p className="text-xs text-muted-foreground mt-1">Volume de novos cadastros no período</p>
+              <p className="text-xs text-muted-foreground mt-1">Imóveis cadastrados nos últimos 7 meses</p>
             </div>
-            <Badge variant="secondary">2025</Badge>
+            <Badge variant="secondary">{new Date().getFullYear()}</Badge>
           </CardHeader>
           <CardContent>
             <div className="h-72">
@@ -152,7 +263,7 @@ function Dashboard() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                   <XAxis dataKey="mes" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
                   <RTooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 8, fontSize: 12 }} />
                   <Bar dataKey="registros" fill="url(#grad-bar)" radius={[6, 6, 0, 0]} />
                 </BarChart>
@@ -171,17 +282,20 @@ function Dashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={pieData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={85} paddingAngle={2}>
-                    {pieData.map((_, i) => <Cell key={i} fill={pieColors[i]} />)}
+                    {pieData.map((_, i) => <Cell key={i} fill={pieColors[i % pieColors.length]} />)}
                   </Pie>
                   <RTooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 8, fontSize: 12 }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
             <div className="space-y-1.5 mt-2">
+              {pieData.length === 0 && !loading && (
+                <p className="text-xs text-muted-foreground text-center">Sem dados</p>
+              )}
               {pieData.map((p, i) => (
                 <div key={p.name} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-sm" style={{ background: pieColors[i] }} />
+                    <span className="h-2.5 w-2.5 rounded-sm" style={{ background: pieColors[i % pieColors.length] }} />
                     <span className="text-muted-foreground">{p.name}</span>
                   </div>
                   <span className="font-medium">{p.value}</span>
@@ -195,8 +309,8 @@ function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle className="text-base">Clientes vs. Leads</CardTitle>
-            <p className="text-xs text-muted-foreground mt-1">Evolução semanal</p>
+            <CardTitle className="text-base">Novos cadastros vs. atividade</CardTitle>
+            <p className="text-xs text-muted-foreground mt-1">Evolução semanal (6 semanas)</p>
           </CardHeader>
           <CardContent>
             <div className="h-64">
@@ -214,10 +328,10 @@ function Dashboard() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                   <XAxis dataKey="dia" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
+                  <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
                   <RTooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 8, fontSize: 12 }} />
-                  <Area type="monotone" dataKey="clientes" stroke="var(--color-chart-1)" strokeWidth={2.5} fill="url(#grad-area-1)" />
-                  <Area type="monotone" dataKey="leads" stroke="var(--color-chart-2)" strokeWidth={2.5} fill="url(#grad-area-2)" />
+                  <Area type="monotone" dataKey="novos" name="Novos imóveis" stroke="var(--color-chart-1)" strokeWidth={2.5} fill="url(#grad-area-1)" />
+                  <Area type="monotone" dataKey="atividade" name="Atividade" stroke="var(--color-chart-2)" strokeWidth={2.5} fill="url(#grad-area-2)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -229,31 +343,67 @@ function Dashboard() {
             <CardTitle className="text-base">Atividade recente</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {[
-              { who: "Maria Silva", what: "criou um novo registro", when: "há 5 min" },
-              { who: "João Pereira", what: "exportou relatório", when: "há 22 min" },
-              { who: "Ana Costa", what: "atualizou cliente", when: "há 1 h" },
-              { who: "Carlos R.", what: "criou novo usuário", when: "há 3 h" },
-            ].map((a, i) => (
-              <div key={i} className="flex items-start gap-3 text-sm">
-                <div className="grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
-                  {a.who.split(" ").map(n => n[0]).join("").slice(0, 2)}
+            {loading && <p className="text-xs text-muted-foreground">Carregando…</p>}
+            {!loading && atividades.length === 0 && (
+              <p className="text-xs text-muted-foreground">Nenhuma atividade registrada.</p>
+            )}
+            {atividades.map((a) => {
+              const who = a.nome || "Sistema";
+              return (
+                <div key={a.id} className="flex items-start gap-3 text-sm">
+                  <div className="grid h-8 w-8 place-items-center rounded-full bg-primary/10 text-primary text-xs font-semibold shrink-0">
+                    {who.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="leading-snug">
+                      <span className="font-medium">{who}</span>{" "}
+                      <span className="text-muted-foreground">{describeAcao(a.acao, a.modulo)}</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{fmtRelTime(a.created_at)}</p>
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="leading-snug"><span className="font-medium">{a.who}</span> <span className="text-muted-foreground">{a.what}</span></p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{a.when}</p>
-                </div>
-              </div>
-            ))}
-            <Button variant="ghost" size="sm" className="w-full justify-between">
-              Ver tudo <ArrowRight className="h-4 w-4" />
-            </Button>
+              );
+            })}
+            <Link to="/auditoria">
+              <Button variant="ghost" size="sm" className="w-full justify-between">
+                Ver tudo <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
     </>
   );
 }
+
+function fmt(n: number | null | undefined) {
+  return (n ?? 0).toLocaleString("pt-BR");
+}
+function pctDelta(curr: number, prev: number): { label: string; up: boolean } {
+  if (!prev) return { label: curr > 0 ? "+100%" : "0%", up: curr >= 0 };
+  const d = ((curr - prev) / prev) * 100;
+  const up = d >= 0;
+  return { label: `${up ? "+" : ""}${d.toFixed(1).replace(".", ",")}%`, up };
+}
+function describeAcao(acao: string, modulo: string) {
+  const map: Record<string, string> = {
+    criacao: "criou", atualizacao: "atualizou", exclusao: "excluiu",
+    login: "fez login", logout: "saiu do sistema",
+  };
+  const verb = map[acao] || acao;
+  return `${verb} ${modulo ? `em ${modulo}` : ""}`.trim();
+}
+function fmtRelTime(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "agora";
+  if (m < 60) return `há ${m} min`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `há ${h} h`;
+  return `há ${Math.floor(h / 24)} d`;
+}
+
+
 
 type Atividade = { id: string; acao: string; created_at: string; imovel_id: string | null };
 
