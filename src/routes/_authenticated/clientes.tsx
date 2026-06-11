@@ -88,7 +88,7 @@ function ClientesPage() {
       supabase.from("planos").select("id, nome, tipo, preco_mensal, preco_anual, limite_usuarios, ativo").order("ordem"),
       supabase.from("imobiliarias").select("id, nome_fantasia, cnpj, telefone, email, status").order("nome_fantasia"),
       supabase.from("corretores").select("id, user_id, nome, email, telefone, creci, imobiliaria_id, status").is("imobiliaria_id", null).order("nome"),
-      supabase.from("assinaturas").select("id, plano_id, imobiliaria_id, usuario_id, status, ciclo, valor"),
+      supabase.from("assinaturas").select("id, plano_id, imobiliaria_id, usuario_id, status, ciclo, valor, proximo_vencimento"),
       supabase.from("corretores").select("imobiliaria_id, status").eq("status", "ativo").not("imobiliaria_id", "is", null),
     ]);
 
