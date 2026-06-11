@@ -87,11 +87,11 @@
   --input: oklch(0.88 0 0);
   --ring: oklch(0.15 0 0);
 
-  --chart-1: oklch(0.15 0 0);
-  --chart-2: oklch(0.40 0 0);
-  --chart-3: oklch(0.60 0 0);
-  --chart-4: oklch(0.75 0 0);
-  --chart-5: oklch(0.85 0 0);
+  --chart-1: oklch(0.55 0.20 260);
+  --chart-2: oklch(0.68 0.17 152);
+  --chart-3: oklch(0.75 0.16 75);
+  --chart-4: oklch(0.62 0.22 25);
+  --chart-5: oklch(0.62 0.18 200);
 
   /* Sidebar preta */
   --sidebar: oklch(0.10 0 0);
