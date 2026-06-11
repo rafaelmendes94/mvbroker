@@ -8,15 +8,15 @@ export function AppShell({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-muted/30">
+    <div className="min-h-screen flex bg-background">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border sticky top-0 h-screen">
+      <aside className="hidden lg:flex w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground sticky top-0 h-screen">
         <AppSidebar />
       </aside>
 
       {/* Mobile sidebar */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="p-0 bg-sidebar text-sidebar-foreground w-64 border-sidebar-border">
+        <SheetContent side="left" className="p-0 bg-sidebar text-sidebar-foreground w-72 border-0">
           <AppSidebar onNavigate={() => setMobileOpen(false)} />
         </SheetContent>
       </Sheet>

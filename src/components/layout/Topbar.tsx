@@ -30,31 +30,36 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 bg-background/80 backdrop-blur border-b border-border">
-      <div className="flex items-center gap-3 h-16 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 bg-card border-b border-border">
+      <div className="flex items-center gap-3 h-20 px-4 sm:px-6 lg:px-8">
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={onMenuClick}>
           <Menu className="h-5 w-5" />
         </Button>
 
         {/* Search */}
-        <div className="flex-1 max-w-xl relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Busca global..." className="pl-9 bg-muted/40 border-transparent focus-visible:bg-background" />
+        <div className="flex-1 max-w-md relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Pesquisar por clientes, imóveis..."
+            className="pl-11 h-11 rounded-full bg-muted border-transparent focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-accent"
+          />
         </div>
+
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2 shrink-0">
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative rounded-full bg-muted hover:bg-muted/70 h-10 w-10">
                 <Bell className="h-5 w-5" />
                 {unread > 0 && (
-                  <Badge className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 text-[10px] bg-primary">
+                  <Badge className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 text-[10px] bg-accent text-accent-foreground border-2 border-card">
                     {unread > 99 ? "99+" : unread}
                   </Badge>
                 )}
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end" className="w-96">
               <div className="flex items-center justify-between px-2 py-1.5">
                 <DropdownMenuLabel className="p-0">Notificações</DropdownMenuLabel>
@@ -102,14 +107,19 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 rounded-full hover:bg-muted px-1 py-1 transition-colors">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
+              <button className="flex items-center gap-3 rounded-full hover:bg-muted pl-3 pr-1 py-1 transition-colors border-l border-border ml-1">
+                <div className="hidden sm:flex flex-col items-end leading-tight">
+                  <span className="text-sm font-bold text-foreground truncate max-w-[160px]">{user?.email?.split("@")[0] ?? "Usuário"}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Conta MV Broker</span>
+                </div>
+                <Avatar className="h-9 w-9 ring-2 ring-muted">
+                  <AvatarFallback className="bg-primary text-primary-foreground text-xs font-bold">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
               </button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="flex flex-col">
