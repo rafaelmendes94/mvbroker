@@ -24,7 +24,7 @@ const ALL_NAV: NavEntry[] = [
     label: "Empreendimentos",
     icon: Layers,
     children: [
-      { to: "/empreendimentos", label: "Empreendimentos", icon: Briefcase },
+      
       { to: "/condominios", label: "Condomínios", icon: Building },
       { to: "/edificios", label: "Edifícios", icon: Building2 },
       { to: "/loteamentos", label: "Loteamentos", icon: Layers },

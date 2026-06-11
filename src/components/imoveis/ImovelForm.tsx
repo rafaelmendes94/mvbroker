@@ -390,15 +390,6 @@ export function ImovelForm({ initial, onSaved }: { initial?: AnyRec | null; onSa
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="Empreendimento">
-              <Select value={form.empreendimento_id ?? ""} onValueChange={(v) => selectVinculo("empreendimento", v)}>
-                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">—</SelectItem>
-                  {empreendimentos.map((e) => <SelectItem key={e.id} value={e.id}>{e.nome}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </Field>
             <Field label="Loteamento">
               <Select value={form.loteamento_id ?? ""} onValueChange={(v) => selectVinculo("loteamento", v)}>
                 <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
