@@ -274,8 +274,11 @@ export function EstruturaPage({ tipo }: { tipo: EstruturaTipo }) {
     SPECIFIC[tipo].fields.forEach((f) => {
       const v = specific[f.key];
       if (v === "" || v === undefined || v === null) { payload[f.key] = null; return; }
-      payload[f.key] = f.type === "number" ? Number(v) : v;
+      if (f.type === "number") { payload[f.key] = Number(v); return; }
+      if (f.type === "currency") { payload[f.key] = parseBRL(v); return; }
+      payload[f.key] = v;
     });
+
 
     if (editing) {
       const { error } = await supabase.from(table).update(payload).eq("id", editing.id);
