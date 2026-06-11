@@ -30,19 +30,12 @@ interface Props {
 }
 
 export function SoldConfirmDialog({ open, propertyTitle, defaultDate, onConfirm, onCancel }: Props) {
-  const [platform, setPlatform] = useState<string>("");
-  const [otherPlatform, setOtherPlatform] = useState("");
   const [saleDate, setSaleDate] = useState<string>(
     defaultDate || new Date().toISOString().slice(0, 10)
   );
 
   const handleConfirm = () => {
-    const finalPlatform = platform === "Outro" ? otherPlatform.trim() || "Outro" : platform;
-    if (!finalPlatform) return;
-    onConfirm({ platform: finalPlatform, saleDate });
-    // reset for next open
-    setPlatform("");
-    setOtherPlatform("");
+    onConfirm({ platform: "Balcão", saleDate });
   };
 
   return (
@@ -61,36 +54,6 @@ export function SoldConfirmDialog({ open, propertyTitle, defaultDate, onConfirm,
 
         <div className="space-y-4 py-2">
           <div>
-            <Label className="text-xs font-semibold mb-2 block">Por qual plataforma foi vendido?</Label>
-            <div className="grid grid-cols-3 gap-1.5">
-              {PLATFORMS.map((p) => (
-                <button
-                  key={p}
-                  type="button"
-                  onClick={() => setPlatform(p)}
-                  className={cn(
-                    "px-2 py-2 rounded-md text-xs font-medium border transition-all",
-                    platform === p
-                      ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                      : "bg-card text-foreground border-border hover:bg-muted"
-                  )}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-            {platform === "Outro" && (
-              <Input
-                className="mt-2 h-9 text-sm"
-                placeholder="Informe a plataforma"
-                value={otherPlatform}
-                onChange={(e) => setOtherPlatform(e.target.value)}
-                autoFocus
-              />
-            )}
-          </div>
-
-          <div>
             <Label className="text-xs font-semibold mb-2 block">Data da venda</Label>
             <Input
               type="date"
@@ -100,6 +63,7 @@ export function SoldConfirmDialog({ open, propertyTitle, defaultDate, onConfirm,
             />
           </div>
         </div>
+
 
         <DialogFooter className="gap-2">
           <button
