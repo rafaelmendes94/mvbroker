@@ -161,9 +161,9 @@ function LandingPage() {
 
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-black text-slate-100">
       {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-[#020617] text-white">
+      <header className="sticky top-0 z-50 bg-[#0a0a0a] text-white">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <a href="#inicio" className="flex items-center gap-2 shrink-0">
             <img src={logoMv.url} alt="MV BROKER" className="h-8 w-auto" />
@@ -182,7 +182,7 @@ function LandingPage() {
 
           <div className="hidden md:block">
             <Link to="/auth">
-              <button className="inline-flex items-center gap-2 rounded-md border border-white px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-[#020617]">
+              <button className="inline-flex items-center gap-2 rounded-md border border-white px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-[#10b981]">
                 <User className="h-4 w-4" />
                 Login
               </button>
@@ -195,7 +195,7 @@ function LandingPage() {
         </div>
 
         {menuOpen && (
-          <div className="border-t border-white/10 bg-[#020617] md:hidden">
+          <div className="border-t border-white/10 bg-[#0a0a0a] md:hidden">
             <nav className="mx-auto flex max-w-7xl flex-col px-4 py-4">
               {NAV.map((i) => (
                 <a key={i.href} href={i.href} onClick={() => setMenuOpen(false)} className="py-2 text-sm font-medium text-white/80">
@@ -212,7 +212,7 @@ function LandingPage() {
       </header>
 
       {/* HERO */}
-      <section id="inicio" className="relative isolate overflow-hidden bg-[#020617] text-white">
+      <section id="inicio" className="relative isolate overflow-hidden bg-[#0a0a0a] text-white">
         {/* Desktop bg */}
         <div
           className="absolute inset-0 hidden bg-cover bg-center md:block"
@@ -226,8 +226,8 @@ function LandingPage() {
           aria-hidden
         />
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/95 via-[#020617]/70 to-transparent md:block hidden" aria-hidden />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020617]/60 to-[#020617] md:hidden" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a]/95 via-[#0a0a0a]/70 to-transparent md:block hidden" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/60 to-[#0a0a0a] md:hidden" aria-hidden />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex min-h-[600px] flex-col justify-end pb-12 pt-16 md:min-h-[640px] md:justify-center md:py-28 md:max-w-2xl">
@@ -242,7 +242,7 @@ function LandingPage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <a href="#planos">
-                <Button size="lg" className="w-full bg-white px-8 text-base font-semibold text-[#020617] shadow-lg hover:bg-white/90 sm:w-auto">
+                <Button size="lg" className="w-full bg-[#10b981] px-8 text-base font-semibold text-white shadow-lg hover:bg-[#059669] sm:w-auto">
                   Assinar Plano
                 </Button>
               </a>
@@ -258,26 +258,26 @@ function LandingPage() {
       </section>
 
       {/* COMO FUNCIONA */}
-      <section id="como-funciona" className="bg-white py-20 md:py-28">
+      <section id="como-funciona" className="bg-[#0a0a0a] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-sm font-bold uppercase tracking-widest text-[#020617]">Como Funciona</p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+            <p className="text-sm font-bold uppercase tracking-widest text-[#10b981]">Como Funciona</p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Simples, rápido e eficiente
             </h2>
           </div>
           <div className="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, idx) => (
               <div key={s.t} className="relative text-center">
-                <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-7xl font-black text-slate-100 select-none">
+                <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-7xl font-black text-white/5 select-none">
                   {idx + 1}
                 </span>
                 <div className="relative">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#020617] text-white shadow-lg">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#10b981] text-white shadow-lg shadow-[#10b981]/30">
                     <s.icon className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-base font-bold text-slate-900">{s.t}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500">{s.d}</p>
+                  <h3 className="mt-5 text-base font-bold text-white">{s.t}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/60">{s.d}</p>
                 </div>
               </div>
             ))}
@@ -286,33 +286,33 @@ function LandingPage() {
       </section>
 
       {/* IMÓVEIS */}
-      <section id="imoveis" className="bg-[#F8FAFC] py-20 md:py-24">
+      <section id="imoveis" className="bg-[#111111] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-sm font-bold uppercase tracking-widest text-slate-900">
+          <h2 className="text-center text-sm font-bold uppercase tracking-widest text-white">
             Imóveis em Destaque
           </h2>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {IMOVEIS.map((im, idx) => (
-              <div key={idx} className="group overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-200 transition hover:shadow-lg">
-                <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+              <div key={idx} className="group overflow-hidden rounded-xl bg-[#111] shadow-sm ring-1 ring-white/10 transition hover:shadow-lg">
+                <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
                   <img
                     src={MOCK_IMAGES[idx]}
                     alt={im.titulo}
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute right-3 top-3 rounded-md bg-[#020617] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                  <span className="absolute right-3 top-3 rounded-md bg-[#10b981] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
                     Destaque
                   </span>
                 </div>
                 <div className="space-y-2 p-5">
-                  <h3 className="line-clamp-2 text-base font-bold text-slate-900">{im.titulo}</h3>
-                  <p className="flex items-center gap-1 text-xs text-slate-500">
+                  <h3 className="line-clamp-2 text-base font-bold text-white">{im.titulo}</h3>
+                  <p className="flex items-center gap-1 text-xs text-white/60">
                     <MapPin className="h-3 w-3" />
                     {im.cidade}, {im.bairro}
                   </p>
-                  <div className="flex flex-wrap gap-3 pt-1 text-xs text-slate-600">
+                  <div className="flex flex-wrap gap-3 pt-1 text-xs text-white/70">
                     {im.dorm !== undefined && im.dorm > 0 ? (
                       <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" />{im.dorm}</span>
                     ) : null}
@@ -324,7 +324,7 @@ function LandingPage() {
                     ) : null}
                     <span className="flex items-center gap-1"><Maximize className="h-3.5 w-3.5" />{im.area}m²</span>
                   </div>
-                  <p className="pt-1 text-lg font-bold text-[#020617]">{fmtBRL(im.valor)}</p>
+                  <p className="pt-1 text-lg font-bold text-[#10b981]">{fmtBRL(im.valor)}</p>
                 </div>
               </div>
             ))}
@@ -333,20 +333,20 @@ function LandingPage() {
       </section>
 
       {/* BENEFÍCIOS */}
-      <section className="bg-white py-16 md:py-20">
+      <section className="bg-[#0a0a0a] py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-sm font-bold uppercase tracking-widest text-slate-900">
-            Por que escolher o <span className="text-[#020617]">MV BROKER</span>?
+          <h2 className="text-center text-sm font-bold uppercase tracking-widest text-white">
+            Por que escolher o <span className="text-[#10b981]">MV BROKER</span>?
           </h2>
-          <div className="mt-10 rounded-2xl bg-[#F8FAFC] p-6 md:p-10">
+          <div className="mt-10 rounded-2xl bg-[#111111] p-6 md:p-10">
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-6">
               {BENEFITS.map((b) => (
                 <div key={b.t} className="text-left">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md text-[#020617]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md text-[#10b981]">
                     <b.i className="h-7 w-7" strokeWidth={1.5} />
                   </div>
-                  <h3 className="mt-3 text-sm font-bold leading-snug text-slate-900">{b.t}</h3>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-500">{b.d}</p>
+                  <h3 className="mt-3 text-sm font-bold leading-snug text-white">{b.t}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-white/60">{b.d}</p>
                 </div>
               ))}
             </div>
@@ -355,7 +355,7 @@ function LandingPage() {
       </section>
 
       {/* PLANOS */}
-      <section id="planos" className="bg-[#020617] py-20 md:py-24">
+      <section id="planos" className="bg-[#0a0a0a] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center text-sm font-bold uppercase tracking-widest text-white">
             Planos que cabem no seu negócio
@@ -363,17 +363,17 @@ function LandingPage() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {PLANS.map((p) => (
-              <div key={p.name} className="flex flex-col overflow-hidden rounded-xl bg-white shadow-xl">
+              <div key={p.name} className="flex flex-col overflow-hidden rounded-xl bg-[#111] shadow-xl ring-1 ring-white/10">
                 <div className="flex-1 p-7">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#020617] text-white">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#10b981] text-white shadow-lg shadow-[#10b981]/30">
                     <p.icon className="h-7 w-7" />
                   </div>
-                  <h3 className="mt-5 text-xl font-bold text-[#020617]">Plano {p.name}</h3>
-                  <p className="mt-1 text-sm text-slate-600">{p.desc}</p>
+                  <h3 className="mt-5 text-xl font-bold text-[#10b981]">Plano {p.name}</h3>
+                  <p className="mt-1 text-sm text-white/70">{p.desc}</p>
                   <ul className="mt-6 space-y-2.5">
                     {p.items.map((it) => (
-                      <li key={it} className="flex items-start gap-2 text-sm text-slate-700">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#020617]" />
+                      <li key={it} className="flex items-start gap-2 text-sm text-white/80">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#10b981]" />
                         <span>{it}</span>
                       </li>
                     ))}
@@ -383,8 +383,8 @@ function LandingPage() {
                   <button
                     className={`w-full py-3.5 text-sm font-semibold transition-colors ${
                       p.dark
-                        ? "bg-[#020617] text-white hover:bg-[#020617]/90"
-                        : "bg-[#020617] text-white hover:bg-[#020617]/90"
+                        ? "bg-[#10b981] text-white hover:bg-[#059669]"
+                        : "bg-[#10b981] text-white hover:bg-[#059669]"
                     }`}
                   >
                     {p.cta}
@@ -397,7 +397,7 @@ function LandingPage() {
       </section>
 
       {/* CTA FINAL */}
-      <section className="bg-gradient-to-r from-[#020617] to-[#1f2937] py-12">
+      <section className="bg-gradient-to-r from-[#0a0a0a] to-[#1f2937] py-12">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 md:grid-cols-3 md:items-center lg:px-8">
           <h2 className="text-2xl font-bold text-white md:text-3xl">
             Pronto para organizar sua operação imobiliária?
@@ -407,7 +407,7 @@ function LandingPage() {
           </p>
           <div className="md:text-right">
             <Link to="/auth">
-              <button className="rounded-md bg-white px-6 py-3 text-sm font-bold text-[#020617] shadow-md transition-colors hover:bg-white/95">
+              <button className="rounded-md bg-[#10b981] px-6 py-3 text-sm font-bold text-white shadow-md transition-colors hover:bg-[#059669]">
                 Começar Agora
               </button>
             </Link>
@@ -416,7 +416,7 @@ function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-[#020617] py-14 text-white/70">
+      <footer className="bg-[#0a0a0a] py-14 text-white/70">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 md:grid-cols-5">
             <div className="md:col-span-2">
@@ -465,7 +465,7 @@ function LandingPage() {
               </ul>
               <h4 className="mb-3 mt-6 text-sm font-bold text-white">Acesso</h4>
               <Link to="/auth">
-                <button className="inline-flex items-center gap-2 rounded-md border border-white px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-white hover:text-[#020617]">
+                <button className="inline-flex items-center gap-2 rounded-md border border-white px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-white hover:text-[#10b981]">
                   <User className="h-3.5 w-3.5" />
                   Login
                 </button>
