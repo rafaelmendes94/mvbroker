@@ -1030,7 +1030,12 @@ function RankingListCard({ title, icon: Icon, data, colors, sales, field }: { ti
 }
 
 function RankingProgressCard({ title, data }: { title: string; data: { name: string; count: number; vgv: number }[] }) {
-  if (data.length === 0) return null;
+  if (data.length === 0) return (
+    <div className="elevated-card rounded-xl p-5">
+      <h3 className="text-sm font-semibold text-card-foreground mb-3 flex items-center gap-2"><Trophy className="w-4 h-4 text-accent" /> {title}</h3>
+      <p className="text-sm text-muted-foreground text-center py-10">Sem dados no período</p>
+    </div>
+  );
   const maxVgv = data[0]?.vgv || 1;
   return (
     <div className="elevated-card rounded-xl p-5">
