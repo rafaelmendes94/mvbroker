@@ -101,7 +101,7 @@ function RelImobiliarias() {
               <XAxis dataKey="nome" fontSize={11} angle={-20} textAnchor="end" height={60} interval={0} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Bar dataKey="imoveis" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="imoveis" fill="hsl(var(--chart-1))" radius={[6, 6, 0, 0]} />
               <Bar dataKey="xml" fill="#10b981" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

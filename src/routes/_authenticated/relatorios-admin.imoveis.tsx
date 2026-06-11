@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/relatorios-admin/imoveis")
   component: RelImoveis,
 });
 
-const CHART_COLORS = ["hsl(var(--primary))", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
+const CHART_COLORS = ["hsl(var(--chart-1))", "#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
 
 type Row = {
   id: string;

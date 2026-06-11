@@ -16,7 +16,7 @@ type Corretor = { id: string; user_id: string | null; imobiliaria_id: string | n
 type Imovel = { id: string; corretor_id: string | null; publicar_xml: boolean | null };
 type CartUser = { usuario_id: string; id: string };
 
-const COLORS = ["hsl(var(--primary))", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
+const COLORS = ["hsl(var(--chart-1))", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
 
 function RelCorretores() {
   const { filters } = useRelFilters();
