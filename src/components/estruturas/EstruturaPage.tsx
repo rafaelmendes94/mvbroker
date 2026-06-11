@@ -64,6 +64,8 @@ const SPECIFIC: Record<EstruturaTipo, Specific> = {
       { key: "qtd_apartamentos", label: "Qtd. apartamentos", type: "number" },
       { key: "ano_construcao", label: "Ano de construção", type: "number" },
       { key: "construtora", label: "Construtora" },
+      { key: "espelho_grupos", label: "Espelho — andares", type: "number" },
+      { key: "espelho_por_grupo", label: "Espelho — unidades por andar", type: "number" },
     ],
   },
   condominio: {
@@ -73,6 +75,8 @@ const SPECIFIC: Record<EstruturaTipo, Specific> = {
       { key: "portaria", label: "Portaria" },
       { key: "seguranca", label: "Segurança" },
       { key: "area_total", label: "Área total (m²)", type: "number" },
+      { key: "espelho_grupos", label: "Espelho — blocos", type: "number" },
+      { key: "espelho_por_grupo", label: "Espelho — unidades por bloco", type: "number" },
     ],
   },
   empreendimento: {
@@ -95,6 +99,8 @@ const SPECIFIC: Record<EstruturaTipo, Specific> = {
       { key: "area_total_m2", label: "Área total (m²)", type: "number" },
       { key: "total_lotes", label: "Total de lotes", type: "number" },
       { key: "lotes_disponiveis", label: "Lotes disponíveis", type: "number" },
+      { key: "espelho_grupos", label: "Espelho — quadras", type: "number" },
+      { key: "espelho_por_grupo", label: "Espelho — lotes por quadra", type: "number" },
     ],
   },
 };
