@@ -34,6 +34,7 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useExportacao } from "@/hooks/use-exportacao";
+import { usePodeExportar } from "@/hooks/use-pode-exportar";
 import { useFavoritos } from "@/hooks/use-favoritos";
 import { useBuscasSalvas } from "@/hooks/use-buscas-salvas";
 import { useRoles } from "@/hooks/use-roles";
@@ -71,6 +72,7 @@ function Central() {
   const { roles } = useRoles();
   const canWrite = canWriteImovel(roles);
   const exp = useExportacao();
+  const { podeExportar } = usePodeExportar();
   const fav = useFavoritos();
   const buscas = useBuscasSalvas();
 
@@ -205,9 +207,11 @@ function Central() {
             <Button asChild variant="outline" size="sm">
               <Link to="/favoritos"><Heart className="h-4 w-4 mr-1.5" />Favoritos <Badge className="ml-2">{fav.count}</Badge></Link>
             </Button>
-            <Button asChild variant="outline" size="sm">
-              <Link to="/imoveis/exportacao"><ShoppingBag className="h-4 w-4 mr-1.5" />Exportação <Badge className="ml-2">{exp.count}</Badge></Link>
-            </Button>
+            {podeExportar && (
+              <Button asChild variant="outline" size="sm">
+                <Link to="/imoveis/exportacao"><ShoppingBag className="h-4 w-4 mr-1.5" />Exportação <Badge className="ml-2">{exp.count}</Badge></Link>
+              </Button>
+            )}
           </div>
         }
       />
@@ -280,8 +284,12 @@ function Central() {
           <CardContent className="p-3 flex items-center justify-between gap-2 flex-wrap">
             <p className="text-sm font-medium">{selected.size} selecionado(s)</p>
             <div className="flex gap-2 flex-wrap">
-              <Button size="sm" onClick={addSelectedToExport}><ShoppingBag className="h-4 w-4 mr-1.5" />+ Exportação</Button>
-              <Button size="sm" variant="outline" onClick={removeSelectedFromExport}>– Exportação</Button>
+              {podeExportar && (
+                <>
+                  <Button size="sm" onClick={addSelectedToExport}><ShoppingBag className="h-4 w-4 mr-1.5" />+ Exportação</Button>
+                  <Button size="sm" variant="outline" onClick={removeSelectedFromExport}>– Exportação</Button>
+                </>
+              )}
               {canWrite && (
                 <>
                   <DropdownMenu>
@@ -323,6 +331,7 @@ function Central() {
             <ImovelCard
               key={i.id} imovel={i}
               selected={selected.has(i.id)} inExport={exp.has(i.id)} isFav={fav.has(i.id)} canWrite={canWrite}
+              podeExportar={podeExportar}
               onToggleSel={() => toggleSel(i.id)} onView={() => openDrawer(i.id)}
               onToggleExport={() => exp.toggle(i.id)} onToggleFav={() => fav.toggle(i.id)}
             />
@@ -358,9 +367,11 @@ function Central() {
                         <Heart className={`h-4 w-4 ${fav.has(i.id) ? "fill-destructive text-destructive" : ""}`} />
                       </Button>
                       <Button size="icon" variant="ghost" onClick={() => openDrawer(i.id)}><Eye className="h-4 w-4" /></Button>
-                      <Button size="icon" variant={exp.has(i.id) ? "secondary" : "ghost"} onClick={() => exp.toggle(i.id)}>
-                        {exp.has(i.id) ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
-                      </Button>
+                      {podeExportar && (
+                        <Button size="icon" variant={exp.has(i.id) ? "secondary" : "ghost"} onClick={() => exp.toggle(i.id)} disabled={i.exportacao_liberada === false} title={i.exportacao_liberada === false ? "Imóvel não liberado para exportação" : undefined}>
+                          {exp.has(i.id) ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4" />}
+                        </Button>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -385,7 +396,8 @@ function Central() {
   );
 }
 
-function ImovelCard({ imovel, selected, inExport, isFav, canWrite, onToggleSel, onView, onToggleExport, onToggleFav }: any) {
+function ImovelCard({ imovel, selected, inExport, isFav, canWrite, podeExportar, onToggleSel, onView, onToggleExport, onToggleFav }: any) {
+  const liberado = imovel.exportacao_liberada !== false;
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow group">
       <div className="relative aspect-video bg-muted">
@@ -425,9 +437,11 @@ function ImovelCard({ imovel, selected, inExport, isFav, canWrite, onToggleSel, 
         </div>
         <div className="flex gap-1.5 pt-2">
           <Button size="sm" variant="outline" className="flex-1" onClick={onView}><Eye className="h-3.5 w-3.5 mr-1" />Visualizar</Button>
-          <Button size="sm" variant={inExport ? "secondary" : "default"} className="flex-1" onClick={onToggleExport}>
-            {inExport ? <><Check className="h-3.5 w-3.5 mr-1" />Na lista</> : "+ Exportação"}
-          </Button>
+          {podeExportar && (
+            <Button size="sm" variant={inExport ? "secondary" : "default"} className="flex-1" onClick={onToggleExport} disabled={!liberado} title={!liberado ? "Imóvel não liberado para exportação" : undefined}>
+              {inExport ? <><Check className="h-3.5 w-3.5 mr-1" />Na lista</> : "+ Exportação"}
+            </Button>
+          )}
           {canWrite && (
             <Button size="icon" variant="ghost" asChild><Link to="/imoveis/$id/editar" params={{ id: imovel.id }}><Pencil className="h-3.5 w-3.5" /></Link></Button>
           )}
