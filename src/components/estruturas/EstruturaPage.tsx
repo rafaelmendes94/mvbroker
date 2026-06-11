@@ -358,6 +358,13 @@ export function EstruturaPage({ tipo }: { tipo: EstruturaTipo }) {
                     </TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-1">
+                        {tipo !== "empreendimento" && (
+                          <Button asChild size="sm" variant="outline" title="Espelho de Vendas">
+                            <Link to="/empreendimentos/$tipo/$id" params={{ tipo, id: i.id }}>
+                              <LayoutGrid className="h-4 w-4 mr-1" /> Espelho
+                            </Link>
+                          </Button>
+                        )}
                         <Button size="icon" variant="ghost" onClick={() => openEdit(i)}><Pencil className="h-4 w-4" /></Button>
                         <Button size="icon" variant="ghost" onClick={() => remove(i.id, i.nome)}><Trash2 className="h-4 w-4" /></Button>
                       </div>
