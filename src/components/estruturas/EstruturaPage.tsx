@@ -25,6 +25,20 @@ import { GaleriaUpload, type EstruturaTipo } from "@/components/forms/GaleriaUpl
 import { logAudit } from "@/lib/audit";
 import { useAuth } from "@/hooks/use-auth";
 
+function parseBRL(v: unknown): number | null {
+  if (v == null || v === "") return null;
+  if (typeof v === "number") return isFinite(v) ? v : null;
+  const s = String(v).replace(/[^\d,.-]/g, "").replace(/\.(?=\d{3}(\D|$))/g, "").replace(",", ".");
+  const n = Number(s);
+  return isFinite(n) ? n : null;
+}
+function formatBRL(v: unknown): string {
+  const n = typeof v === "number" ? v : parseBRL(v);
+  if (n == null) return "";
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+
 function parseLatLngFromUrl(url: string): { lat: number | null; lng: number | null } {
   if (!url) return { lat: null, lng: null };
   const patterns = [
