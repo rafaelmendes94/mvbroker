@@ -95,26 +95,15 @@ function Dashboard() {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-        {kpis.map((k, idx) => {
+        {kpis.map((k) => {
           const Icon = k.icon;
-          const highlight = idx === kpis.length - 1; // last card = dark highlight
           return (
             <div
               key={k.label}
-              className={
-                highlight
-                  ? "rounded-2xl p-6 bg-primary text-primary-foreground border border-white/10 shadow-[0_8px_24px_-8px_oklch(0_0_0/0.25)]"
-                  : "rounded-2xl p-6 bg-card border border-border shadow-[0_1px_2px_0_oklch(0_0_0/0.04),0_4px_16px_-6px_oklch(0_0_0/0.06)] hover:border-accent/40 transition-colors"
-              }
+              className="rounded-2xl p-6 bg-card border border-border shadow-[0_1px_2px_0_oklch(0_0_0/0.04),0_4px_16px_-6px_oklch(0_0_0/0.06)] hover:border-accent/40 transition-colors"
             >
               <div className="flex items-center justify-between mb-4">
-                <div
-                  className={
-                    highlight
-                      ? "h-11 w-11 grid place-items-center rounded-xl bg-[image:var(--gradient-accent)] text-accent-foreground shadow-[var(--shadow-accent)]"
-                      : "h-11 w-11 grid place-items-center rounded-xl bg-[image:var(--gradient-accent)] text-accent-foreground shadow-[var(--shadow-accent)]"
-                  }
-                >
+                <div className="h-11 w-11 grid place-items-center rounded-xl bg-[image:var(--gradient-accent)] text-accent-foreground shadow-[var(--shadow-accent)]">
                   <Icon className="h-5 w-5" />
                 </div>
                 {k.delta && (
@@ -130,10 +119,10 @@ function Dashboard() {
                   </span>
                 )}
               </div>
-              <p className={highlight ? "text-[11px] uppercase tracking-wider font-bold text-white/50" : "text-[11px] uppercase tracking-wider font-bold text-muted-foreground"}>
+              <p className="text-[11px] uppercase tracking-wider font-bold text-muted-foreground">
                 {k.label}
               </p>
-              <p className={highlight ? "text-3xl font-extrabold tracking-tight mt-1 text-white" : "text-3xl font-extrabold tracking-tight mt-1 text-foreground"}>
+              <p className="text-3xl font-extrabold tracking-tight mt-1 text-foreground">
                 {k.value}
               </p>
             </div>
