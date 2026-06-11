@@ -38,10 +38,9 @@ export const Route = createFileRoute("/_authenticated/usuarios")({
   ),
 });
 
-const ROLE_OPTIONS: AppRole[] = [
-  "super_admin", "secretaria", "imobiliaria",
-  "corretor_imobiliaria", "corretor_autonomo",
-];
+// Apenas papéis administrativos. Imobiliária e corretores são CLIENTES
+// (cadastrados pelo fluxo de assinatura), não devem ser criados aqui.
+const ROLE_OPTIONS: AppRole[] = ["super_admin", "secretaria"];
 
 type UserRow = {
   id: string; email: string; full_name: string | null; avatar_url: string | null;
