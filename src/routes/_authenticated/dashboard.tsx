@@ -86,7 +86,12 @@ function Dashboard() {
       <PageHeader
         title={title}
         description={desc}
-        actions={<Badge variant="secondary" className="text-xs">Perfil: {ROLE_LABEL[role]}</Badge>}
+        actions={
+          <div className="flex items-center gap-2">
+            <BaixarTabelaButton />
+            <Badge variant="secondary" className="text-xs">Perfil: {ROLE_LABEL[role]}</Badge>
+          </div>
+        }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
