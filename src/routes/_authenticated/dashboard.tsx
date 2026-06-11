@@ -297,7 +297,12 @@ function ComercialDashboard({ roleLabel }: { roleLabel: string }) {
       <PageHeader
         title="Meu Dashboard"
         description="Resumo da sua atividade na plataforma."
-        actions={<Badge variant="secondary" className="text-xs">Perfil: {roleLabel}</Badge>}
+        actions={
+          <div className="flex items-center gap-2">
+            <BaixarTabelaButton />
+            <Badge variant="secondary" className="text-xs">Perfil: {roleLabel}</Badge>
+          </div>
+        }
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
