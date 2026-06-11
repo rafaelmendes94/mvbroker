@@ -33,6 +33,7 @@ type Plano = {
 type Assinatura = {
   id: string; plano_id: string; imobiliaria_id: string | null; usuario_id: string | null;
   status: string; ciclo: "mensal" | "anual"; valor: number;
+  proximo_vencimento: string | null;
 };
 type ClienteRow = {
   key: string;
