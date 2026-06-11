@@ -206,7 +206,7 @@ function Central() {
               <Link to="/favoritos"><Heart className="h-4 w-4 mr-1.5" />Favoritos <Badge className="ml-2">{fav.count}</Badge></Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link to="/exportacoes"><ShoppingBag className="h-4 w-4 mr-1.5" />Exportação <Badge className="ml-2">{exp.count}</Badge></Link>
+              <Link to="/imoveis/exportacao"><ShoppingBag className="h-4 w-4 mr-1.5" />Exportação <Badge className="ml-2">{exp.count}</Badge></Link>
             </Button>
           </div>
         }
