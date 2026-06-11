@@ -94,37 +94,54 @@ function Dashboard() {
         }
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-        {kpis.map((k) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+        {kpis.map((k, idx) => {
           const Icon = k.icon;
+          const highlight = idx === kpis.length - 1; // last card = dark highlight
           return (
-            <Card key={k.label} className="border-border">
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between">
-                  <div className="min-w-0">
-                    <p className="text-sm text-muted-foreground">{k.label}</p>
-                    <p className="text-3xl font-bold tracking-tight mt-2">{k.value}</p>
-                  </div>
-                  <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary shrink-0">
-                    <Icon className="h-5 w-5" />
-                  </div>
+            <div
+              key={k.label}
+              className={
+                highlight
+                  ? "rounded-2xl p-6 bg-primary text-primary-foreground border border-white/10 shadow-[0_8px_24px_-8px_oklch(0_0_0/0.25)]"
+                  : "rounded-2xl p-6 bg-card border border-border shadow-[0_1px_2px_0_oklch(0_0_0/0.04),0_4px_16px_-6px_oklch(0_0_0/0.06)] hover:border-accent/40 transition-colors"
+              }
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div
+                  className={
+                    highlight
+                      ? "h-11 w-11 grid place-items-center rounded-xl bg-accent/20 text-accent"
+                      : "h-11 w-11 grid place-items-center rounded-xl bg-muted text-foreground/70"
+                  }
+                >
+                  <Icon className="h-5 w-5" />
                 </div>
-                <div className="mt-3 flex items-center gap-1.5">
-                  {k.up ? (
-                    <TrendingUp className="h-3.5 w-3.5 text-[oklch(0.68_0.16_152)]" />
-                  ) : (
-                    <TrendingDown className="h-3.5 w-3.5 text-destructive" />
-                  )}
-                  <span className={k.up ? "text-xs font-medium text-[oklch(0.68_0.16_152)]" : "text-xs font-medium text-destructive"}>
+                {k.delta && (
+                  <span
+                    className={
+                      k.up
+                        ? "text-[11px] font-bold px-2.5 py-1 rounded-lg bg-accent/15 text-accent-foreground/90"
+                        : "text-[11px] font-bold px-2.5 py-1 rounded-lg bg-destructive/10 text-destructive"
+                    }
+                    style={k.up ? { color: "oklch(0.40 0.15 152)" } : undefined}
+                  >
+                    {k.up ? <TrendingUp className="h-3 w-3 inline -mt-px mr-0.5" /> : <TrendingDown className="h-3 w-3 inline -mt-px mr-0.5" />}
                     {k.delta}
                   </span>
-                  <span className="text-xs text-muted-foreground">vs. mês anterior</span>
-                </div>
-              </CardContent>
-            </Card>
+                )}
+              </div>
+              <p className={highlight ? "text-[11px] uppercase tracking-wider font-bold text-white/50" : "text-[11px] uppercase tracking-wider font-bold text-muted-foreground"}>
+                {k.label}
+              </p>
+              <p className={highlight ? "text-3xl font-extrabold tracking-tight mt-1 text-white" : "text-3xl font-extrabold tracking-tight mt-1 text-foreground"}>
+                {k.value}
+              </p>
+            </div>
           );
         })}
       </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <Card className="lg:col-span-2">
