@@ -41,6 +41,18 @@ export function useExportacao() {
   const add = useCallback(async (imovelId: string) => {
     const { data: u } = await supabase.auth.getUser();
     if (!u.user) return;
+
+    // Verifica se o imóvel está liberado para exportação
+    const { data: imv } = await supabase
+      .from("imoveis")
+      .select("exportacao_liberada")
+      .eq("id", imovelId)
+      .maybeSingle();
+    if (imv && (imv as any).exportacao_liberada === false) {
+      toast.error("Este imóvel não está liberado para exportação.");
+      return;
+    }
+
     const { error } = await supabase
       .from("exportacao_itens")
       .insert({ usuario_id: u.user.id, imovel_id: imovelId } as never);

@@ -88,6 +88,7 @@ export function ImovelForm({ initial, onSaved }: { initial?: AnyRec | null; onSa
     data_captacao: "", responsavel_captacao: "", observacoes_internas: "",
     exclusivo: false, compartilhamento_permitido: true, comissao_compartilhada: null, data_vencimento_exclusividade: "",
     portais_permitidos: [] as string[], prioridade_xml: 0, ultima_exportacao: null, status_exportacao: "",
+    exportacao_liberada: true,
     ...initial,
   });
 
@@ -609,8 +610,14 @@ export function ImovelForm({ initial, onSaved }: { initial?: AnyRec | null; onSa
 
         {/* === 11 XML === */}
         <TabsContent value="xml" className="space-y-4 pt-4">
-          <div className="flex items-center gap-2 rounded-md border bg-card/50 p-3 w-fit">
-            <Switch checked={!!form.publicar_xml} onCheckedChange={(v) => set("publicar_xml", v)} /><Label className="text-sm">Publicar XML</Label>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2 rounded-md border bg-card/50 p-3 w-fit">
+              <Switch checked={!!form.publicar_xml} onCheckedChange={(v) => set("publicar_xml", v)} /><Label className="text-sm">Publicar XML</Label>
+            </div>
+            <div className="flex items-center gap-2 rounded-md border bg-card/50 p-3 w-fit">
+              <Switch checked={form.exportacao_liberada !== false} onCheckedChange={(v) => set("exportacao_liberada", v)} />
+              <Label className="text-sm">Liberar exportação para clientes</Label>
+            </div>
           </div>
           <Field label="Portais permitidos">
             <MultiPill options={portaisOpts} value={form.portais_permitidos ?? []} onChange={(v) => set("portais_permitidos", v)} />
