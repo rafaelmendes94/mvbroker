@@ -28,12 +28,12 @@ export const ROUTE_ACCESS: Record<string, AppRole[]> = {
   "/favoritos": [], // Favoritos — todos autenticados
   "/notificacoes": [], // Notificações — todos autenticados
   "/registros": ["super_admin", "secretaria", "imobiliaria", "corretor_imobiliaria", "corretor_autonomo"],
-  "/imobiliarias": ["super_admin"],
+  
   "/edificios": ["super_admin", "secretaria"],
   "/condominios": ["super_admin", "secretaria"],
   "/empreendimentos": ["super_admin", "secretaria"],
   "/biblioteca": ["super_admin", "secretaria"],
-  "/corretores": ["super_admin", "imobiliaria"],
+  
   "/usuarios": ["super_admin"],
   "/clientes": ["super_admin", "secretaria"],
   "/relatorios": ["super_admin", "imobiliaria", "corretor_imobiliaria", "corretor_autonomo"],
