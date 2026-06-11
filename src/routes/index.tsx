@@ -365,7 +365,7 @@ function LandingPage() {
             {PLANS.map((p) => (
               <div key={p.name} className="flex flex-col overflow-hidden rounded-xl bg-[#111] shadow-xl ring-1 ring-white/10">
                 <div className="flex-1 p-7">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0a0a0a] text-white">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#10b981] text-white shadow-lg shadow-[#10b981]/30">
                     <p.icon className="h-7 w-7" />
                   </div>
                   <h3 className="mt-5 text-xl font-bold text-[#10b981]">Plano {p.name}</h3>
