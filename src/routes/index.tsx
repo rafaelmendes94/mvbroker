@@ -112,9 +112,9 @@ const BENEFITS = [
   { i: BarChart3, t: "Relatórios de performance", d: "Acompanhe resultados, acessos, downloads e muito mais." },
 ];
 
-const WHATSAPP_COMERCIAL = "5551983282535"; // Patrique Lopes
-const waLink = (plano: string) =>
-  `https://wa.me/${WHATSAPP_COMERCIAL}?text=${encodeURIComponent(
+const WHATSAPP_FALLBACK = "5551983282535"; // Patrique Lopes (fallback)
+const waLink = (numero: string, plano: string) =>
+  `https://wa.me/${numero}?text=${encodeURIComponent(
     `Olá Patrique! Tenho interesse no Plano ${plano} do MV BROKER e gostaria de mais informações para assinar.`
   )}`;
 
