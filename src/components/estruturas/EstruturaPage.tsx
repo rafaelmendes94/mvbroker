@@ -73,10 +73,10 @@ const SPECIFIC: Record<EstruturaTipo, Specific> = {
     fields: [
       { key: "tipo_condominio", label: "Tipo de condomínio" },
       { key: "numero_lotes", label: "Número de lotes", type: "number" },
+      { key: "espelho_grupos", label: "Quadras", type: "number" },
       { key: "portaria", label: "Portaria" },
       { key: "seguranca", label: "Segurança" },
       { key: "area_total", label: "Área total (m²)", type: "number" },
-      { key: "espelho_grupos", label: "Espelho — blocos", type: "number" },
       { key: "espelho_por_grupo", label: "Espelho — unidades por bloco", type: "number" },
     ],
   },
