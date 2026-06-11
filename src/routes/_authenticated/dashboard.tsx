@@ -25,45 +25,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 type Kpi = { label: string; value: string; delta?: string; up?: boolean; icon: typeof FolderKanban };
 
-const KPIS_ADMIN: Kpi[] = [
-  { label: "Clientes", value: "1.926", delta: "+8,7%", up: true, icon: UserSquare2 },
-  { label: "Imobiliárias", value: "84", delta: "+3,2%", up: true, icon: Building },
-  { label: "Corretores", value: "612", delta: "+5,1%", up: true, icon: Briefcase },
-  { label: "Usuários", value: "284", delta: "+3,1%", up: true, icon: Users },
-  { label: "Exportações", value: "342", delta: "-2,3%", up: false, icon: Download },
-  { label: "Assinaturas ativas", value: "78", delta: "+4,4%", up: true, icon: BadgeCheck },
-];
+const pieColors = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)", "var(--color-chart-5)"];
 
-const KPIS_SECRETARIA: Kpi[] = [
-  { label: "Imóveis cadastrados", value: "1.482", delta: "+6,2%", up: true, icon: FolderKanban },
-  { label: "Imóveis atualizados", value: "326", delta: "+12,1%", up: true, icon: RefreshCw },
-  { label: "Arquivos enviados", value: "918", delta: "+4,8%", up: true, icon: FileUp },
-  { label: "Fotos enviadas", value: "5.214", delta: "+9,3%", up: true, icon: ImageIcon },
-];
-
-const barData = [
-  { mes: "Jan", registros: 420 }, { mes: "Fev", registros: 510 },
-  { mes: "Mar", registros: 690 }, { mes: "Abr", registros: 740 },
-  { mes: "Mai", registros: 820 }, { mes: "Jun", registros: 910 },
-  { mes: "Jul", registros: 1020 },
-];
-
-const lineData = [
-  { dia: "Sem 1", clientes: 120, leads: 80 },
-  { dia: "Sem 2", clientes: 180, leads: 140 },
-  { dia: "Sem 3", clientes: 240, leads: 200 },
-  { dia: "Sem 4", clientes: 310, leads: 260 },
-  { dia: "Sem 5", clientes: 390, leads: 320 },
-  { dia: "Sem 6", clientes: 480, leads: 410 },
-];
-
-const pieData = [
-  { name: "Residencial", value: 540 },
-  { name: "Comercial", value: 320 },
-  { name: "Terreno", value: 180 },
-  { name: "Rural", value: 90 },
-];
-const pieColors = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"];
 
 function Dashboard() {
   const { roles } = useRoles();
