@@ -958,6 +958,7 @@ export type Database = {
           estado: string | null
           exclusividade: boolean
           exclusivo: boolean
+          exportacao_liberada: boolean
           id: string
           imobiliaria_id: string | null
           infraestrutura: string[]
@@ -1040,6 +1041,7 @@ export type Database = {
           estado?: string | null
           exclusividade?: boolean
           exclusivo?: boolean
+          exportacao_liberada?: boolean
           id?: string
           imobiliaria_id?: string | null
           infraestrutura?: string[]
@@ -1122,6 +1124,7 @@ export type Database = {
           estado?: string | null
           exclusividade?: boolean
           exclusivo?: boolean
+          exportacao_liberada?: boolean
           id?: string
           imobiliaria_id?: string | null
           infraestrutura?: string[]
@@ -1455,6 +1458,7 @@ export type Database = {
           limite_usuarios: number | null
           nome: string
           ordem: number
+          permite_exportacao: boolean
           preco_anual: number | null
           preco_mensal: number
           recursos: Json
@@ -1470,6 +1474,7 @@ export type Database = {
           limite_usuarios?: number | null
           nome: string
           ordem?: number
+          permite_exportacao?: boolean
           preco_anual?: number | null
           preco_mensal?: number
           recursos?: Json
@@ -1485,6 +1490,7 @@ export type Database = {
           limite_usuarios?: number | null
           nome?: string
           ordem?: number
+          permite_exportacao?: boolean
           preco_anual?: number | null
           preco_mensal?: number
           recursos?: Json

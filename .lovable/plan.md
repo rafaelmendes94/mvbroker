@@ -1,70 +1,54 @@
 ## Objetivo
 
-No cadastro de **Clientes** (imobiliárias e corretores autônomos), criar automaticamente uma conta de acesso para o cliente, com duas opções:
-1. **Gerar senha automática** — sistema cria uma senha forte e mostra na tela para copiar/enviar.
-2. **Enviar convite por email** — cliente recebe link para definir a própria senha.
+1. Remover a entrada própria "Exportações" do sidebar e mesclar tudo dentro do menu **Imóveis** (a Central de Imóveis já é a tela de seleção; a lista de exportação vira uma sub-rota desse mesmo menu).
+2. Permitir que o **super admin**, no cadastro/edição do imóvel, defina se aquele imóvel **pode ou não ser exportado pelos clientes**.
+3. Adicionar no cadastro de **Planos** uma opção que define se o plano **permite exportar imóveis**. Planos sem essa permissão escondem/bloqueiam as ações de exportação no app.
 
-E no **Perfil** do usuário logado, adicionar a opção de **alterar a própria senha**.
+## Mudanças no banco
 
----
+Migração única:
 
-## 1. Cadastro de Clientes (`/clientes`)
+- `imoveis.exportacao_liberada boolean NOT NULL DEFAULT true`
+  - Controlado apenas por super_admin / secretaria via formulário do imóvel.
+- `planos.permite_exportacao boolean NOT NULL DEFAULT true`
+  - Editável na tela de Planos.
+- Atualizar a policy/insert de `exportacao_itens` para impedir adicionar um `imovel_id` cuja `exportacao_liberada = false` (via trigger BEFORE INSERT que faz RAISE quando o imóvel está bloqueado — não bloqueia super_admin).
 
-No diálogo "Novo cliente", adicionar bloco **Acesso ao sistema**:
+## Frontend
 
-- Radio:
-  - `Gerar senha agora` (default) — gera senha aleatória de 12 caracteres.
-  - `Enviar convite por email` — dispara email de definição de senha.
-- Email é obrigatório para ambos os modos.
-- Após criar com sucesso:
-  - Modo "gerar senha": mostra dialog com email + senha, botão **Copiar credenciais** e aviso "Anote agora — não será exibida novamente".
-  - Modo "convite": toast "Convite enviado para `email`".
+### Sidebar (`src/components/layout/AppSidebar.tsx`)
+- Remover o item "Exportações" do nível raiz.
+- O grupo **Imóveis** passa a ter os subitens: Central, Minha exportação (nova rota dentro de imóveis), Favoritos (se aplicável). A rota antiga `/exportacoes` é redirecionada para a nova.
 
-### Vínculo do usuário criado
-- Imobiliária → `imobiliarias.owner_id = novo user_id` + role `imobiliaria` em `user_roles`.
-- Corretor autônomo → `corretores.user_id = novo user_id` + role `corretor_autonomo`.
-- Se o email já existe em `auth.users`, reaproveitar o user_id existente em vez de duplicar; mostrar aviso "Conta já existia, vinculada ao cliente".
+### Rota
+- Criar `src/routes/_authenticated/imoveis.exportacao.tsx` reaproveitando o conteúdo atual de `exportacoes.tsx`.
+- Deletar `src/routes/_authenticated/exportacoes.tsx` (ou deixar só um redirect para a nova URL).
+- Ajustar todos `Link to="/exportacoes"` para `/imoveis/exportacao` (Central, Topbar, etc.).
 
----
+### Cadastro de Imóvel (`src/components/imoveis/ImovelForm.tsx`)
+- Novo Switch **"Liberar exportação para clientes"** dentro do bloco de publicação/XML.
+- Visível e editável **apenas** para `super_admin` / `secretaria` (usar `RoleGate` ou `useRoles`). Demais perfis veem somente leitura ou nada.
+- Persistir `exportacao_liberada` no insert/update.
 
-## 2. Perfil (`/perfil`) — Alterar senha
+### Hook de exportação (`src/hooks/use-exportacao.ts`)
+- Antes de `add`, validar localmente:
+  - Plano do usuário precisa ter `permite_exportacao = true` (usar `useAssinatura`/`get_minha_assinatura` ou um novo hook `usePodeExportar`).
+  - Imóvel precisa ter `exportacao_liberada = true`.
+- Caso negado, mostrar toast amigável ("Seu plano não permite exportação" / "Este imóvel não está liberado para exportação") e não chamar o backend.
 
-Adicionar card **Segurança** com:
-- Campos: nova senha, confirmar nova senha.
-- Validação: mínimo 8 caracteres, igual no confirmar.
-- Botão **Atualizar senha** → `supabase.auth.updateUser({ password })`.
-- Toast de sucesso / erro.
+### UI da Central (`src/routes/_authenticated/central.tsx`) e cards de imóvel
+- Esconder os botões de "Adicionar à exportação" quando o plano não permitir.
+- Desabilitar o botão quando o imóvel tiver `exportacao_liberada = false`, com tooltip.
 
----
+### Planos (`src/routes/_authenticated/planos.tsx` e telas de edição)
+- Adicionar Switch **"Permite exportar imóveis"** no formulário do plano.
+- Mostrar a flag na listagem.
 
-## Detalhes técnicos
+### Gate de plano (novo hook `usePodeExportar`)
+- Consulta o plano ativo do usuário (`get_minha_assinatura` já retorna `plano_id`) e busca `planos.permite_exportacao`.
+- Cacheia em memória; usado por hook/UI.
 
-**Server function** `src/lib/clientes-auth.functions.ts` com `requireSupabaseAuth`:
-- `criarAcessoCliente({ email, modo: 'senha' | 'convite', nome })`
-- Verifica caller via `has_role(super_admin)` OR `has_role(secretaria)`; caso contrário, 403.
-- Carrega `supabaseAdmin` dentro do handler (`await import('@/integrations/supabase/client.server')`).
-- Procura usuário existente: `supabaseAdmin.auth.admin.listUsers` filtrando por email.
-- Se não existe:
-  - Modo `senha`: `auth.admin.createUser({ email, password, email_confirm: true, user_metadata: { full_name } })` — retorna `{ user_id, senha }`.
-  - Modo `convite`: `auth.admin.inviteUserByEmail(email, { redirectTo: <origin>/reset-password })` — retorna `{ user_id }`.
-- Insere role apropriada em `user_roles` (`imobiliaria` ou `corretor_autonomo`) — idempotente.
-- Retorna `{ user_id, senha?: string, jaExistia: boolean }`.
-
-**Fluxo no formulário** (clientes.tsx):
-1. Chama `criarAcessoCliente` antes de inserir o cliente.
-2. Usa o `user_id` retornado para preencher `owner_id`/`user_id` no insert da tabela.
-3. Se modo `senha`, abre o segundo diálogo com as credenciais.
-
-**Rota `/reset-password`** — verificar se já existe; se não, criar página pública que detecta `type=recovery|invite` no hash e chama `supabase.auth.updateUser({ password })`. Isso garante que o link do convite funciona.
-
-**Perfil** — componente novo `<AlterarSenhaCard />` em `src/components/perfil/AlterarSenhaCard.tsx`, importado em `perfil.tsx`.
-
-**Sem migrações de banco** — apenas `user_roles` (já existe) recebe insert via service role.
-
----
-
-## Fora de escopo
-
-- Reenviar convite a partir da lista de clientes (pode ser adicionado depois).
-- Desativar/excluir conta auth quando cliente é removido.
-- 2FA / política de complexidade adicional além do HIBP já existente.
+## Itens fora de escopo
+- Geração de PDF/ZIP (continua como já está).
+- Mudanças na identidade visual.
+- Permissões de outros perfis (apenas super_admin/secretaria editam a flag por imóvel).
