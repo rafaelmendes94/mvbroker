@@ -98,7 +98,7 @@ function RelAtividade() {
               <XAxis dataKey="dia" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Bar dataKey="vis" name="Visualizações" stackId="a" fill="hsl(var(--primary))" />
+              <Bar dataKey="vis" name="Visualizações" stackId="a" fill="hsl(var(--chart-1))" />
               <Bar dataKey="down" name="Downloads" stackId="a" fill="#10b981" />
             </BarChart>
           </ResponsiveContainer>

@@ -68,7 +68,7 @@ function RelExportacoes() {
   for (const cp of cartPortais) {
     const p = portalMap.get(cp.portal_id);
     if (!p) continue;
-    const cur = porPortal.get(p.id) ?? { nome: p.nome, cor: p.cor ?? "hsl(var(--primary))", leituras: 0, carteiras: 0, erros: 0 };
+    const cur = porPortal.get(p.id) ?? { nome: p.nome, cor: p.cor ?? "hsl(var(--chart-1))", leituras: 0, carteiras: 0, erros: 0 };
     cur.leituras += cp.total_leituras ?? 0;
     cur.carteiras += 1;
     if (cp.status_sincronizacao === "erro") cur.erros += 1;
@@ -110,15 +110,15 @@ function RelExportacoes() {
             <AreaChart data={atividade}>
               <defs>
                 <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  <stop offset="0%" stopColor="hsl(var(--chart-1))" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="hsl(var(--chart-1))" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
               <XAxis dataKey="dia" fontSize={11} />
               <YAxis fontSize={11} />
               <Tooltip />
-              <Area type="monotone" dataKey="leituras" stroke="hsl(var(--primary))" fill="url(#grad)" />
+              <Area type="monotone" dataKey="leituras" stroke="hsl(var(--chart-1))" fill="url(#grad)" />
             </AreaChart>
           </ResponsiveContainer>
         </CardContent>
@@ -134,7 +134,7 @@ function RelExportacoes() {
                 <XAxis type="number" fontSize={11} />
                 <YAxis dataKey="nome" type="category" fontSize={11} width={120} />
                 <Tooltip />
-                <Bar dataKey="value" fill="hsl(var(--primary))" radius={[0, 6, 6, 0]} />
+                <Bar dataKey="value" fill="hsl(var(--chart-1))" radius={[0, 6, 6, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -150,7 +150,7 @@ function RelExportacoes() {
                 <YAxis fontSize={11} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="leituras" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="leituras" fill="hsl(var(--chart-1))" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
