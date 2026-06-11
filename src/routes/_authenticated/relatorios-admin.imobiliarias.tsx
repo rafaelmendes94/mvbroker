@@ -8,7 +8,7 @@ import { logRelatorioAccess } from "@/hooks/use-relatorios";
 import { useRelFilters } from "@/hooks/use-rel-filters";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
-export const Route = createFileRoute("/_authenticated/relatorios/imobiliarias")({
+export const Route = createFileRoute("/_authenticated/relatorios-admin/imobiliarias")({
   beforeLoad: async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw redirect({ to: "/auth" });

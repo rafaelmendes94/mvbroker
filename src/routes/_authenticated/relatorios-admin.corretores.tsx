@@ -8,7 +8,7 @@ import { logRelatorioAccess } from "@/hooks/use-relatorios";
 import { useRelFilters } from "@/hooks/use-rel-filters";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, PieChart, Pie, Cell, Legend } from "recharts";
 
-export const Route = createFileRoute("/_authenticated/relatorios/corretores")({
+export const Route = createFileRoute("/_authenticated/relatorios-admin/corretores")({
   component: RelCorretores,
 });
 

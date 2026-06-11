@@ -10,7 +10,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGri
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-export const Route = createFileRoute("/_authenticated/relatorios/atividade")({
+export const Route = createFileRoute("/_authenticated/relatorios-admin/atividade")({
   component: RelAtividade,
 });
 
