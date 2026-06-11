@@ -41,6 +41,7 @@ const ALL_NAV: NavEntry[] = [
   { to: "/seguranca", label: "Segurança", icon: Lock },
   { to: "/biblioteca", label: "Biblioteca de Arquivos", icon: FolderArchive },
   { to: "/importacoes", label: "Importações", icon: Upload },
+  { to: "/tabela", label: "Tabela", icon: FileText },
   { to: "/configuracoes", label: "Configurações", icon: Settings },
 ];
 
