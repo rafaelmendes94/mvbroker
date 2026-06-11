@@ -4,7 +4,7 @@ import {
   Building, Briefcase, ImageIcon, FileUp, RefreshCw, Clock, FileText, BadgeCheck, Heart, Eye,
 } from "lucide-react";
 import {
-  Bar, BarChart, CartesianGrid, Cell, Line, LineChart, Pie, PieChart,
+  Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart,
   ResponsiveContainer, Tooltip as RTooltip, XAxis, YAxis,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,8 +111,8 @@ function Dashboard() {
                 <div
                   className={
                     highlight
-                      ? "h-11 w-11 grid place-items-center rounded-xl bg-accent/20 text-accent"
-                      : "h-11 w-11 grid place-items-center rounded-xl bg-muted text-foreground/70"
+                      ? "h-11 w-11 grid place-items-center rounded-xl bg-[image:var(--gradient-accent)] text-accent-foreground shadow-[var(--shadow-accent)]"
+                      : "h-11 w-11 grid place-items-center rounded-xl bg-[image:var(--gradient-accent)] text-accent-foreground shadow-[var(--shadow-accent)]"
                   }
                 >
                   <Icon className="h-5 w-5" />
@@ -121,10 +121,9 @@ function Dashboard() {
                   <span
                     className={
                       k.up
-                        ? "text-[11px] font-bold px-2.5 py-1 rounded-lg bg-accent/15 text-accent-foreground/90"
+                        ? "text-[11px] font-bold px-2.5 py-1 rounded-lg bg-accent/15 text-accent"
                         : "text-[11px] font-bold px-2.5 py-1 rounded-lg bg-destructive/10 text-destructive"
                     }
-                    style={k.up ? { color: "oklch(0.40 0.15 152)" } : undefined}
                   >
                     {k.up ? <TrendingUp className="h-3 w-3 inline -mt-px mr-0.5" /> : <TrendingDown className="h-3 w-3 inline -mt-px mr-0.5" />}
                     {k.delta}
@@ -156,11 +155,17 @@ function Dashboard() {
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barData}>
+                  <defs>
+                    <linearGradient id="grad-bar" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--color-accent-glow)" stopOpacity={1} />
+                      <stop offset="100%" stopColor="var(--color-accent-deep)" stopOpacity={0.9} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                   <XAxis dataKey="mes" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <RTooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 8, fontSize: 12 }} />
-                  <Bar dataKey="registros" fill="var(--color-primary)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="registros" fill="url(#grad-bar)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -207,14 +212,24 @@ function Dashboard() {
           <CardContent>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={lineData}>
+                <AreaChart data={lineData}>
+                  <defs>
+                    <linearGradient id="grad-area-1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--color-chart-1)" stopOpacity={0.45} />
+                      <stop offset="100%" stopColor="var(--color-chart-1)" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="grad-area-2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--color-chart-2)" stopOpacity={0.40} />
+                      <stop offset="100%" stopColor="var(--color-chart-2)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                   <XAxis dataKey="dia" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <RTooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 8, fontSize: 12 }} />
-                  <Line type="monotone" dataKey="clientes" stroke="var(--color-chart-1)" strokeWidth={2.5} dot={false} />
-                  <Line type="monotone" dataKey="leads" stroke="var(--color-chart-2)" strokeWidth={2.5} dot={false} />
-                </LineChart>
+                  <Area type="monotone" dataKey="clientes" stroke="var(--color-chart-1)" strokeWidth={2.5} fill="url(#grad-area-1)" />
+                  <Area type="monotone" dataKey="leads" stroke="var(--color-chart-2)" strokeWidth={2.5} fill="url(#grad-area-2)" />
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
