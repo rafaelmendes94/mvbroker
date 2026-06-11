@@ -29,7 +29,6 @@ import { Route as AuthenticatedLoteamentosRouteImport } from './routes/_authenti
 import { Route as AuthenticatedImportacoesRouteImport } from './routes/_authenticated/importacoes'
 import { Route as AuthenticatedImoveisRouteImport } from './routes/_authenticated/imoveis'
 import { Route as AuthenticatedFavoritosRouteImport } from './routes/_authenticated/favoritos'
-import { Route as AuthenticatedEmpreendimentosRouteImport } from './routes/_authenticated/empreendimentos'
 import { Route as AuthenticatedEdificiosRouteImport } from './routes/_authenticated/edificios'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
@@ -61,7 +60,6 @@ import { Route as AuthenticatedRelatoriosAtividadeRouteImport } from './routes/_
 import { Route as AuthenticatedRegistrosNovoRouteImport } from './routes/_authenticated/registros.novo'
 import { Route as AuthenticatedRegistrosIdRouteImport } from './routes/_authenticated/registros.$id'
 import { Route as AuthenticatedImportacoesImoveisRouteImport } from './routes/_authenticated/importacoes.imoveis'
-import { Route as AuthenticatedImportacoesEmpreendimentosRouteImport } from './routes/_authenticated/importacoes.empreendimentos'
 import { Route as AuthenticatedImportacoesEdificiosRouteImport } from './routes/_authenticated/importacoes.edificios'
 import { Route as AuthenticatedImportacoesCondominiosRouteImport } from './routes/_authenticated/importacoes.condominios'
 import { Route as AuthenticatedImoveisNovoRouteImport } from './routes/_authenticated/imoveis.novo'
@@ -180,12 +178,6 @@ const AuthenticatedFavoritosRoute = AuthenticatedFavoritosRouteImport.update({
   path: '/favoritos',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedEmpreendimentosRoute =
-  AuthenticatedEmpreendimentosRouteImport.update({
-    id: '/empreendimentos',
-    path: '/empreendimentos',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
 const AuthenticatedEdificiosRoute = AuthenticatedEdificiosRouteImport.update({
   id: '/edificios',
   path: '/edificios',
@@ -365,12 +357,6 @@ const AuthenticatedImportacoesImoveisRoute =
     path: '/imoveis',
     getParentRoute: () => AuthenticatedImportacoesRoute,
   } as any)
-const AuthenticatedImportacoesEmpreendimentosRoute =
-  AuthenticatedImportacoesEmpreendimentosRouteImport.update({
-    id: '/empreendimentos',
-    path: '/empreendimentos',
-    getParentRoute: () => AuthenticatedImportacoesRoute,
-  } as any)
 const AuthenticatedImportacoesEdificiosRoute =
   AuthenticatedImportacoesEdificiosRouteImport.update({
     id: '/edificios',
@@ -464,7 +450,6 @@ export interface FileRoutesByFullPath {
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/edificios': typeof AuthenticatedEdificiosRoute
-  '/empreendimentos': typeof AuthenticatedEmpreendimentosRoute
   '/favoritos': typeof AuthenticatedFavoritosRoute
   '/imoveis': typeof AuthenticatedImoveisRouteWithChildren
   '/importacoes': typeof AuthenticatedImportacoesRouteWithChildren
@@ -489,7 +474,6 @@ export interface FileRoutesByFullPath {
   '/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/importacoes/condominios': typeof AuthenticatedImportacoesCondominiosRoute
   '/importacoes/edificios': typeof AuthenticatedImportacoesEdificiosRoute
-  '/importacoes/empreendimentos': typeof AuthenticatedImportacoesEmpreendimentosRoute
   '/importacoes/imoveis': typeof AuthenticatedImportacoesImoveisRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
@@ -530,7 +514,6 @@ export interface FileRoutesByTo {
   '/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/edificios': typeof AuthenticatedEdificiosRoute
-  '/empreendimentos': typeof AuthenticatedEmpreendimentosRoute
   '/favoritos': typeof AuthenticatedFavoritosRoute
   '/loteamentos': typeof AuthenticatedLoteamentosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -549,7 +532,6 @@ export interface FileRoutesByTo {
   '/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/importacoes/condominios': typeof AuthenticatedImportacoesCondominiosRoute
   '/importacoes/edificios': typeof AuthenticatedImportacoesEdificiosRoute
-  '/importacoes/empreendimentos': typeof AuthenticatedImportacoesEmpreendimentosRoute
   '/importacoes/imoveis': typeof AuthenticatedImportacoesImoveisRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
@@ -593,7 +575,6 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/edificios': typeof AuthenticatedEdificiosRoute
-  '/_authenticated/empreendimentos': typeof AuthenticatedEmpreendimentosRoute
   '/_authenticated/favoritos': typeof AuthenticatedFavoritosRoute
   '/_authenticated/imoveis': typeof AuthenticatedImoveisRouteWithChildren
   '/_authenticated/importacoes': typeof AuthenticatedImportacoesRouteWithChildren
@@ -618,7 +599,6 @@ export interface FileRoutesById {
   '/_authenticated/imoveis/novo': typeof AuthenticatedImoveisNovoRoute
   '/_authenticated/importacoes/condominios': typeof AuthenticatedImportacoesCondominiosRoute
   '/_authenticated/importacoes/edificios': typeof AuthenticatedImportacoesEdificiosRoute
-  '/_authenticated/importacoes/empreendimentos': typeof AuthenticatedImportacoesEmpreendimentosRoute
   '/_authenticated/importacoes/imoveis': typeof AuthenticatedImportacoesImoveisRoute
   '/_authenticated/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/_authenticated/registros/novo': typeof AuthenticatedRegistrosNovoRoute
@@ -662,7 +642,6 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/dashboard'
     | '/edificios'
-    | '/empreendimentos'
     | '/favoritos'
     | '/imoveis'
     | '/importacoes'
@@ -687,7 +666,6 @@ export interface FileRouteTypes {
     | '/imoveis/novo'
     | '/importacoes/condominios'
     | '/importacoes/edificios'
-    | '/importacoes/empreendimentos'
     | '/importacoes/imoveis'
     | '/registros/$id'
     | '/registros/novo'
@@ -728,7 +706,6 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/dashboard'
     | '/edificios'
-    | '/empreendimentos'
     | '/favoritos'
     | '/loteamentos'
     | '/notificacoes'
@@ -747,7 +724,6 @@ export interface FileRouteTypes {
     | '/imoveis/novo'
     | '/importacoes/condominios'
     | '/importacoes/edificios'
-    | '/importacoes/empreendimentos'
     | '/importacoes/imoveis'
     | '/registros/$id'
     | '/registros/novo'
@@ -790,7 +766,6 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes'
     | '/_authenticated/dashboard'
     | '/_authenticated/edificios'
-    | '/_authenticated/empreendimentos'
     | '/_authenticated/favoritos'
     | '/_authenticated/imoveis'
     | '/_authenticated/importacoes'
@@ -815,7 +790,6 @@ export interface FileRouteTypes {
     | '/_authenticated/imoveis/novo'
     | '/_authenticated/importacoes/condominios'
     | '/_authenticated/importacoes/edificios'
-    | '/_authenticated/importacoes/empreendimentos'
     | '/_authenticated/importacoes/imoveis'
     | '/_authenticated/registros/$id'
     | '/_authenticated/registros/novo'
@@ -992,13 +966,6 @@ declare module '@tanstack/react-router' {
       path: '/favoritos'
       fullPath: '/favoritos'
       preLoaderRoute: typeof AuthenticatedFavoritosRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/empreendimentos': {
-      id: '/_authenticated/empreendimentos'
-      path: '/empreendimentos'
-      fullPath: '/empreendimentos'
-      preLoaderRoute: typeof AuthenticatedEmpreendimentosRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/edificios': {
@@ -1218,13 +1185,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImportacoesImoveisRouteImport
       parentRoute: typeof AuthenticatedImportacoesRoute
     }
-    '/_authenticated/importacoes/empreendimentos': {
-      id: '/_authenticated/importacoes/empreendimentos'
-      path: '/empreendimentos'
-      fullPath: '/importacoes/empreendimentos'
-      preLoaderRoute: typeof AuthenticatedImportacoesEmpreendimentosRouteImport
-      parentRoute: typeof AuthenticatedImportacoesRoute
-    }
     '/_authenticated/importacoes/edificios': {
       id: '/_authenticated/importacoes/edificios'
       path: '/edificios'
@@ -1398,7 +1358,6 @@ const AuthenticatedImoveisRouteWithChildren =
 interface AuthenticatedImportacoesRouteChildren {
   AuthenticatedImportacoesCondominiosRoute: typeof AuthenticatedImportacoesCondominiosRoute
   AuthenticatedImportacoesEdificiosRoute: typeof AuthenticatedImportacoesEdificiosRoute
-  AuthenticatedImportacoesEmpreendimentosRoute: typeof AuthenticatedImportacoesEmpreendimentosRoute
   AuthenticatedImportacoesImoveisRoute: typeof AuthenticatedImportacoesImoveisRoute
   AuthenticatedImportacoesIndexRoute: typeof AuthenticatedImportacoesIndexRoute
 }
@@ -1409,8 +1368,6 @@ const AuthenticatedImportacoesRouteChildren: AuthenticatedImportacoesRouteChildr
       AuthenticatedImportacoesCondominiosRoute,
     AuthenticatedImportacoesEdificiosRoute:
       AuthenticatedImportacoesEdificiosRoute,
-    AuthenticatedImportacoesEmpreendimentosRoute:
-      AuthenticatedImportacoesEmpreendimentosRoute,
     AuthenticatedImportacoesImoveisRoute: AuthenticatedImportacoesImoveisRoute,
     AuthenticatedImportacoesIndexRoute: AuthenticatedImportacoesIndexRoute,
   }
@@ -1528,7 +1485,6 @@ interface AuthenticatedRouteChildren {
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEdificiosRoute: typeof AuthenticatedEdificiosRoute
-  AuthenticatedEmpreendimentosRoute: typeof AuthenticatedEmpreendimentosRoute
   AuthenticatedFavoritosRoute: typeof AuthenticatedFavoritosRoute
   AuthenticatedImoveisRoute: typeof AuthenticatedImoveisRouteWithChildren
   AuthenticatedImportacoesRoute: typeof AuthenticatedImportacoesRouteWithChildren
@@ -1558,7 +1514,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEdificiosRoute: AuthenticatedEdificiosRoute,
-  AuthenticatedEmpreendimentosRoute: AuthenticatedEmpreendimentosRoute,
   AuthenticatedFavoritosRoute: AuthenticatedFavoritosRoute,
   AuthenticatedImoveisRoute: AuthenticatedImoveisRouteWithChildren,
   AuthenticatedImportacoesRoute: AuthenticatedImportacoesRouteWithChildren,
@@ -1592,3 +1547,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
