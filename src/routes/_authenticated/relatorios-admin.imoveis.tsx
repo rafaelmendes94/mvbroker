@@ -10,7 +10,7 @@ import {
   PieChart, Pie, Cell, Legend,
 } from "recharts";
 
-export const Route = createFileRoute("/_authenticated/relatorios/imoveis")({
+export const Route = createFileRoute("/_authenticated/relatorios-admin/imoveis")({
   component: RelImoveis,
 });
 

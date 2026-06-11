@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trophy, Eye, Download, Share2, Heart, Award, LogIn, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_authenticated/relatorios/rankings")({
+export const Route = createFileRoute("/_authenticated/relatorios-admin/rankings")({
   head: () => ({ meta: [{ title: "Rankings — MV Broker" }] }),
   component: RankingsPage,
 });

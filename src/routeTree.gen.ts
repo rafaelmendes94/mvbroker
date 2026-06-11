@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedUsuariosRouteImport } from './routes/_authenticated/usuarios'
 import { Route as AuthenticatedTabelaRouteImport } from './routes/_authenticated/tabela'
 import { Route as AuthenticatedSegurancaRouteImport } from './routes/_authenticated/seguranca'
+import { Route as AuthenticatedRelatoriosAdminRouteImport } from './routes/_authenticated/relatorios-admin'
 import { Route as AuthenticatedRelatoriosRouteImport } from './routes/_authenticated/relatorios'
 import { Route as AuthenticatedRegularizacaoRouteImport } from './routes/_authenticated/regularizacao'
 import { Route as AuthenticatedRegistrosRouteImport } from './routes/_authenticated/registros'
@@ -42,7 +43,7 @@ import { Route as AuthenticatedAuditoriaRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAssinaturasRouteImport } from './routes/_authenticated/assinaturas'
 import { Route as AuthenticatedAcessoNegadoRouteImport } from './routes/_authenticated/acesso-negado'
 import { Route as AuthenticatedSegurancaIndexRouteImport } from './routes/_authenticated/seguranca.index'
-import { Route as AuthenticatedRelatoriosIndexRouteImport } from './routes/_authenticated/relatorios.index'
+import { Route as AuthenticatedRelatoriosAdminIndexRouteImport } from './routes/_authenticated/relatorios-admin.index'
 import { Route as AuthenticatedRegistrosIndexRouteImport } from './routes/_authenticated/registros.index'
 import { Route as AuthenticatedPortaisIndexRouteImport } from './routes/_authenticated/portais.index'
 import { Route as AuthenticatedImportacoesIndexRouteImport } from './routes/_authenticated/importacoes.index'
@@ -52,12 +53,12 @@ import { Route as AuthenticatedSegurancaSessoesRouteImport } from './routes/_aut
 import { Route as AuthenticatedSegurancaPermissoesRouteImport } from './routes/_authenticated/seguranca.permissoes'
 import { Route as AuthenticatedSegurancaAlertasRouteImport } from './routes/_authenticated/seguranca.alertas'
 import { Route as AuthenticatedSegurancaAcessosRouteImport } from './routes/_authenticated/seguranca.acessos'
-import { Route as AuthenticatedRelatoriosRankingsRouteImport } from './routes/_authenticated/relatorios.rankings'
-import { Route as AuthenticatedRelatoriosImoveisRouteImport } from './routes/_authenticated/relatorios.imoveis'
-import { Route as AuthenticatedRelatoriosImobiliariasRouteImport } from './routes/_authenticated/relatorios.imobiliarias'
-import { Route as AuthenticatedRelatoriosExportacoesRouteImport } from './routes/_authenticated/relatorios.exportacoes'
-import { Route as AuthenticatedRelatoriosCorretoresRouteImport } from './routes/_authenticated/relatorios.corretores'
-import { Route as AuthenticatedRelatoriosAtividadeRouteImport } from './routes/_authenticated/relatorios.atividade'
+import { Route as AuthenticatedRelatoriosAdminRankingsRouteImport } from './routes/_authenticated/relatorios-admin.rankings'
+import { Route as AuthenticatedRelatoriosAdminImoveisRouteImport } from './routes/_authenticated/relatorios-admin.imoveis'
+import { Route as AuthenticatedRelatoriosAdminImobiliariasRouteImport } from './routes/_authenticated/relatorios-admin.imobiliarias'
+import { Route as AuthenticatedRelatoriosAdminExportacoesRouteImport } from './routes/_authenticated/relatorios-admin.exportacoes'
+import { Route as AuthenticatedRelatoriosAdminCorretoresRouteImport } from './routes/_authenticated/relatorios-admin.corretores'
+import { Route as AuthenticatedRelatoriosAdminAtividadeRouteImport } from './routes/_authenticated/relatorios-admin.atividade'
 import { Route as AuthenticatedRegistrosNovoRouteImport } from './routes/_authenticated/registros.novo'
 import { Route as AuthenticatedRegistrosIdRouteImport } from './routes/_authenticated/registros.$id'
 import { Route as AuthenticatedImportacoesImoveisRouteImport } from './routes/_authenticated/importacoes.imoveis'
@@ -115,6 +116,12 @@ const AuthenticatedSegurancaRoute = AuthenticatedSegurancaRouteImport.update({
   path: '/seguranca',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedRelatoriosAdminRoute =
+  AuthenticatedRelatoriosAdminRouteImport.update({
+    id: '/relatorios-admin',
+    path: '/relatorios-admin',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedRelatoriosRoute = AuthenticatedRelatoriosRouteImport.update({
   id: '/relatorios',
   path: '/relatorios',
@@ -250,11 +257,11 @@ const AuthenticatedSegurancaIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedSegurancaRoute,
   } as any)
-const AuthenticatedRelatoriosIndexRoute =
-  AuthenticatedRelatoriosIndexRouteImport.update({
+const AuthenticatedRelatoriosAdminIndexRoute =
+  AuthenticatedRelatoriosAdminIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
 const AuthenticatedRegistrosIndexRoute =
   AuthenticatedRegistrosIndexRouteImport.update({
@@ -310,41 +317,41 @@ const AuthenticatedSegurancaAcessosRoute =
     path: '/acessos',
     getParentRoute: () => AuthenticatedSegurancaRoute,
   } as any)
-const AuthenticatedRelatoriosRankingsRoute =
-  AuthenticatedRelatoriosRankingsRouteImport.update({
+const AuthenticatedRelatoriosAdminRankingsRoute =
+  AuthenticatedRelatoriosAdminRankingsRouteImport.update({
     id: '/rankings',
     path: '/rankings',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
-const AuthenticatedRelatoriosImoveisRoute =
-  AuthenticatedRelatoriosImoveisRouteImport.update({
+const AuthenticatedRelatoriosAdminImoveisRoute =
+  AuthenticatedRelatoriosAdminImoveisRouteImport.update({
     id: '/imoveis',
     path: '/imoveis',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
-const AuthenticatedRelatoriosImobiliariasRoute =
-  AuthenticatedRelatoriosImobiliariasRouteImport.update({
+const AuthenticatedRelatoriosAdminImobiliariasRoute =
+  AuthenticatedRelatoriosAdminImobiliariasRouteImport.update({
     id: '/imobiliarias',
     path: '/imobiliarias',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
-const AuthenticatedRelatoriosExportacoesRoute =
-  AuthenticatedRelatoriosExportacoesRouteImport.update({
+const AuthenticatedRelatoriosAdminExportacoesRoute =
+  AuthenticatedRelatoriosAdminExportacoesRouteImport.update({
     id: '/exportacoes',
     path: '/exportacoes',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
-const AuthenticatedRelatoriosCorretoresRoute =
-  AuthenticatedRelatoriosCorretoresRouteImport.update({
+const AuthenticatedRelatoriosAdminCorretoresRoute =
+  AuthenticatedRelatoriosAdminCorretoresRouteImport.update({
     id: '/corretores',
     path: '/corretores',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
-const AuthenticatedRelatoriosAtividadeRoute =
-  AuthenticatedRelatoriosAtividadeRouteImport.update({
+const AuthenticatedRelatoriosAdminAtividadeRoute =
+  AuthenticatedRelatoriosAdminAtividadeRouteImport.update({
     id: '/atividade',
     path: '/atividade',
-    getParentRoute: () => AuthenticatedRelatoriosRoute,
+    getParentRoute: () => AuthenticatedRelatoriosAdminRoute,
   } as any)
 const AuthenticatedRegistrosNovoRoute =
   AuthenticatedRegistrosNovoRouteImport.update({
@@ -475,7 +482,8 @@ export interface FileRoutesByFullPath {
   '/portais': typeof AuthenticatedPortaisRouteWithChildren
   '/registros': typeof AuthenticatedRegistrosRouteWithChildren
   '/regularizacao': typeof AuthenticatedRegularizacaoRoute
-  '/relatorios': typeof AuthenticatedRelatoriosRouteWithChildren
+  '/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/relatorios-admin': typeof AuthenticatedRelatoriosAdminRouteWithChildren
   '/seguranca': typeof AuthenticatedSegurancaRouteWithChildren
   '/tabela': typeof AuthenticatedTabelaRoute
   '/usuarios': typeof AuthenticatedUsuariosRoute
@@ -491,12 +499,12 @@ export interface FileRoutesByFullPath {
   '/importacoes/imoveis': typeof AuthenticatedImportacoesImoveisRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
-  '/relatorios/atividade': typeof AuthenticatedRelatoriosAtividadeRoute
-  '/relatorios/corretores': typeof AuthenticatedRelatoriosCorretoresRoute
-  '/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
-  '/relatorios/imobiliarias': typeof AuthenticatedRelatoriosImobiliariasRoute
-  '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
-  '/relatorios/rankings': typeof AuthenticatedRelatoriosRankingsRoute
+  '/relatorios-admin/atividade': typeof AuthenticatedRelatoriosAdminAtividadeRoute
+  '/relatorios-admin/corretores': typeof AuthenticatedRelatoriosAdminCorretoresRoute
+  '/relatorios-admin/exportacoes': typeof AuthenticatedRelatoriosAdminExportacoesRoute
+  '/relatorios-admin/imobiliarias': typeof AuthenticatedRelatoriosAdminImobiliariasRoute
+  '/relatorios-admin/imoveis': typeof AuthenticatedRelatoriosAdminImoveisRoute
+  '/relatorios-admin/rankings': typeof AuthenticatedRelatoriosAdminRankingsRoute
   '/seguranca/acessos': typeof AuthenticatedSegurancaAcessosRoute
   '/seguranca/alertas': typeof AuthenticatedSegurancaAlertasRoute
   '/seguranca/permissoes': typeof AuthenticatedSegurancaPermissoesRoute
@@ -506,7 +514,7 @@ export interface FileRoutesByFullPath {
   '/importacoes/': typeof AuthenticatedImportacoesIndexRoute
   '/portais/': typeof AuthenticatedPortaisIndexRoute
   '/registros/': typeof AuthenticatedRegistrosIndexRoute
-  '/relatorios/': typeof AuthenticatedRelatoriosIndexRoute
+  '/relatorios-admin/': typeof AuthenticatedRelatoriosAdminIndexRoute
   '/seguranca/': typeof AuthenticatedSegurancaIndexRoute
   '/empreendimentos/$tipo/$id': typeof AuthenticatedEmpreendimentosTipoIdRoute
   '/imoveis/$id/editar': typeof AuthenticatedImoveisIdEditarRoute
@@ -537,6 +545,7 @@ export interface FileRoutesByTo {
   '/perfil': typeof AuthenticatedPerfilRoute
   '/planos': typeof AuthenticatedPlanosRoute
   '/regularizacao': typeof AuthenticatedRegularizacaoRoute
+  '/relatorios': typeof AuthenticatedRelatoriosRoute
   '/tabela': typeof AuthenticatedTabelaRoute
   '/usuarios': typeof AuthenticatedUsuariosRoute
   '/assinaturas/$id': typeof AuthenticatedAssinaturasIdRoute
@@ -551,12 +560,12 @@ export interface FileRoutesByTo {
   '/importacoes/imoveis': typeof AuthenticatedImportacoesImoveisRoute
   '/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/registros/novo': typeof AuthenticatedRegistrosNovoRoute
-  '/relatorios/atividade': typeof AuthenticatedRelatoriosAtividadeRoute
-  '/relatorios/corretores': typeof AuthenticatedRelatoriosCorretoresRoute
-  '/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
-  '/relatorios/imobiliarias': typeof AuthenticatedRelatoriosImobiliariasRoute
-  '/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
-  '/relatorios/rankings': typeof AuthenticatedRelatoriosRankingsRoute
+  '/relatorios-admin/atividade': typeof AuthenticatedRelatoriosAdminAtividadeRoute
+  '/relatorios-admin/corretores': typeof AuthenticatedRelatoriosAdminCorretoresRoute
+  '/relatorios-admin/exportacoes': typeof AuthenticatedRelatoriosAdminExportacoesRoute
+  '/relatorios-admin/imobiliarias': typeof AuthenticatedRelatoriosAdminImobiliariasRoute
+  '/relatorios-admin/imoveis': typeof AuthenticatedRelatoriosAdminImoveisRoute
+  '/relatorios-admin/rankings': typeof AuthenticatedRelatoriosAdminRankingsRoute
   '/seguranca/acessos': typeof AuthenticatedSegurancaAcessosRoute
   '/seguranca/alertas': typeof AuthenticatedSegurancaAlertasRoute
   '/seguranca/permissoes': typeof AuthenticatedSegurancaPermissoesRoute
@@ -566,7 +575,7 @@ export interface FileRoutesByTo {
   '/importacoes': typeof AuthenticatedImportacoesIndexRoute
   '/portais': typeof AuthenticatedPortaisIndexRoute
   '/registros': typeof AuthenticatedRegistrosIndexRoute
-  '/relatorios': typeof AuthenticatedRelatoriosIndexRoute
+  '/relatorios-admin': typeof AuthenticatedRelatoriosAdminIndexRoute
   '/seguranca': typeof AuthenticatedSegurancaIndexRoute
   '/empreendimentos/$tipo/$id': typeof AuthenticatedEmpreendimentosTipoIdRoute
   '/imoveis/$id/editar': typeof AuthenticatedImoveisIdEditarRoute
@@ -604,7 +613,8 @@ export interface FileRoutesById {
   '/_authenticated/portais': typeof AuthenticatedPortaisRouteWithChildren
   '/_authenticated/registros': typeof AuthenticatedRegistrosRouteWithChildren
   '/_authenticated/regularizacao': typeof AuthenticatedRegularizacaoRoute
-  '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRouteWithChildren
+  '/_authenticated/relatorios': typeof AuthenticatedRelatoriosRoute
+  '/_authenticated/relatorios-admin': typeof AuthenticatedRelatoriosAdminRouteWithChildren
   '/_authenticated/seguranca': typeof AuthenticatedSegurancaRouteWithChildren
   '/_authenticated/tabela': typeof AuthenticatedTabelaRoute
   '/_authenticated/usuarios': typeof AuthenticatedUsuariosRoute
@@ -620,12 +630,12 @@ export interface FileRoutesById {
   '/_authenticated/importacoes/imoveis': typeof AuthenticatedImportacoesImoveisRoute
   '/_authenticated/registros/$id': typeof AuthenticatedRegistrosIdRouteWithChildren
   '/_authenticated/registros/novo': typeof AuthenticatedRegistrosNovoRoute
-  '/_authenticated/relatorios/atividade': typeof AuthenticatedRelatoriosAtividadeRoute
-  '/_authenticated/relatorios/corretores': typeof AuthenticatedRelatoriosCorretoresRoute
-  '/_authenticated/relatorios/exportacoes': typeof AuthenticatedRelatoriosExportacoesRoute
-  '/_authenticated/relatorios/imobiliarias': typeof AuthenticatedRelatoriosImobiliariasRoute
-  '/_authenticated/relatorios/imoveis': typeof AuthenticatedRelatoriosImoveisRoute
-  '/_authenticated/relatorios/rankings': typeof AuthenticatedRelatoriosRankingsRoute
+  '/_authenticated/relatorios-admin/atividade': typeof AuthenticatedRelatoriosAdminAtividadeRoute
+  '/_authenticated/relatorios-admin/corretores': typeof AuthenticatedRelatoriosAdminCorretoresRoute
+  '/_authenticated/relatorios-admin/exportacoes': typeof AuthenticatedRelatoriosAdminExportacoesRoute
+  '/_authenticated/relatorios-admin/imobiliarias': typeof AuthenticatedRelatoriosAdminImobiliariasRoute
+  '/_authenticated/relatorios-admin/imoveis': typeof AuthenticatedRelatoriosAdminImoveisRoute
+  '/_authenticated/relatorios-admin/rankings': typeof AuthenticatedRelatoriosAdminRankingsRoute
   '/_authenticated/seguranca/acessos': typeof AuthenticatedSegurancaAcessosRoute
   '/_authenticated/seguranca/alertas': typeof AuthenticatedSegurancaAlertasRoute
   '/_authenticated/seguranca/permissoes': typeof AuthenticatedSegurancaPermissoesRoute
@@ -635,7 +645,7 @@ export interface FileRoutesById {
   '/_authenticated/importacoes/': typeof AuthenticatedImportacoesIndexRoute
   '/_authenticated/portais/': typeof AuthenticatedPortaisIndexRoute
   '/_authenticated/registros/': typeof AuthenticatedRegistrosIndexRoute
-  '/_authenticated/relatorios/': typeof AuthenticatedRelatoriosIndexRoute
+  '/_authenticated/relatorios-admin/': typeof AuthenticatedRelatoriosAdminIndexRoute
   '/_authenticated/seguranca/': typeof AuthenticatedSegurancaIndexRoute
   '/_authenticated/empreendimentos/$tipo/$id': typeof AuthenticatedEmpreendimentosTipoIdRoute
   '/_authenticated/imoveis/$id/editar': typeof AuthenticatedImoveisIdEditarRoute
@@ -674,6 +684,7 @@ export interface FileRouteTypes {
     | '/registros'
     | '/regularizacao'
     | '/relatorios'
+    | '/relatorios-admin'
     | '/seguranca'
     | '/tabela'
     | '/usuarios'
@@ -689,12 +700,12 @@ export interface FileRouteTypes {
     | '/importacoes/imoveis'
     | '/registros/$id'
     | '/registros/novo'
-    | '/relatorios/atividade'
-    | '/relatorios/corretores'
-    | '/relatorios/exportacoes'
-    | '/relatorios/imobiliarias'
-    | '/relatorios/imoveis'
-    | '/relatorios/rankings'
+    | '/relatorios-admin/atividade'
+    | '/relatorios-admin/corretores'
+    | '/relatorios-admin/exportacoes'
+    | '/relatorios-admin/imobiliarias'
+    | '/relatorios-admin/imoveis'
+    | '/relatorios-admin/rankings'
     | '/seguranca/acessos'
     | '/seguranca/alertas'
     | '/seguranca/permissoes'
@@ -704,7 +715,7 @@ export interface FileRouteTypes {
     | '/importacoes/'
     | '/portais/'
     | '/registros/'
-    | '/relatorios/'
+    | '/relatorios-admin/'
     | '/seguranca/'
     | '/empreendimentos/$tipo/$id'
     | '/imoveis/$id/editar'
@@ -735,6 +746,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/planos'
     | '/regularizacao'
+    | '/relatorios'
     | '/tabela'
     | '/usuarios'
     | '/assinaturas/$id'
@@ -749,12 +761,12 @@ export interface FileRouteTypes {
     | '/importacoes/imoveis'
     | '/registros/$id'
     | '/registros/novo'
-    | '/relatorios/atividade'
-    | '/relatorios/corretores'
-    | '/relatorios/exportacoes'
-    | '/relatorios/imobiliarias'
-    | '/relatorios/imoveis'
-    | '/relatorios/rankings'
+    | '/relatorios-admin/atividade'
+    | '/relatorios-admin/corretores'
+    | '/relatorios-admin/exportacoes'
+    | '/relatorios-admin/imobiliarias'
+    | '/relatorios-admin/imoveis'
+    | '/relatorios-admin/rankings'
     | '/seguranca/acessos'
     | '/seguranca/alertas'
     | '/seguranca/permissoes'
@@ -764,7 +776,7 @@ export interface FileRouteTypes {
     | '/importacoes'
     | '/portais'
     | '/registros'
-    | '/relatorios'
+    | '/relatorios-admin'
     | '/seguranca'
     | '/empreendimentos/$tipo/$id'
     | '/imoveis/$id/editar'
@@ -802,6 +814,7 @@ export interface FileRouteTypes {
     | '/_authenticated/registros'
     | '/_authenticated/regularizacao'
     | '/_authenticated/relatorios'
+    | '/_authenticated/relatorios-admin'
     | '/_authenticated/seguranca'
     | '/_authenticated/tabela'
     | '/_authenticated/usuarios'
@@ -817,12 +830,12 @@ export interface FileRouteTypes {
     | '/_authenticated/importacoes/imoveis'
     | '/_authenticated/registros/$id'
     | '/_authenticated/registros/novo'
-    | '/_authenticated/relatorios/atividade'
-    | '/_authenticated/relatorios/corretores'
-    | '/_authenticated/relatorios/exportacoes'
-    | '/_authenticated/relatorios/imobiliarias'
-    | '/_authenticated/relatorios/imoveis'
-    | '/_authenticated/relatorios/rankings'
+    | '/_authenticated/relatorios-admin/atividade'
+    | '/_authenticated/relatorios-admin/corretores'
+    | '/_authenticated/relatorios-admin/exportacoes'
+    | '/_authenticated/relatorios-admin/imobiliarias'
+    | '/_authenticated/relatorios-admin/imoveis'
+    | '/_authenticated/relatorios-admin/rankings'
     | '/_authenticated/seguranca/acessos'
     | '/_authenticated/seguranca/alertas'
     | '/_authenticated/seguranca/permissoes'
@@ -832,7 +845,7 @@ export interface FileRouteTypes {
     | '/_authenticated/importacoes/'
     | '/_authenticated/portais/'
     | '/_authenticated/registros/'
-    | '/_authenticated/relatorios/'
+    | '/_authenticated/relatorios-admin/'
     | '/_authenticated/seguranca/'
     | '/_authenticated/empreendimentos/$tipo/$id'
     | '/_authenticated/imoveis/$id/editar'
@@ -907,6 +920,13 @@ declare module '@tanstack/react-router' {
       path: '/seguranca'
       fullPath: '/seguranca'
       preLoaderRoute: typeof AuthenticatedSegurancaRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/relatorios-admin': {
+      id: '/_authenticated/relatorios-admin'
+      path: '/relatorios-admin'
+      fullPath: '/relatorios-admin'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/relatorios': {
@@ -1084,12 +1104,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSegurancaIndexRouteImport
       parentRoute: typeof AuthenticatedSegurancaRoute
     }
-    '/_authenticated/relatorios/': {
-      id: '/_authenticated/relatorios/'
+    '/_authenticated/relatorios-admin/': {
+      id: '/_authenticated/relatorios-admin/'
       path: '/'
-      fullPath: '/relatorios/'
-      preLoaderRoute: typeof AuthenticatedRelatoriosIndexRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
     '/_authenticated/registros/': {
       id: '/_authenticated/registros/'
@@ -1154,47 +1174,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSegurancaAcessosRouteImport
       parentRoute: typeof AuthenticatedSegurancaRoute
     }
-    '/_authenticated/relatorios/rankings': {
-      id: '/_authenticated/relatorios/rankings'
+    '/_authenticated/relatorios-admin/rankings': {
+      id: '/_authenticated/relatorios-admin/rankings'
       path: '/rankings'
-      fullPath: '/relatorios/rankings'
-      preLoaderRoute: typeof AuthenticatedRelatoriosRankingsRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/rankings'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminRankingsRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
-    '/_authenticated/relatorios/imoveis': {
-      id: '/_authenticated/relatorios/imoveis'
+    '/_authenticated/relatorios-admin/imoveis': {
+      id: '/_authenticated/relatorios-admin/imoveis'
       path: '/imoveis'
-      fullPath: '/relatorios/imoveis'
-      preLoaderRoute: typeof AuthenticatedRelatoriosImoveisRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/imoveis'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminImoveisRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
-    '/_authenticated/relatorios/imobiliarias': {
-      id: '/_authenticated/relatorios/imobiliarias'
+    '/_authenticated/relatorios-admin/imobiliarias': {
+      id: '/_authenticated/relatorios-admin/imobiliarias'
       path: '/imobiliarias'
-      fullPath: '/relatorios/imobiliarias'
-      preLoaderRoute: typeof AuthenticatedRelatoriosImobiliariasRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/imobiliarias'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminImobiliariasRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
-    '/_authenticated/relatorios/exportacoes': {
-      id: '/_authenticated/relatorios/exportacoes'
+    '/_authenticated/relatorios-admin/exportacoes': {
+      id: '/_authenticated/relatorios-admin/exportacoes'
       path: '/exportacoes'
-      fullPath: '/relatorios/exportacoes'
-      preLoaderRoute: typeof AuthenticatedRelatoriosExportacoesRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/exportacoes'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminExportacoesRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
-    '/_authenticated/relatorios/corretores': {
-      id: '/_authenticated/relatorios/corretores'
+    '/_authenticated/relatorios-admin/corretores': {
+      id: '/_authenticated/relatorios-admin/corretores'
       path: '/corretores'
-      fullPath: '/relatorios/corretores'
-      preLoaderRoute: typeof AuthenticatedRelatoriosCorretoresRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/corretores'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminCorretoresRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
-    '/_authenticated/relatorios/atividade': {
-      id: '/_authenticated/relatorios/atividade'
+    '/_authenticated/relatorios-admin/atividade': {
+      id: '/_authenticated/relatorios-admin/atividade'
       path: '/atividade'
-      fullPath: '/relatorios/atividade'
-      preLoaderRoute: typeof AuthenticatedRelatoriosAtividadeRouteImport
-      parentRoute: typeof AuthenticatedRelatoriosRoute
+      fullPath: '/relatorios-admin/atividade'
+      preLoaderRoute: typeof AuthenticatedRelatoriosAdminAtividadeRouteImport
+      parentRoute: typeof AuthenticatedRelatoriosAdminRoute
     }
     '/_authenticated/registros/novo': {
       id: '/_authenticated/registros/novo'
@@ -1459,34 +1479,37 @@ const AuthenticatedRegistrosRouteWithChildren =
     AuthenticatedRegistrosRouteChildren,
   )
 
-interface AuthenticatedRelatoriosRouteChildren {
-  AuthenticatedRelatoriosAtividadeRoute: typeof AuthenticatedRelatoriosAtividadeRoute
-  AuthenticatedRelatoriosCorretoresRoute: typeof AuthenticatedRelatoriosCorretoresRoute
-  AuthenticatedRelatoriosExportacoesRoute: typeof AuthenticatedRelatoriosExportacoesRoute
-  AuthenticatedRelatoriosImobiliariasRoute: typeof AuthenticatedRelatoriosImobiliariasRoute
-  AuthenticatedRelatoriosImoveisRoute: typeof AuthenticatedRelatoriosImoveisRoute
-  AuthenticatedRelatoriosRankingsRoute: typeof AuthenticatedRelatoriosRankingsRoute
-  AuthenticatedRelatoriosIndexRoute: typeof AuthenticatedRelatoriosIndexRoute
+interface AuthenticatedRelatoriosAdminRouteChildren {
+  AuthenticatedRelatoriosAdminAtividadeRoute: typeof AuthenticatedRelatoriosAdminAtividadeRoute
+  AuthenticatedRelatoriosAdminCorretoresRoute: typeof AuthenticatedRelatoriosAdminCorretoresRoute
+  AuthenticatedRelatoriosAdminExportacoesRoute: typeof AuthenticatedRelatoriosAdminExportacoesRoute
+  AuthenticatedRelatoriosAdminImobiliariasRoute: typeof AuthenticatedRelatoriosAdminImobiliariasRoute
+  AuthenticatedRelatoriosAdminImoveisRoute: typeof AuthenticatedRelatoriosAdminImoveisRoute
+  AuthenticatedRelatoriosAdminRankingsRoute: typeof AuthenticatedRelatoriosAdminRankingsRoute
+  AuthenticatedRelatoriosAdminIndexRoute: typeof AuthenticatedRelatoriosAdminIndexRoute
 }
 
-const AuthenticatedRelatoriosRouteChildren: AuthenticatedRelatoriosRouteChildren =
+const AuthenticatedRelatoriosAdminRouteChildren: AuthenticatedRelatoriosAdminRouteChildren =
   {
-    AuthenticatedRelatoriosAtividadeRoute:
-      AuthenticatedRelatoriosAtividadeRoute,
-    AuthenticatedRelatoriosCorretoresRoute:
-      AuthenticatedRelatoriosCorretoresRoute,
-    AuthenticatedRelatoriosExportacoesRoute:
-      AuthenticatedRelatoriosExportacoesRoute,
-    AuthenticatedRelatoriosImobiliariasRoute:
-      AuthenticatedRelatoriosImobiliariasRoute,
-    AuthenticatedRelatoriosImoveisRoute: AuthenticatedRelatoriosImoveisRoute,
-    AuthenticatedRelatoriosRankingsRoute: AuthenticatedRelatoriosRankingsRoute,
-    AuthenticatedRelatoriosIndexRoute: AuthenticatedRelatoriosIndexRoute,
+    AuthenticatedRelatoriosAdminAtividadeRoute:
+      AuthenticatedRelatoriosAdminAtividadeRoute,
+    AuthenticatedRelatoriosAdminCorretoresRoute:
+      AuthenticatedRelatoriosAdminCorretoresRoute,
+    AuthenticatedRelatoriosAdminExportacoesRoute:
+      AuthenticatedRelatoriosAdminExportacoesRoute,
+    AuthenticatedRelatoriosAdminImobiliariasRoute:
+      AuthenticatedRelatoriosAdminImobiliariasRoute,
+    AuthenticatedRelatoriosAdminImoveisRoute:
+      AuthenticatedRelatoriosAdminImoveisRoute,
+    AuthenticatedRelatoriosAdminRankingsRoute:
+      AuthenticatedRelatoriosAdminRankingsRoute,
+    AuthenticatedRelatoriosAdminIndexRoute:
+      AuthenticatedRelatoriosAdminIndexRoute,
   }
 
-const AuthenticatedRelatoriosRouteWithChildren =
-  AuthenticatedRelatoriosRoute._addFileChildren(
-    AuthenticatedRelatoriosRouteChildren,
+const AuthenticatedRelatoriosAdminRouteWithChildren =
+  AuthenticatedRelatoriosAdminRoute._addFileChildren(
+    AuthenticatedRelatoriosAdminRouteChildren,
   )
 
 interface AuthenticatedSegurancaRouteChildren {
@@ -1536,7 +1559,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPortaisRoute: typeof AuthenticatedPortaisRouteWithChildren
   AuthenticatedRegistrosRoute: typeof AuthenticatedRegistrosRouteWithChildren
   AuthenticatedRegularizacaoRoute: typeof AuthenticatedRegularizacaoRoute
-  AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRouteWithChildren
+  AuthenticatedRelatoriosRoute: typeof AuthenticatedRelatoriosRoute
+  AuthenticatedRelatoriosAdminRoute: typeof AuthenticatedRelatoriosAdminRouteWithChildren
   AuthenticatedSegurancaRoute: typeof AuthenticatedSegurancaRouteWithChildren
   AuthenticatedTabelaRoute: typeof AuthenticatedTabelaRoute
   AuthenticatedUsuariosRoute: typeof AuthenticatedUsuariosRoute
@@ -1567,7 +1591,9 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPortaisRoute: AuthenticatedPortaisRouteWithChildren,
   AuthenticatedRegistrosRoute: AuthenticatedRegistrosRouteWithChildren,
   AuthenticatedRegularizacaoRoute: AuthenticatedRegularizacaoRoute,
-  AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRouteWithChildren,
+  AuthenticatedRelatoriosRoute: AuthenticatedRelatoriosRoute,
+  AuthenticatedRelatoriosAdminRoute:
+    AuthenticatedRelatoriosAdminRouteWithChildren,
   AuthenticatedSegurancaRoute: AuthenticatedSegurancaRouteWithChildren,
   AuthenticatedTabelaRoute: AuthenticatedTabelaRoute,
   AuthenticatedUsuariosRoute: AuthenticatedUsuariosRoute,
