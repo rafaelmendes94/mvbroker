@@ -379,7 +379,7 @@ function LandingPage() {
                     ))}
                   </ul>
                 </div>
-                <a href={waLink(p.name)} target="_blank" rel="noreferrer">
+                <a href={waLink(waNumero, p.name)} target="_blank" rel="noreferrer">
                   <button
                     className={`w-full py-3.5 text-sm font-semibold transition-colors ${
                       p.dark
