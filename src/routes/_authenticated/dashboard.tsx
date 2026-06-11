@@ -212,14 +212,24 @@ function Dashboard() {
           <CardContent>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={lineData}>
+                <AreaChart data={lineData}>
+                  <defs>
+                    <linearGradient id="grad-area-1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--color-chart-1)" stopOpacity={0.45} />
+                      <stop offset="100%" stopColor="var(--color-chart-1)" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="grad-area-2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--color-chart-2)" stopOpacity={0.40} />
+                      <stop offset="100%" stopColor="var(--color-chart-2)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
                   <XAxis dataKey="dia" stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="var(--color-muted-foreground)" fontSize={12} tickLine={false} axisLine={false} />
                   <RTooltip contentStyle={{ background: "var(--color-popover)", border: "1px solid var(--color-border)", borderRadius: 8, fontSize: 12 }} />
-                  <Line type="monotone" dataKey="clientes" stroke="var(--color-chart-1)" strokeWidth={2.5} dot={false} />
-                  <Line type="monotone" dataKey="leads" stroke="var(--color-chart-2)" strokeWidth={2.5} dot={false} />
-                </LineChart>
+                  <Area type="monotone" dataKey="clientes" stroke="var(--color-chart-1)" strokeWidth={2.5} fill="url(#grad-area-1)" />
+                  <Area type="monotone" dataKey="leads" stroke="var(--color-chart-2)" strokeWidth={2.5} fill="url(#grad-area-2)" />
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
