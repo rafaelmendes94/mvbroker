@@ -316,11 +316,24 @@ function LandingPage() {
           </h2>
 
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {IMOVEIS.map((im, idx) => (
+            {(destaques.length > 0
+              ? destaques.map((d: any, idx: number) => ({
+                  titulo: d.titulo ?? "Imóvel em destaque",
+                  cidade: d.cidade ?? "",
+                  bairro: d.bairro ?? "",
+                  valor: Number(d.preco) || 0,
+                  dorm: d.dormitorios ?? undefined,
+                  banh: d.banheiros ?? undefined,
+                  vagas: d.vagas ?? undefined,
+                  area: Number(d.area_privativa ?? d.area_total ?? 0),
+                  img: d.capa ?? MOCK_IMAGES[idx % MOCK_IMAGES.length],
+                }))
+              : IMOVEIS.map((im, idx) => ({ ...im, img: MOCK_IMAGES[idx] }))
+            ).map((im, idx) => (
               <div key={idx} className="group overflow-hidden rounded-xl bg-[#111] shadow-sm ring-1 ring-white/10 transition hover:shadow-lg">
                 <div className="relative aspect-[4/3] overflow-hidden bg-white/5">
                   <img
-                    src={MOCK_IMAGES[idx]}
+                    src={im.img}
                     alt={im.titulo}
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -333,25 +346,20 @@ function LandingPage() {
                   <h3 className="line-clamp-2 text-base font-bold text-white">{im.titulo}</h3>
                   <p className="flex items-center gap-1 text-xs text-white/60">
                     <MapPin className="h-3 w-3" />
-                    {im.cidade}, {im.bairro}
+                    {[im.cidade, im.bairro].filter(Boolean).join(", ")}
                   </p>
                   <div className="flex flex-wrap gap-3 pt-1 text-xs text-white/70">
-                    {im.dorm !== undefined && im.dorm > 0 ? (
-                      <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" />{im.dorm}</span>
-                    ) : null}
-                    {im.banh !== undefined && im.banh > 0 ? (
-                      <span className="flex items-center gap-1"><Bath className="h-3.5 w-3.5" />{im.banh}</span>
-                    ) : null}
-                    {im.vagas !== undefined && im.vagas > 0 ? (
-                      <span className="flex items-center gap-1"><Car className="h-3.5 w-3.5" />{im.vagas}</span>
-                    ) : null}
-                    <span className="flex items-center gap-1"><Maximize className="h-3.5 w-3.5" />{im.area}m²</span>
+                    {im.dorm ? <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" />{im.dorm}</span> : null}
+                    {im.banh ? <span className="flex items-center gap-1"><Bath className="h-3.5 w-3.5" />{im.banh}</span> : null}
+                    {im.vagas ? <span className="flex items-center gap-1"><Car className="h-3.5 w-3.5" />{im.vagas}</span> : null}
+                    {im.area ? <span className="flex items-center gap-1"><Maximize className="h-3.5 w-3.5" />{im.area}m²</span> : null}
                   </div>
-                  <p className="pt-1 text-lg font-bold text-[#10b981]">{fmtBRL(im.valor)}</p>
+                  {im.valor > 0 && <p className="pt-1 text-lg font-bold text-[#10b981]">{fmtBRL(im.valor)}</p>}
                 </div>
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
