@@ -148,6 +148,7 @@ const PLANS = [
 function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [waNumero, setWaNumero] = useState(WHATSAPP_FALLBACK);
+  const [destaques, setDestaques] = useState<any[]>([]);
 
   useEffect(() => {
     supabase
@@ -158,23 +159,44 @@ function LandingPage() {
       });
   }, []);
 
-
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from("imoveis")
+        .select("id, titulo, cidade, bairro, preco, dormitorios, banheiros, vagas, area_privativa, area_total")
+        .eq("destaque_home", true)
+        .or("arquivado.is.null,arquivado.eq.false")
+        .order("updated_at", { ascending: false })
+        .limit(6);
+      const items = data ?? [];
+      if (!items.length) return;
+      const ids = items.map((i: any) => i.id);
+      const { data: imgs } = await supabase
+        .from("imovel_imagens")
+        .select("imovel_id, url, capa, ordem")
+        .in("imovel_id", ids)
+        .order("capa", { ascending: false })
+        .order("ordem", { ascending: true });
+      const map = new Map<string, string>();
+      (imgs ?? []).forEach((im: any) => {
+        if (!map.has(im.imovel_id) && im.url) map.set(im.imovel_id, im.url);
+      });
+      setDestaques(items.map((i: any) => ({ ...i, capa: map.get(i.id) ?? null })));
+    })();
+  }, []);
 
   return (
     <div className="min-h-screen bg-black text-slate-100">
       {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-[#0a0a0a] text-white">
+      <header className="sticky top-0 z-50 bg-white text-slate-900 shadow-sm">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <a href="#inicio" className="flex items-center gap-2 shrink-0">
-            <img src={logoMv.url} alt="MV BROKER" className="h-8 w-auto" />
-            <span className="hidden text-[10px] uppercase tracking-widest text-white/50 sm:block">
-              Sistema de Suporte Imobiliário
-            </span>
+            <img src={logoMv.url} alt="MV BROKER" className="h-9 w-auto" />
           </a>
 
           <nav className="hidden items-center gap-8 md:flex">
             {NAV.map((i) => (
-              <a key={i.href} href={i.href} className="text-sm font-medium text-white/80 transition-colors hover:text-white">
+              <a key={i.href} href={i.href} className="text-sm font-medium text-slate-700 transition-colors hover:text-[#10b981]">
                 {i.label}
               </a>
             ))}
@@ -182,27 +204,27 @@ function LandingPage() {
 
           <div className="hidden md:block">
             <Link to="/auth">
-              <button className="inline-flex items-center gap-2 rounded-md border border-white px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-[#10b981]">
+              <button className="inline-flex items-center gap-2 rounded-md bg-[#10b981] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#059669]">
                 <User className="h-4 w-4" />
                 Login
               </button>
             </Link>
           </div>
 
-          <button className="md:hidden" onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
+          <button className="md:hidden text-slate-900" onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
         {menuOpen && (
-          <div className="border-t border-white/10 bg-[#0a0a0a] md:hidden">
+          <div className="border-t border-slate-200 bg-white md:hidden">
             <nav className="mx-auto flex max-w-7xl flex-col px-4 py-4">
               {NAV.map((i) => (
-                <a key={i.href} href={i.href} onClick={() => setMenuOpen(false)} className="py-2 text-sm font-medium text-white/80">
+                <a key={i.href} href={i.href} onClick={() => setMenuOpen(false)} className="py-2 text-sm font-medium text-slate-700">
                   {i.label}
                 </a>
               ))}
-              <Link to="/auth" onClick={() => setMenuOpen(false)} className="mt-2 inline-flex items-center justify-center gap-2 rounded-md border border-[#ffffff] px-4 py-2 text-sm font-semibold text-white">
+              <Link to="/auth" onClick={() => setMenuOpen(false)} className="mt-2 inline-flex items-center justify-center gap-2 rounded-md bg-[#10b981] px-4 py-2 text-sm font-semibold text-white">
                 <User className="h-4 w-4" />
                 Login
               </Link>
@@ -210,6 +232,7 @@ function LandingPage() {
           </div>
         )}
       </header>
+
 
       {/* HERO */}
       <section id="inicio" className="relative isolate overflow-hidden bg-[#0a0a0a] text-white">
