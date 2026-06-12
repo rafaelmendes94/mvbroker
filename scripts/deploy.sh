@@ -52,6 +52,14 @@ for env_file in .env .env.local .dev.vars; do
   fi
 done
 
+EXPECTED_SUPABASE_URL="${EXPECTED_SUPABASE_URL:-https://supabase.sistemamvbroker.com.br}"
+CURRENT_SUPABASE_URL="$(grep -E '^VITE_SUPABASE_URL=' .env 2>/dev/null | tail -1 | cut -d= -f2- | tr -d '\"' || true)"
+if [ "$CURRENT_SUPABASE_URL" != "$EXPECTED_SUPABASE_URL" ]; then
+  echo "❌ .env não aponta para o Supabase self-host esperado. Build cancelado para não voltar ao Lovable."
+  echo "   Ajuste VITE_SUPABASE_URL=$EXPECTED_SUPABASE_URL em $APP_DIR/.env e rode novamente."
+  exit 1
+fi
+
 echo "▶ [4/6] Verificando dependências (só instala se package.json/lock mudou)"
 CHANGED_FILES=$(git diff --name-only "$LOCAL" "$REMOTE")
 if echo "$CHANGED_FILES" | grep -qE '^(package\.json|package-lock\.json|bun\.lockb)$'; then
