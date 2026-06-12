@@ -68,7 +68,11 @@ fi
 
 
 echo "▶ [4/6] Verificando dependências (só instala se package.json/lock mudou)"
-CHANGED_FILES=$(git diff --name-only "$LOCAL" "$REMOTE")
+if [ "$SKIP_PULL" = "1" ]; then
+  CHANGED_FILES=""
+else
+  CHANGED_FILES=$(git diff --name-only "$LOCAL" "$REMOTE")
+fi
 if echo "$CHANGED_FILES" | grep -qE '^(package\.json|package-lock\.json|bun\.lockb)$'; then
   echo "   Mudanças em dependências detectadas → npm install"
   npm install --no-audit --no-fund
